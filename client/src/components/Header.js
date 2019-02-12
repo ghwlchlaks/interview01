@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './Header.css';
 import {Link} from 'react-router-dom'
 
-import goorm_img from '../routes/goorm_img.svg';
+import goorm_img from '../images/goorm_img.svg';
 
 export default class Header extends Component {
   render() {
