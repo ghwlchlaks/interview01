@@ -1,25 +1,20 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+import * as testService from "./services/test";
+
 class App extends Component {
+  state = {
+    user : null
+  }
+  componentDidMount() {
+    testService.getData().then((user)=>this.setState({user: user.username}));
+  }
   render() {
+    const {user} = this.state;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+      {user ? <h1>{`Hello ${user}`}</h1> : <h1>Loading.. please wait!</h1>}
       </div>
     );
   }
