@@ -8,37 +8,52 @@ class App extends Component {
   state = {
     user : null,
     endpoint: "http://localhost:4000",
-    color: "white"
+    color: "white",
+    msg: '',
+    receiveMsg: ''
   }
   componentDidMount() {
     testService.getData().then((user)=>this.setState({user: user.username}));
   }
-  send = () => {
-    const socket = socketIOClient(this.state.endpoint);
 
-    socket.emit('change color', this.state.color);
+  sendMsg = () => {
+    const socket = socketIOClient(this.state.endpoint);
+  
+    // 서버에게 해당 메시지 전달 
+    socket.emit('allSendMsg', this.state.msg);
   }
 
-  setColor = (color) => {
-    this.setState({color: color})
+  changeHandler = (e) => {
+    const {name, value} = e.target;
+    this.setState({
+      [name]: value
+    })
   }
 
   render() {
     const {user} = this.state;
     const socket = socketIOClient(this.state.endpoint);
 
-    socket.on('change color', (color) => {
-      document.body.style.backgroundColor = color;
+    socket.on('allSendMsg', (msg) => {
+      this.setState({
+        receiveMsg: msg
+      })
     })
+
     return (
       <div>
         <div>
         {user ? <h1>{`Hello ${user}`}</h1> : <h1>Loading.. please wait!</h1>}
         </div>
         <div>
-          <button onClick={this.send}>change color</button>
-          <button id="blue" onClick={() => this.setColor('blue')}>Blue</button>
-          <button id="red" onClick={() => this.setColor('red')}>Red</button>
+          <textarea 
+            row="30"
+            placeholder="메시지를 입력해주세요"
+            onChange={this.changeHandler}
+            name="msg"
+            ></textarea>
+          <button onClick={this.sendMsg}>전송</button>
+          <h2>{this.state.receiveMsg}</h2>
         </div>
       </div>
     );
