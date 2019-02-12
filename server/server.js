@@ -16,7 +16,6 @@ io.on('connection', (socket) => {
 
     // 클라이언트에게 전체 메시지를 받으면
     socket.on('allSendMsg', (msg) => {
-        console.log('send to : ' + msg);
         io.emit('allSendMsg', msg);
     })
     socket.on('disconnect', () => {
