@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Button, Input, FormGroup, Form } from "reactstrap";
+import { Button, Input, Label, FormGroup, Form } from "reactstrap";
 
-import './Login.css';
+import './Signup.css';
 
 export default class Login extends Component {
   render() {
@@ -14,7 +14,10 @@ export default class Login extends Component {
           <FormGroup>
             <Input type="password" name="password" id="examplePassword" placeholder="비밀번호" />
           </FormGroup>
-          <Button id="LoginBtn">로그인</Button>
+          <FormGroup>
+            <Input type="password" name="password1" id="examplePassword1" placeholder="비밀번호 확인" />
+          </FormGroup>
+          <Button id="SignupBtn">계정 만들기</Button>
         </Form>
       </div>
     )

@@ -1,11 +1,18 @@
 import React, { Component } from 'react'
 
-const fileManager = ({match}) => {
-    return (
-        <div>
-            {match.params.username} 의 파일매니저
-        </div>
-    )
-}
+export default class FileManager extends Component {
+  constructor(props){
+    super(props);
 
-export default fileManager;
+    this.state = {
+      username: props.match.params.username
+    }
+  }
+  render() {
+    return (
+      <div>
+        {this.state.username}
+      </div>
+    )
+  }
+}

@@ -10,26 +10,35 @@ import FileManager from './routes/FileManager';
 import Posts from './routes/Posts';
 import MyPage from './routes/MyPage';
 import Login from './routes/Login';
+import Signup from './routes/Signup';
 import NoMatch from './routes/NotFound';
 
 import Header from './components/Header';
+import Footer from './components/Footer';
 
 class App extends Component {
   render() {
     return (
+      <div>
       <Router>
-        <div>
+        <div id="contents">
           <Header></Header>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/fileManager/:username" component={FileManager} />
             <Route path="/posts" component={Posts} />
             <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
             <Route path="/mypage" component={MyPage} />
             <Route component={NoMatch} />
           </Switch>
         </div>
       </Router>
+      <div>
+        <Footer></Footer>
+      </div>  
+      </div>
+
     );
   }
 }

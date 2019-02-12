@@ -1,17 +1,16 @@
-import React from "react";
+import React, { Component } from "react";
 import {Redirect} from 'react-router-dom';
 
-const logged = true;
-
-const MyPage = () => {
-    return(
-        <div>
-            {
-                !logged && <Redirect  to="/login"/>
-            }
-            마이페이지
-        </div>
+export default class MyPage extends Component {
+  render() {
+    const logged = false;
+    return (
+    <div>
+        {
+          !logged && <Redirect  to="/login"/>
+        }
+        마이페이지
+    </div>
     )
+  }
 }
-
-export default MyPage;

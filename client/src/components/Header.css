@@ -1,5 +1,5 @@
 .header {
-    background: #5c7cfa;
+    background: #fff;
     display: table;
     table-layout: fixed;
     width: 100%;
@@ -10,16 +10,21 @@
     padding-top: 1rem;
     padding-bottom: 1rem;
     display: table-cell;
-    color: white;
+    color: rgba(0, 0, 0, 0.5);
     text-decoration: none;
-    font-size: 1.1rem;
 }
 
-.item:hover {
+/* .item:hover {
     background: #748ffc;
-}
+} */
 
 .item:active {
-    background: white;
+    background: #fff;
     color: #5c7cfa
+}
+
+@media all and (min-width: 480px) {
+    #App-head-logo{
+        height: 25px;
+    }
 }
