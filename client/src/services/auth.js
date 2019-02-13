@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const login = (loginInfo) => {
-  return axios.put('/auth/login', {
+  return axios.put('/api/auth/login', {
     username: loginInfo.username,
     password: loginInfo.password
   })
@@ -17,7 +17,7 @@ export const login = (loginInfo) => {
 }
 
 export const signup = (signupInfo) => {
-  return axios.post('/auth/signup', {
+  return axios.post('/api/auth/signup', {
     username: signupInfo.username,
     password: signupInfo.password,
     email : signupInfo.email,
@@ -32,7 +32,7 @@ export const signup = (signupInfo) => {
 }
 
 export const update = (updateInfo) => {
-  return axios.put('/auth/update', {
+  return axios.put('/api/auth/update', {
     password: updateInfo.password
   }).then((result) => {
     if (result.status === 200 && result.data.status) return result.data
@@ -44,9 +44,9 @@ export const update = (updateInfo) => {
 }
 
 export const logout = () => {
-  return axios.get('/auth/logout')
+  return axios.get('/api/auth/logout')
   .then((result) => {
-    if (result.status === 200 && result.data.status) return result.data
+    if (result.status === 200 && result.data.status) return result.data.status
     else return null;
   })
   .catch((err) => {

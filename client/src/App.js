@@ -17,12 +17,29 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isloggedin: true
+    }
+  }
+
+  isAuthentication = () => {
+    const user = localStorage.getItem('userInfo');
+    if (user) {
+      return JSON.parse(user);
+    } else {
+      return null;
+    }
+  }
+
   render() {
+    const isAlreadyAuthentication = this.isAuthentication();
     return (
       <div>
       <Router>
         <div id="contents">
-          <Header></Header>
+          <Header isloggedin={isAlreadyAuthentication}></Header>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/fileManager/:username" component={FileManager} />

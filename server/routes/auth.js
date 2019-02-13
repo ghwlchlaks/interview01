@@ -17,7 +17,11 @@ router.get('/',isAuthentication, (req, res) => {
 
 router.put('/login', passport.authenticate('login'),
   (req, res) => {
-  res.status(200).send({status: true, msg: req.user.username});
+  res.status(200).send({status: true, msg: {
+    username : req.user.username,
+    email : req.user.email,
+    sex : req.user.sex
+  }});
 })
 
 router.post('/signup', passport.authenticate('signup'),

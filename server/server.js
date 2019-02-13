@@ -61,7 +61,7 @@ app.use(express.static(path.join(__dirname, '..', 'public/')));
 app.get("/api/getUsername", function(req, res, next){
 res.send({ username: os.userInfo().username });
 });
-app.use('/auth', authRouter);
+app.use('/api/auth', authRouter);
 
 server.listen(PORT, () => {
 console.log(`Check out the app at http://localhost:${PORT}`);
