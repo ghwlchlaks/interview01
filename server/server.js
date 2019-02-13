@@ -11,6 +11,7 @@ const passport = require('passport');
 
 // routes files
 const authRouter = require('./routes/auth');
+const fileManagerRouter = require('./routes/fileManager');
 
 const redis = require('./config/redis');
 const mongoose = require('./config/mongoose');
@@ -61,7 +62,11 @@ app.use(express.static(path.join(__dirname, '..', 'public/')));
 app.get("/api/getUsername", function(req, res, next){
 res.send({ username: os.userInfo().username });
 });
+
+
 app.use('/api/auth', authRouter);
+app.use('/api/fileManager', fileManagerRouter);
+
 
 server.listen(PORT, () => {
 console.log(`Check out the app at http://localhost:${PORT}`);

@@ -58,7 +58,7 @@ export default class Login extends Component {
                 type="email" 
                 name="email" 
                 id="email" 
-                placeholder="이메일" 
+                placeholder="아이디" 
                 onChange={this.changeHandler}
                 name="username"
                 />
