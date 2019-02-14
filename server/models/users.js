@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     sex: {type: Boolean, required: true},
     createDate: {type: Date, default: Date.now, required: true},
     updateDate: {type: Date, default: Date.now, required: true},
-    currentDate: {type: Date, default: Date.now, required: true}
+    currentDate: {type: Date, default: Date.now, required: true},
 })
 
 userSchema.methods.comparePassword = (inputPass, originPass) => {
