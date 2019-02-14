@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const fs = require('fs');
 const unzip = require('unzip');
+const tar = require('tar-fs');
 
 const uploadZipDir = multer({
     dest: 'uploadFiles/zip'
@@ -15,8 +16,9 @@ const isAuthentication = (req, res, next) => {
   else res.send({stats: false, msg: '로그인 필요'});
 }
 
-router.get('/getAllData', (req, res) => {
-    const searchFolder = uploadUnZipDir + 'user/';
+router.get('/getAllData',isAuthentication, (req, res) => {
+    // 유저의 아이디 디렉토리 검색 경로
+    const searchFolder = uploadUnZipDir + req.user.username + '/';
     // 유저 디렉토리 검사
     const check = fs.existsSync(searchFolder);
     let list = []
@@ -42,12 +44,13 @@ const walkSync = (dir, filelist) => {
     return filelist;
   };
 
-router.post('/upload', isAuthentication, uploadZipDir.single('file'), async (req, res) => {
+router.post('/upload',isAuthentication, uploadZipDir.single('file'),async (req, res) => {
     try {
+        
         const file = req.file;
         const user = req.user;
 
-        const check = await fileCheck(file, user.username);
+        const check = await fileCheckAndExtract(file, user.username);
         if (!check) {
             res.send({status: false, msg: 'zip, tar 확장자 파일이 아닙니다.'})
         } else {
@@ -60,21 +63,19 @@ router.post('/upload', isAuthentication, uploadZipDir.single('file'), async (req
     
 })
 
-const fileCheck = (file, username) => {
+const fileCheckAndExtract = (file, username) => {
     return new Promise((resolve, reject) => {
         const fileType = file.originalname.split('.')[file.originalname.split('.').length - 1]
         const path = file.path;
         //확장자가 맞다면
         if (fileType === 'zip' || fileType === 'tar') {
+            // 유저아이디의 업로드 디렉토리 경로
             const userDir = uploadUnZipDir + username;
             if(!fs.existsSync(userDir)) {
                 //해당 유저의 디렉토리가 존재 하지 않다면 username 디렉토리 생성
                 fs.mkdirSync(userDir)
-            } else {
-                //존재 하지 않다면 압축풀기
-                
-            }
-            fs.createReadStream(path).pipe(unzip.Extract({path: uploadUnZipDir}));
+            } 
+            fileType === 'zip' ? fs.createReadStream(path).pipe(unzip.Extract({path: userDir})) : fs.createReadStream(path).pipe( tar.extract(userDir));
             resolve(true)
         }
         else {
@@ -90,12 +91,31 @@ const fileCheck = (file, username) => {
     });
 };
 
-router.put('/update', async(req, res) => {
-
-})
-
 router.get('/read', async(req, res) => {
-    const name = req.query.name;
+    try{
+        const path = req.query.path;
+        const data = await readfile(path);
+        res.send({status: true, msg: data});
+    } catch(e) {
+        res.send({status: false, msg: '해당경로에 맞는 파일이 없습니다.'});
+    }
 
 })
+
+const readfile = (path) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(path, 'utf8', (err, result) => {
+            if (err) reject(err)
+            else {
+                resolve(result);
+            }
+        })
+    })
+}
+
+router.put('/update', async(req, res) => {
+    
+})
+
+
 module.exports = router;
