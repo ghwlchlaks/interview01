@@ -91,10 +91,10 @@ const fileCheckAndExtract = (file, username) => {
     });
 };
 
-router.get('/read', async(req, res) => {
+router.get('/read',isAuthentication, async(req, res) => {
     try{
         const path = req.query.path;
-        const data = await readfile(path);
+        const data = await readFile(path);
         res.send({status: true, msg: data});
     } catch(e) {
         res.send({status: false, msg: '해당경로에 맞는 파일이 없습니다.'});
@@ -102,7 +102,7 @@ router.get('/read', async(req, res) => {
 
 })
 
-const readfile = (path) => {
+const readFile = (path) => {
     return new Promise((resolve, reject) => {
         fs.readFile(path, 'utf8', (err, result) => {
             if (err) reject(err)
@@ -113,9 +113,35 @@ const readfile = (path) => {
     })
 }
 
-router.put('/update', async(req, res) => {
-    
+router.put('/update', isAuthentication, async(req, res) => {
+    try {
+        const path = req.body.path;
+        const newData = req.body.data;
+        const pathCheck = await isExistPath(path);
+        const updateCheck = await updateFile(path, newData);
+        res.send({status:false, msg: updateCheck});
+    } catch(e) {
+        res.send({status: false, msg: e});
+    }
 })
-
-
+const isExistPath = (path) => {
+    return new Promise((resolve, reject) => {
+        fs.exists(path, (exists) => {
+            if (exists) resolve(true);
+            else reject('해당 경로에 파일이 존재 하지 않습니다.')
+        })
+    })
+}
+const updateFile = (path, newData) => {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(path, newData, 'utf8', (err) => {
+            if (err) {
+                console.error(err);
+                reject('파일 업데이트 실패');
+            } else {
+                resolve('파일 업데이트 성공');
+            }
+        })
+    })
+}
 module.exports = router;
