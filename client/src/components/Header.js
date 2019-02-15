@@ -6,23 +6,37 @@ import goorm_img from '../images/goorm_img.svg';
 import * as authService from '../services/auth';
 
 export default class Header extends Component {
-  logoutHandler = async() => {
-    await authService.logout();
-    localStorage.removeItem('userInfo');
-    this.setState({});
+  constructor(props) {
+    super(props);
+    this.state = {
+      isloggined: false
+    }
+
+    this.authenticatedHandler()
   }
 
-  isAuthentication = () => {
-    const user = localStorage.getItem('userInfo');
-    if (user) {
-      return JSON.parse(user);
-    } else {
-      return null;
-    }
+  // 로그아웃
+  logoutHandler = async() => {
+    await authService.logout();
+    window.location.reload();
+  }
+
+  authenticatedHandler = async() => {
+    // 로그인 유무 확인
+    const check = await authService.isAuthenticated();
+    if (check) {
+      this.setState({
+        isloggined: true
+      })
+    } 
+
+    // 부모(App.js)로 로그인 유무 전달
+    this.props.isLogginHandler(this.state.isloggined)
   }
 
   render() {
-    const isAlreadyAuthentication = this.isAuthentication();
+    const isAlreadyAuthentication = this.state.isloggined
+    // console.log('ss'+ isAlreadyAuthentication)
     if (isAlreadyAuthentication) {
       return (
         <div className="header">

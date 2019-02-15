@@ -20,31 +20,26 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isloggedin: true
+      isloggined: false
     }
   }
 
-  isAuthentication = () => {
-    const user = localStorage.getItem('userInfo');
-    if (user) {
-      return JSON.parse(user);
-    } else {
-      return null;
-    }
+  isLogginHandler = (isloggined) => {
+    this.setState({isloggined : isloggined})
   }
-
   render() {
-    const isAlreadyAuthentication = this.isAuthentication();
+    // console.log('app'+ this.state.isloggined)
     return (
       <div>
       <Router>
         <div id="contents">
-          <Header isloggedin={isAlreadyAuthentication}></Header>
+          <Header isLogginHandler={this.isLogginHandler}></Header>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/fileManager/:username" component={FileManager} />
             <Route path="/posts" component={Posts} />
-            <Route path="/login" component={Login} />
+            {/* <Route path="/login" render={(props) => } component={Login} /> */}
+            <Route path="/login" render={(props) => <Login isloggined={this.state.isloggined} {...props} />} />
             <Route path="/signup" component={Signup} />
             <Route path="/mypage" component={MyPage} />
             <Route component={NoMatch} />

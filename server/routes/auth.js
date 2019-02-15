@@ -7,20 +7,17 @@ const Users = require('../models/users');
 // 로그인 검사
 const isAuthentication = (req, res, next) => {
   if (req.isAuthenticated()) next();
-  else res.send({stats: false, msg: 'unauthorized'});
+  else res.status(200).send({status: false, msg: 'unauthorized'});
 }
 
 /* GET home page. */
 router.get('/',isAuthentication, (req, res) => {
-  res.status(200).send('login success ' + req.user.username);
+  res.status(200).send({status: true, msg: req.user.username});
 });
 
 router.put('/login', passport.authenticate('login'),
   (req, res) => {
-    console.log(req.sessionID);
-  res.status(200).send({status: true, msg: {
-    session : 'req.sessionID',
-  }});
+  res.status(200).send({status: true, msg: '로그인성공'});
 })
 
 router.post('/signup', passport.authenticate('signup'),
@@ -29,7 +26,7 @@ router.post('/signup', passport.authenticate('signup'),
 })
 
 router.get('/logout', (req, res) => {
-  console.log(req.user)
+  // console.log(req.user)
   req.logout();
   res.status(200).send({status: true, msg:'logout success'});
 })

@@ -19,9 +19,7 @@ export default class Login extends Component {
   loginHandler = async() => {
     const auth = await authService.login(this.state.loginInfo);
     if(auth) {
-      console.log(auth.msg);
-      localStorage.setItem('userInfo', JSON.stringify(auth.msg));
-      this.setState({});
+      window.location.reload()
     } else {
       alert('잘못된 계정!');
     }
@@ -38,18 +36,14 @@ export default class Login extends Component {
   }
 
   isAuthentication = () => {
-    const user = localStorage.getItem('userInfo');
-    if (user) {
-      return JSON.parse(user);
-    } else {
-      return null;
-    }
+    return authService.isAuthenticated();
   }
-
   render() {
-    const isAlreadyAuthentication = this.isAuthentication();
+    // App.js에서 전달받은 로그인 유무
+    const isAlreadyAuthentication = this.props.isloggined
     return (
       <div>
+      {/* 로그인 유무에 따른 리다이렉션 */}
       {isAlreadyAuthentication ? <Redirect to={{pathname: '/'}} /> : (
           <div className="Login">
           <Form>
