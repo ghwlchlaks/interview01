@@ -4,6 +4,7 @@ const multer = require('multer');
 const fs = require('fs');
 const unzip = require('unzip');
 const tar = require('tar-fs');
+const dirTree = require('directory-tree');
 
 const uploadZipDir = multer({
     dest: 'uploadFiles/zip'
@@ -21,28 +22,14 @@ router.get('/getAllData',isAuthentication, (req, res) => {
     const searchFolder = uploadUnZipDir + req.user.username + '/';
     // 유저 디렉토리 검사
     const check = fs.existsSync(searchFolder);
-    let list = []
+    let tree = null
     if (check) {
         // 유저의 디렉토리가 존재한다면
-        walkSync(searchFolder, list);
+        tree = dirTree(searchFolder);
     }
-    res.send({status: true, msg: list})
+    res.send({status: true, msg: tree})
     
 })
-
-const walkSync = (dir, filelist) => {
-    const files = fs.readdirSync(dir);
-    letfilelist = filelist || [];
-    files.forEach(function(file) {
-      if (fs.statSync(dir + file).isDirectory()) {
-        filelist = walkSync(dir + file + '/', filelist);
-      }
-      else {
-        filelist.push(dir + file);
-      }
-    });
-    return filelist;
-  };
 
 router.post('/upload',isAuthentication, uploadZipDir.single('file'),async (req, res) => {
     try {
