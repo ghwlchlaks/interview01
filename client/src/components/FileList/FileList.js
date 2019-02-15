@@ -4,51 +4,39 @@ import * as fileManagerService from '../../services/fileManager';
 import './FileList.css';
 export default class FileList extends Component {
   state = {
-    fileData : ["abc/def/test.txt", "abc/def/test1.txt", "abc/ghi/test2.txt", "test4.txt"]
+    fileData : null,
   }
   //컴포넌트 로딩후 호출
   componentDidMount() {
-    // fileManagerService.getAllData().then((data) => this.setState({fileData: data}));
-    fileManagerService.getAllData().then((data) => console.log(data));
+    fileManagerService.getAllData().then((data) => { 
+      this.setState({
+        fileData: data.children
+      })
+    });
   }
 
-  makeFolderStructure = (path) => {
-    const pathSplit = path.split('/');
-    pathSplit.forEach((value, index) => {
-      return value
-    })
+  makeFolderStructure = (array) => {
+    if(array) {
+      return (
+      <ul>
+      {array.map((item) => {
+        return (
+          <li key={item.path} className={item.type} >
+            {item.name}
+            {(item.children) ? this.makeFolderStructure(item.children) : '' }
+          </li>
+        )
+      })}
+      </ul>
+      )
+    }
   }
 
   render() {
-    // console.log(this.state.fileData);
     return (
       <div>
-        {this.state.fileData.map((path, pathIndex) => {
-          // this.makeFolderStructure(path);
-          const pathSplit = path.split('/');
-          pathSplit.map((file, fileIndex) => {
-
-          })
-        })}
+        {this.makeFolderStructure(this.state.fileData)}
       </div>
     )
   }
 }
-
-/* 
-1. li의 아이디 값으로 경로를 가져야한다. 수정 용도 
-*/
-
-{/* 
-<ul>
-<li> dir1</li>
-<ul>
-  <li>subdir1</li>
-  <ul>
-    <li>file3</li>
-    <li>file5</li>
-  </ul>
-  <li> file2</li>
-</ul>
-<li>file1</li>
-</ul> */}
