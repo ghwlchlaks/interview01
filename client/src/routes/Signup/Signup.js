@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button, Input, ButtonGroup, FormGroup, Form } from "reactstrap";
 
 import './Signup.css';
-import * as authService from "../services/auth";
+import * as authService from "../../services/auth";
 
 export default class Login extends Component {
   constructor(props) {

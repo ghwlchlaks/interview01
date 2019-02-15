@@ -5,16 +5,16 @@ import './App.css';
 
 import * as testService from "./services/test";
 
-import Home from './routes/Home';
-import FileManager from './routes/FileManager';
-import Posts from './routes/Posts';
-import MyPage from './routes/MyPage';
-import Login from './routes/Login';
-import Signup from './routes/Signup';
-import NoMatch from './routes/NotFound';
+import Home from './routes/Home/Home';
+import FileManager from './routes/FileManager/FileManager';
+import Posts from './routes/Posts/Posts';
+import MyPage from './routes/MyPage/MyPage';
+import Login from './routes/Login/Login';
+import Signup from './routes/Signup/Signup';
+import NoMatch from './routes/NotFound/NotFound';
 
-import Header from './components/Header';
-import Footer from './components/Footer';
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 
 class App extends Component {
   constructor(props) {

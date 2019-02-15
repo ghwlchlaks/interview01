@@ -3,7 +3,7 @@ import { Button, Input, FormGroup, Form } from "reactstrap";
 import {Redirect} from 'react-router-dom';
 
 import './Login.css';
-import * as authService from '../services/auth';
+import * as authService from '../../services/auth';
 
 export default class Login extends Component {
   constructor(props) {

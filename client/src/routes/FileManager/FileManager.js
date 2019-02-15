@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import FileList from '../components/FileList';
+import FileList from '../../components/FileList/FileList';
 
 export default class FileManager extends Component {
   constructor(props){

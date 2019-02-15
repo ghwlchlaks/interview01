@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './FileList.css';
-import * as fileManagerService from '../services/fileManager';
+import * as fileManagerService from '../../services/fileManager';
 
 export default class FileList extends Component {
   state = {

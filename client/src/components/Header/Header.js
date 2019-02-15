@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import './Header.css';
 import {Link} from 'react-router-dom'
 import { Button} from "reactstrap";
-import goorm_img from '../images/goorm_img.svg';
-import * as authService from '../services/auth';
+import goorm_img from '../../images/goorm_img.svg';
+import * as authService from '../../services/auth';
 
 export default class Header extends Component {
   constructor(props) {
