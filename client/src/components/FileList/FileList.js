@@ -1,17 +1,19 @@
 import React, { Component } from 'react'
 import './FileList.css';
 import * as fileManagerService from '../../services/fileManager';
-import './FileList.css';
+
 export default class FileList extends Component {
   state = {
     fileData : null,
   }
   //컴포넌트 로딩후 호출
   componentDidMount() {
-    fileManagerService.getAllData().then((data) => { 
-      this.setState({
-        fileData: data.children
-      })
+    fileManagerService.getAllData().then((data) => {
+      if (data) {
+        this.setState({
+          fileData: data.children
+        })
+      }
     });
   }
 
@@ -35,7 +37,7 @@ export default class FileList extends Component {
   render() {
     return (
       <div>
-        {this.makeFolderStructure(this.state.fileData)}
+        {this.state.fileData ? this.makeFolderStructure(this.state.fileData) : '' }
       </div>
     )
   }
