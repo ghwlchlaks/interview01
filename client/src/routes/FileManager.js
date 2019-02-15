@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import FileList from '../components/FileList';
 
 export default class FileManager extends Component {
   constructor(props){
@@ -11,6 +12,7 @@ export default class FileManager extends Component {
   render() {
     return (
       <div>
+        <FileList></FileList>
         {this.state.username}
       </div>
     )
