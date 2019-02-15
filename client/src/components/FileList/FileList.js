@@ -9,6 +9,7 @@ export default class FileList extends Component {
   //컴포넌트 로딩후 호출
   componentDidMount() {
     // fileManagerService.getAllData().then((data) => this.setState({fileData: data}));
+    fileManagerService.getAllData().then((data) => console.log(data));
   }
 
   makeFolderStructure = (path) => {
@@ -26,7 +27,7 @@ export default class FileList extends Component {
           // this.makeFolderStructure(path);
           const pathSplit = path.split('/');
           pathSplit.map((file, fileIndex) => {
-            
+
           })
         })}
       </div>
@@ -40,15 +41,14 @@ export default class FileList extends Component {
 
 {/* 
 <ul>
-  <li> dir1</li>
+<li> dir1</li>
+<ul>
+  <li>subdir1</li>
   <ul>
-    <li>subdir1</li>
-    <ul>
-      <li>file3</li>
-      <li>file5</li>
-    </ul>
-    <li> file2</li>
+    <li>file3</li>
+    <li>file5</li>
   </ul>
-  <li>file1</li>
-</ul> 
-*/}
+  <li> file2</li>
+</ul>
+<li>file1</li>
+</ul> */}
