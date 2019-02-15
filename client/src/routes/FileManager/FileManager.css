@@ -1,0 +1,11 @@
+.left {
+    max-height: 300px;
+    overflow-y: scroll;
+    background-color: blue;
+}
+
+.right {
+    overflow-y: scroll;
+    max-height: 300px;
+    background-color: pink;
+}

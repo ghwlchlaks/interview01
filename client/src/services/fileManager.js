@@ -1,10 +1,7 @@
 import axios from 'axios';
 
-export const login = (loginInfo) => {
-  return axios.put('/api/fileManager/login', {
-    username: loginInfo.username,
-    password: loginInfo.password
-  })
+export const upload = (fileData) => {
+  return axios.post('/api/fileManager/upload', fileData)
   .then((result) => {
     console.log(result);
     if (result.status === 200 && result.data.status) return result.data
