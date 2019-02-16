@@ -8,7 +8,7 @@ import * as testService from "./services/test";
 import Home from './routes/Home/Home';
 import FileManager from './routes/FileManager/FileManager';
 import Posts from './routes/Posts/Posts';
-import MyPage from './routes/MyPage/MyPage';
+import Chat from './routes/Chat/Chat';
 import Login from './routes/Login/Login';
 import Signup from './routes/Signup/Signup';
 import NoMatch from './routes/NotFound/NotFound';
@@ -41,7 +41,7 @@ class App extends Component {
             {/* <Route path="/login" render={(props) => } component={Login} /> */}
             <Route path="/login" render={(props) => <Login isloggined={this.state.isloggined} {...props} />} />
             <Route path="/signup" component={Signup} />
-            <Route path="/mypage" component={MyPage} />
+            <Route path="/chat" component={Chat} />
             <Route component={NoMatch} />
           </Switch>
         </div>

@@ -42,7 +42,7 @@ export default class Header extends Component {
         <div className="header">
           <Link to="/" className="item"><img src={goorm_img} id="App-head-logo" alt="goorm_img" /></Link>
           <Link to="/fileManager/test" className="item">파일매니저</Link>
-          <Link to="/mypage" className="item">채팅 </Link>
+          <Link to="/chat" className="item">채팅 </Link>
           <Button className="item" onClick={this.logoutHandler}>로그아웃</Button>
         </div>
       )
