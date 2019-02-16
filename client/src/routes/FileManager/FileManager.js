@@ -63,7 +63,6 @@ export default class FileManager extends Component {
 
   render() {
     return (
-      
     <div>
         {this.state.username}
 

@@ -20,6 +20,7 @@ export default class FileContent extends Component {
     })
   }
 
+  //textarea값이 변경되었을때
   changeContentHandler = (e) => {
     const modifyContent = e.target.value;
     this.setState({
@@ -30,13 +31,14 @@ export default class FileContent extends Component {
     })
   }
 
-  saveClickHandler = () => {
-    const updateData = {
-      path : this.state.path,
-      data : this.state.content
+  // 파일 내용 수정 후 저장 이벤트
+  saveClickHandler = async() => {
+    const result = await updateFile(this.state.fileData);
+    if (result) {
+      alert('성공적으로 저장되었습니다.');
+    } else {
+      alert('저장에 실패하였습니다.');
     }
-    console.log(updateData)
-    // updateFile()
   }  
 
   render() {

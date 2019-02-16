@@ -103,10 +103,10 @@ const readFile = (path) => {
 router.put('/update', isAuthentication, async(req, res) => {
     try {
         const path = req.body.path;
-        const newData = req.body.data;
+        const newData = req.body.fileContent;
         const pathCheck = await isExistPath(path);
         const updateCheck = await updateFile(path, newData);
-        res.send({status:false, msg: updateCheck});
+        res.send({status:true, msg: updateCheck});
     } catch(e) {
         res.send({status: false, msg: e});
     }

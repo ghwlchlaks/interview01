@@ -37,9 +37,9 @@ export const readFile = (path) => {
 
 
 export const updateFile = (updateData) => {
-  return axios.post('/api/fileManager/update', updateData)
+  return axios.put('/api/fileManager/update', updateData)
   .then((result) => {
-    console.log(result);
+    // console.log(result)
     if (result.status === 200 && result.data.status) return result.data
     else return null;
   })
