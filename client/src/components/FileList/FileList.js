@@ -44,8 +44,13 @@ export default class FileList extends Component {
       {array.map((item) => {
         return (
           /* 폴더 구조 리스트 생성 및 click 이벤트로 item.path값 바인드*/
-          <li key={item.path} className={item.type} onClick={this.listClickHandler.bind(this, item.path)}>
-            {item.name}
+          <li key={item.path} className={item.type}>
+            {
+              item.type === 'file' ? 
+              (<a  onClick={this.listClickHandler.bind(this, item.path)}>{item.name}</a>)
+              : (<a>{item.name}</a>)
+            }
+          
             {(item.children) ? this.makeFolderStructure(item.children) : '' }
           </li>
         )
@@ -57,7 +62,7 @@ export default class FileList extends Component {
 
   render() {
     return (
-      <div>
+      <div className="tree">
         {this.state.allFileData ? this.makeFolderStructure(this.state.allFileData) : '' }
       </div>
     )
