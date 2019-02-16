@@ -15,7 +15,6 @@ export const upload = (fileData) => {
 export const getAllData = () => {
   return axios.get('/api/fileManager/getAllData')
   .then((result) => {
-    console.log(result)
     if (result.status === 200 && result.data.status) return result.data.msg
     else return null;
   })
@@ -23,3 +22,16 @@ export const getAllData = () => {
     return null;
   })
 }
+
+export const readFile = (path) => {
+  return axios.get(`/api/fileManager/read?path=${path}`)
+  .then((result) => {
+    // console.log(result)
+    if (result.status === 200 && result.data.status) return result.data.msg
+    else return null;
+  })
+  .catch((err) => {
+    return null;
+  })
+}
+

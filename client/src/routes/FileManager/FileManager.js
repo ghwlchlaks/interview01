@@ -13,25 +13,19 @@ export default class FileManager extends Component {
     this.state = {
       username: props.match.params.username,
       selectFile: null,
-      loaded: 0
+      loaded: 0,
+      content: null,
     }
   }
 
   componentDidMount() {
   }
 
-  // uploadHandler = async() => {
-  //   if(this.state.selectFile) {
-  //     const data = new FormData()
-  //     data.append('file', this.state.selectFile, this.state.selectFile.name);
-
-  //     const result = await fileManagerService.upload(data, )
-  //     console.log(result);
-  //   } else {
-  //     alert('업로드할 파일을 선택해주세요');
-  //   }
-  // }
-
+  contentReceivedHandler = (content) => {
+    this.setState({
+      content: content
+    })
+  }
   uploadHandler = () => {
     if(this.state.selectFile) {
       const data = new FormData()
@@ -72,8 +66,10 @@ export default class FileManager extends Component {
 
       <Container>
         <Row>
-          <Col className="left" xs="4"><FileList></FileList></Col>
-          <Col className="right" xs="8"><FileContent></FileContent></Col>
+          {/* 1. 자식 FileList에서 클릭한 파일의 데이터를 받아옴 */}
+          <Col className="left" xs="4"><FileList sendContentHandler={this.contentReceivedHandler}></FileList></Col>
+          {/* 2. 받아온 FileList의 값을 자식인 FileContent컴포넌트에게 전달 */}
+          <Col className="right" xs="8"><FileContent content={this.state.content}></FileContent></Col>
         </Row>
       </Container>
 
