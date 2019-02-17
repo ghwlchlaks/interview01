@@ -5,6 +5,10 @@ const publicMessageSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
     },
+    username: {
+        type: String,
+        required: true,
+    },
     message: {
         type: String,
         required: true

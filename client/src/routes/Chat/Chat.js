@@ -15,6 +15,21 @@ export default class Chat extends Component {
     // console.log(props.allUsers);
   }
 
+  componentDidMount() {
+    console.log('1');
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // header컴포넌트에서 socket값 가져온 이후에 호출
+    console.log(prevState.socket)
+    console.log(prevProps.socket)
+    console.log(this.state.socket)
+    if (prevState.socket === null && prevProps.socket === null && this.state.socket !== null) {
+        // 모든 전체 채팅 내용 호출
+      this.state.socket.emit('get public message', this.props.username);
+    }
+  }
+
   massageSendHandler = () => {
     // console.log(this.state.message);
 

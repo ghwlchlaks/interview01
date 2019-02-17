@@ -11,7 +11,7 @@ export default class Header extends Component {
     super(props);
     this.state = {
       isloggined: false,
-      endpoint: 'http://localhost:4000'
+      endpoint: 'http://localhost:4000',
     }
 
     this.authenticatedHandler()
@@ -35,7 +35,7 @@ export default class Header extends Component {
       // publicRoom 참여 check.msg = username
       socket.emit('enter public room', check.msg)
       socket.on('success public room', () => {
-        console.log('success public room ');
+        //console.log('success public room ');
         // 모든 유저 정보 요청
         socket.emit('get all users');
       })
@@ -54,6 +54,11 @@ export default class Header extends Component {
       socket.on('public message', (sendUsername, msg) => {
         this.setState({msg: msg});
         this.props.receiveMessageHandler(sendUsername, msg);
+      })
+
+      // 전체 채팅 내역 
+      socket.on('public all message', (allMessage) => {
+        console.log(allMessage);
       })
     } 
 
