@@ -4,12 +4,14 @@ import {Link} from 'react-router-dom'
 import { Button} from "reactstrap";
 import goorm_img from '../../images/goorm_img.svg';
 import * as authService from '../../services/auth';
+import socketIOClient from 'socket.io-client';
 
 export default class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isloggined: false
+      isloggined: false,
+      endpoint: 'http://localhost:4000'
     }
 
     this.authenticatedHandler()
@@ -28,15 +30,35 @@ export default class Header extends Component {
       this.setState({
         isloggined: true
       })
+
+      const socket = socketIOClient(this.state.endpoint);
+      // publicRoom 참여 check.msg = username
+      socket.emit('enter public room', check.msg)
+      socket.on('success public room', () => {
+        console.log('success public room ');
+        socket.emit('get all users');
+      })
+
+      socket.on('success get users', (allUsers) => {
+        this.setState({
+          allUsers: allUsers
+        }, () => {
+          // 부모(App.js)로 로그인 유무 전달, 채팅 모든 유저 정보 전달
+          this.props.isLogginHandler(this.state.isloggined, this.state.allUsers)
+        })
+      })
+      
     } 
 
-    // 부모(App.js)로 로그인 유무 전달
-    this.props.isLogginHandler(this.state.isloggined)
+    
+
+    
   }
 
   render() {
     const isAlreadyAuthentication = this.state.isloggined
     // console.log('ss'+ isAlreadyAuthentication)
+    //console.log(this.state.allUsers);
     if (isAlreadyAuthentication) {
       return (
         <div className="header">

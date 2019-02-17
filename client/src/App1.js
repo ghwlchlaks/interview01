@@ -20,7 +20,7 @@ class App extends Component {
     const socket = socketIOClient(this.state.endpoint);
   
     // 서버에게 해당 메시지 전달 
-    socket.emit('allSendMsg', this.state.msg);
+    socket.emit('public message', this.state.msg, this.state.user);
   }
 
   changeHandler = (e) => {
@@ -32,13 +32,13 @@ class App extends Component {
 
   render() {
     const {user} = this.state;
-    const socket = socketIOClient(this.state.endpoint);
+    //const socket = socketIOClient(this.state.endpoint);
 
-    socket.on('allSendMsg', (msg) => {
-      this.setState({
-        receiveMsg: msg
-      })
-    })
+    // socket.on('public message ', (msg) => {
+    //   this.setState({
+    //     receiveMsg: msg
+    //   })
+    // })
 
     return (
       <div>

@@ -27,18 +27,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 const server = http.createServer(app);
 const io = socketIO(server);
-// 클라이언트가 접속 했을때의 이벤트
-io.on('connection', (socket) => {
-    console.log('user connected');
-
-    // 클라이언트에게 전체 메시지를 받으면
-    socket.on('allSendMsg', (msg) => {
-        io.emit('allSendMsg', msg);
-    })
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    })
-})
+require('./config/chat')(io);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -87,4 +76,4 @@ app.use(function(req, res, next) {
     res.status(err.status || 500).send(err);
   });
 
-module.exports = app;
+module.exports = server;

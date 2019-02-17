@@ -20,12 +20,16 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isloggined: false
+      isloggined: false,
+      allUsers: null
     }
   }
 
-  isLogginHandler = (isloggined) => {
-    this.setState({isloggined : isloggined})
+  isLogginHandler = (isloggined, allUsers) => {
+    this.setState({
+      isloggined : isloggined,
+      allUsers: allUsers
+    })
   }
   render() {
     // console.log('app'+ this.state.isloggined)
@@ -41,7 +45,7 @@ class App extends Component {
             {/* <Route path="/login" render={(props) => } component={Login} /> */}
             <Route path="/login" render={(props) => <Login isloggined={this.state.isloggined} {...props} />} />
             <Route path="/signup" component={Signup} />
-            <Route path="/chat" component={Chat} />
+            <Route path="/chat" render={(props) => <Chat isloggined={this.state.isloggined} allUsers={this.state.allUsers} {...props}/>}/>
             <Route component={NoMatch} />
           </Switch>
         </div>
