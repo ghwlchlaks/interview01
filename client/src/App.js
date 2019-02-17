@@ -21,23 +21,38 @@ class App extends Component {
     super(props);
     this.state = {
       isloggined: false,
-      allUsers: null
+      allUsers: null,
+      socket: null,
+      username: null,
     }
   }
 
-  isLogginHandler = (isloggined, allUsers) => {
+  isLogginHandler = (isloggined, username, allUsers, socket) => {
     this.setState({
       isloggined : isloggined,
-      allUsers: allUsers
+      allUsers: allUsers, 
+      socket: socket,
+      username: username
     })
   }
+
+  receiveMessageHandler = (username, msg) => {
+    // console.log(msg);
+    this.setState({
+      receivedInfo : {
+        username: username,
+        msg: msg
+      }
+    })
+  }
+
   render() {
     // console.log('app'+ this.state.isloggined)
     return (
       <div>
       <Router>
         <div id="contents">
-          <Header isLogginHandler={this.isLogginHandler}></Header>
+          <Header isLogginHandler={this.isLogginHandler} receiveMessageHandler={this.receiveMessageHandler}></Header>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/fileManager/:username" component={FileManager} />
@@ -45,7 +60,18 @@ class App extends Component {
             {/* <Route path="/login" render={(props) => } component={Login} /> */}
             <Route path="/login" render={(props) => <Login isloggined={this.state.isloggined} {...props} />} />
             <Route path="/signup" component={Signup} />
-            <Route path="/chat" render={(props) => <Chat isloggined={this.state.isloggined} allUsers={this.state.allUsers} {...props}/>}/>
+            <Route 
+              path="/chat" 
+              render={(props) => 
+                <Chat 
+                  isloggined={this.state.isloggined} 
+                  username={this.state.username} 
+                  allUsers={this.state.allUsers} 
+                  socket={this.state.socket}
+                  receivedInfo={this.state.receivedInfo}
+                  {...props}
+                  />}
+                />
             <Route component={NoMatch} />
           </Switch>
         </div>

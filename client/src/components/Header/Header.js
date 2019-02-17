@@ -36,18 +36,25 @@ export default class Header extends Component {
       socket.emit('enter public room', check.msg)
       socket.on('success public room', () => {
         console.log('success public room ');
+        // 모든 유저 정보 요청
         socket.emit('get all users');
       })
 
+      // 모든 유저 정보 이벤트 연결
       socket.on('success get users', (allUsers) => {
         this.setState({
           allUsers: allUsers
         }, () => {
           // 부모(App.js)로 로그인 유무 전달, 채팅 모든 유저 정보 전달
-          this.props.isLogginHandler(this.state.isloggined, this.state.allUsers)
+          this.props.isLogginHandler(this.state.isloggined, check.msg, this.state.allUsers, socket)
         })
       })
       
+      // 전체 채팅 이벤트 연결
+      socket.on('public message', (sendUsername, msg) => {
+        this.setState({msg: msg});
+        this.props.receiveMessageHandler(sendUsername, msg);
+      })
     } 
 
     

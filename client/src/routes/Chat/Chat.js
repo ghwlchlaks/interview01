@@ -5,8 +5,34 @@ import './Chat.css';
 export default class Chat extends Component {
   constructor(props) {
     super(props);
+    
+    this.state = {
+      socket: props.socket
+    }
+
+    //console.log(props.socket);
     // 모든 유저 정보 props.allUsers._id, username, socketId
-    console.log(props.allUsers);
+    // console.log(props.allUsers);
+  }
+
+  massageSendHandler = () => {
+    // console.log(this.state.message);
+
+    //전체 채팅 전송
+    this.state.socket.emit('public send message', this.props.username, this.state.message);
+  }
+
+  messageChangeHandler = (e) => {
+    const value = e.target.value
+    this.setState({
+      message: value
+    })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // 메시지 (props) 변경이벤트
+    const {username, msg} = nextProps.receivedInfo;
+    // 동적 메시지 추가
   }
 
   render() {
@@ -16,7 +42,7 @@ export default class Chat extends Component {
     return (
       <div>
         {/* 로그인 유무에 따른 리다이렉션 */}
-        {isAlreadyAuthentication ? <Redirect to={{pathname: '/'}}/> : (
+        {!isAlreadyAuthentication ? <Redirect to={{pathname: '/'}}/> : (
         <div className="col-md-6 col-md-offset-3">
           <div className="panel panel-primary">
             <div className="panel-heading">
@@ -27,9 +53,9 @@ export default class Chat extends Component {
             </div>
             <div className="panel-footer">
               <div className="input-group">
-                <input id="Mensaje" type="text" className="form-control input-sm" placeholder="Escribe un mensaje..." />
+                <input onChange={this.messageChangeHandler} id="Mensaje" type="text" className="form-control input-sm" placeholder="input message" />
                 <span className="input-group-btn">
-                  <button className="btn btn-warning btn-sm" id="btnEnviar">전송</button>
+                  <button onClick={this.massageSendHandler} className="btn btn-warning btn-sm" id="btnEnviar">전송</button>
                 </span>
               </div>
             </div>
