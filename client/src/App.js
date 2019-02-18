@@ -36,10 +36,20 @@ class App extends Component {
     })
   }
 
-  receiveMessageHandler = (username, msg) => {
+  receivePublicMessageHandler = (username, msg) => {
     // console.log(msg);
     this.setState({
-      receivedInfo : {
+      publicReceivedInfo : {
+        username: username,
+        msg: msg
+      }
+    })
+  }
+
+  receiveprivateMessageHandler = (username, msg) => {
+    // console.log(msg);
+    this.setState({
+      privateReceivedInfo : {
         username: username,
         msg: msg
       }
@@ -47,12 +57,16 @@ class App extends Component {
   }
 
   render() {
-    // console.log('app'+ this.state.isloggined)
     return (
       <div>
       <Router>
         <div id="contents">
-          <Header isLogginHandler={this.isLogginHandler} receiveMessageHandler={this.receiveMessageHandler}></Header>
+          <Header 
+            isLogginHandler={this.isLogginHandler} 
+            receivePublicMessageHandler={this.receivePublicMessageHandler}
+            receiveprivateMessageHandler={this.receiveprivateMessageHandler}
+            >
+          </Header>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/fileManager/:username" component={FileManager} />
@@ -68,7 +82,8 @@ class App extends Component {
                   username={this.state.username} 
                   allUsers={this.state.allUsers} 
                   socket={this.state.socket}
-                  receivedInfo={this.state.receivedInfo}
+                  publicReceivedInfo={this.state.publicReceivedInfo}
+                  privateReceivedInfo={this.state.privateReceivedInfo}
                   {...props}
                   />}
                 />

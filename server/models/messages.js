@@ -23,7 +23,8 @@ const publicMessageSchema = new mongoose.Schema({
 const privateMessageSchema = new mongoose.Schema({
     sender: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'users',
+        required: true,
     },
     message: {
         type: String,
@@ -31,7 +32,8 @@ const privateMessageSchema = new mongoose.Schema({
     },
     receiver: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'users',
+        required: true
     },
     createdDate: {
         type: Date, 

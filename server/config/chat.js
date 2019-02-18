@@ -1,6 +1,6 @@
 
 const User = require('../models/users');
-const {PublicRoom, PublicMessage} = require('../models/messages')
+const {PublicRoom, PublicMessage, PrivateMessage} = require('../models/messages')
 
 module.exports = function(io) {
   // 클라이언트가 접속 했을때의 이벤트
@@ -100,18 +100,86 @@ module.exports = function(io) {
             //전체 채팅 컬렉션에서 최근 100개 데이터 가져오기
             PublicMessage.find({})
             .limit(100)
-            .sort({'createdDate': 'acs'})
+            .sort({'createdDate': 'asc'})
             .exec((err, messages) => {
               if(err) throw err;
               // 요청한 클라이언트에게 전달 채팅 내역 전달
-              console.log(messages);
               io.to(user.socketId).emit('public all message', messages);
             })
           }
         })   
       })
 
+      // 귓속말 채팅 보내기
+      socket.on('private send message', (from, to, msg) => {
+        console.log(`${from} 님이 ${to}님에게 ${msg} 를 보냈습니다.`);
 
+        // 두 유저가 존재하는 유저인지 확인
+        Promise.all([
+          User.findOne({username: from}),
+          User.findOne({username: to}),
+        ]).then((users) => {
+          const [fromUser, toUser] = users;
+
+          if (fromUser.length !== 0 && toUser.length !== 0) {
+            //두 유저가 존재한다면
+            const privateMessage = new PrivateMessage({
+              sender: fromUser._id,
+              message: msg,
+              receiver: toUser._id,
+              createdDate: Date.now(),
+            })
+            // 귓속말 저장
+            privateMessage.save((err) => {
+              if (err) throw err;
+              else {
+                // 저장이 완료되면 귓속말 보내기
+                io.to(to._socketId).emit('private message', from, msg);
+                io.to(from._socketId).emit('private message', from, msg)
+              }
+            })
+
+          } else {
+            //둘 중한명이라도 존재 하지 않는다면
+            console.log('존재 하지 않는 유저입니다.');
+          }
+
+        }).catch((err) => {
+          throw err;
+        })
+        
+      })
+
+      // 귓속말 채팅 내용
+      socket.on('get private message', (from, to) => {
+        console.log(`${from} 님과 ${to}님의 모든 대화 내용`);
+
+        // 존재하는 유저인지 파악
+        Promise.all([
+          User.findOne({username: from}),
+          User.findOne({username: to}),
+        ]).then((users) => {
+          const [fromUser, toUser] = users;
+          if (fromUser.length !== 0 && toUser.length !== 0) {
+            // 존재하는 유저라면
+
+            Promise.all([
+              PrivateMessage.find({sender: fromUser._id, receiver: toUser._id}),
+              PrivateMessage.find({sender: toUser._id, receiver: fromUser._id}),
+            ]).then((messages) => {
+              const [fromMsg, toMsg] = messages;
+              const message = [...fromMsg, ...toMsg]
+
+              io.to(socket.id).emit('private get message', (message))
+            })
+
+          } else {
+            // 존재하지 않는 유저라면
+            console.log('존재하지 않는 유저입니다.');
+          }
+        })
+        
+      })
 
       // 연결 끊겼을때
       socket.on('disconnect', () => {

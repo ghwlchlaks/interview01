@@ -7,7 +7,8 @@ export default class Chat extends Component {
     super(props);
     
     this.state = {
-      socket: props.socket
+      socket: props.socket,
+      to: 'public',
     }
 
     //console.log(props.socket);
@@ -16,25 +17,30 @@ export default class Chat extends Component {
   }
 
   componentDidMount() {
-    console.log('1');
+    this.setState({
+      socket: this.props.socket
+    }, () => {
+      // 전체 채팅 받아오기
+      this.state.socket.emit('get public message', this.props.username);
+    })
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // header컴포넌트에서 socket값 가져온 이후에 호출
-    console.log(prevState.socket)
-    console.log(prevProps.socket)
-    console.log(this.state.socket)
-    if (prevState.socket === null && prevProps.socket === null && this.state.socket !== null) {
-        // 모든 전체 채팅 내용 호출
-      this.state.socket.emit('get public message', this.props.username);
-    }
   }
 
   massageSendHandler = () => {
-    // console.log(this.state.message);
+    const from = this.props.username
+    const to = this.state.to;
+    const msg  = this.state.message
+    console.log('messageSendHandler : ', to);
 
-    //전체 채팅 전송
-    this.state.socket.emit('public send message', this.props.username, this.state.message);
+    if(to === 'public'){
+      // 전체 채팅 전송
+      this.state.socket.emit('public send message', from, msg);
+    } else {
+      // 귓속말 전송
+      this.state.socket.emit('private send message', from, to, msg)
+    }
   }
 
   messageChangeHandler = (e) => {
@@ -46,10 +52,43 @@ export default class Chat extends Component {
 
   componentWillReceiveProps(nextProps) {
     // 메시지 (props) 변경이벤트
-    const {username, msg} = nextProps.receivedInfo;
+    let publicUsername
+    let publicMsg
+    let privateUsername
+    let privateMsg
+
+    if (nextProps.publicReceivedInfo) {
+      publicUsername = nextProps.publicReceivedInfo.username;
+      publicMsg = nextProps.publicReceivedInfo.msg;
+    }
+    
+    if (nextProps.privateReceivedInfo) {
+      privateUsername = nextProps.privateReceivedInfo.username
+      privateMsg = nextProps.privateReceivedInfo.msg;
+    }
+
+    console.log('public ', publicUsername, publicMsg);
+    console.log('private ', privateUsername, privateMsg);
     // 동적 메시지 추가
   }
 
+  chatListChangeHandler = (e) => {
+
+    const to = e.target.value
+    const from = this.props.username
+
+    this.setState({
+      to: to
+    })
+    if (to === 'public'){
+      // 전체 채팅 받아오기
+      this.state.socket.emit('get public message', from);
+    } else {
+      // 귓속말 채팅 받아오기
+      this.state.socket.emit('get private message', from, to)
+    }
+  }
+  
   render() {
     // App.js에서 전달받은 로그인 유무
     const isAlreadyAuthentication = this.props.isloggined
@@ -75,7 +114,13 @@ export default class Chat extends Component {
               </div>
             </div>
           </div>
+          <select onChange={this.chatListChangeHandler}>
+            <option value="public">전체</option>
+            <option value="test">test</option>
+            <option value="test1">test1</option>
+          </select>
         </div>
+        
         )}
       </div>
     )

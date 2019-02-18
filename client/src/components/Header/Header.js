@@ -35,7 +35,6 @@ export default class Header extends Component {
       // publicRoom 참여 check.msg = username
       socket.emit('enter public room', check.msg)
       socket.on('success public room', () => {
-        //console.log('success public room ');
         // 모든 유저 정보 요청
         socket.emit('get all users');
       })
@@ -51,15 +50,28 @@ export default class Header extends Component {
       })
       
       // 전체 채팅 이벤트 연결
-      socket.on('public message', (sendUsername, msg) => {
+      socket.on('public message', (from, msg) => {
         this.setState({msg: msg});
-        this.props.receiveMessageHandler(sendUsername, msg);
+        this.props.receivePublicMessageHandler(from, msg);
       })
 
       // 전체 채팅 내역 
       socket.on('public all message', (allMessage) => {
         console.log(allMessage);
+        //Chat.js 컴포넌트로 전달 예정 (전체 메시지)
       })
+
+      // 귓속말 채팅 이벤트 연결
+      socket.on('private message', (from, msg) => {
+        this.setState({msg: msg});
+        this.props.receiveprivateMessageHandler(from, msg)
+      })
+
+      socket.on('private get message', (message) => {
+        console.log(message)
+        // chat.js 컴포넌트로 전달예정 (귓속막 메시지)
+      })
+
     } 
 
     
