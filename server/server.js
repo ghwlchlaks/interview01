@@ -36,7 +36,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     secret: 'session',
-    cookie: { maxAge : 1000 * 60 * 3}, //쿠키 유효시간 3분
+    cookie: { maxAge : 1000 * 60 * 60}, //쿠키 유효시간 60분
     store: new RedisStore({
       client: redis
     })

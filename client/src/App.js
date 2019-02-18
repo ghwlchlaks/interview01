@@ -46,6 +46,12 @@ class App extends Component {
     })
   }
 
+  getPublicMessageHandler = (allMessage) => {
+    this.setState({
+      publicAllmessage: allMessage
+    })
+  }
+
   receiveprivateMessageHandler = (username, msg) => {
     // console.log(msg);
     this.setState({
@@ -65,6 +71,7 @@ class App extends Component {
             isLogginHandler={this.isLogginHandler} 
             receivePublicMessageHandler={this.receivePublicMessageHandler}
             receiveprivateMessageHandler={this.receiveprivateMessageHandler}
+            getPublicMessageHandler={this.getPublicMessageHandler}
             >
           </Header>
           <Switch>
@@ -84,6 +91,7 @@ class App extends Component {
                   socket={this.state.socket}
                   publicReceivedInfo={this.state.publicReceivedInfo}
                   privateReceivedInfo={this.state.privateReceivedInfo}
+                  publicAllmessage={this.state.publicAllmessage}
                   {...props}
                   />}
                 />

@@ -57,8 +57,9 @@ export default class Header extends Component {
 
       // 전체 채팅 내역 
       socket.on('public all message', (allMessage) => {
-        console.log(allMessage);
+        //console.log(allMessage);
         //Chat.js 컴포넌트로 전달 예정 (전체 메시지)
+        this.props.getPublicMessageHandler(allMessage)
       })
 
       // 귓속말 채팅 이벤트 연결
@@ -67,6 +68,7 @@ export default class Header extends Component {
         this.props.receiveprivateMessageHandler(from, msg)
       })
 
+      // 귓속말 내역
       socket.on('private get message', (message) => {
         console.log(message)
         // chat.js 컴포넌트로 전달예정 (귓속막 메시지)
@@ -81,8 +83,6 @@ export default class Header extends Component {
 
   render() {
     const isAlreadyAuthentication = this.state.isloggined
-    // console.log('ss'+ isAlreadyAuthentication)
-    //console.log(this.state.allUsers);
     if (isAlreadyAuthentication) {
       return (
         <div className="header">
