@@ -50,9 +50,10 @@ export default class Header extends Component {
       })
       
       // 전체 채팅 이벤트 연결
-      socket.on('public message', (from, msg) => {
-        this.setState({msg: msg});
-        this.props.receivePublicMessageHandler(from, msg);
+      socket.on('public message', (publicMessage) => {
+        this.setState({publicMessage: publicMessage});
+        //console.log('public message ',publicMessage)
+        this.props.receivePublicMessageHandler(publicMessage);
       })
 
       // 전체 채팅 내역 

@@ -80,7 +80,7 @@ module.exports = function(io) {
                   if (err) throw err;
                   else {
                     // 채팅 내용이 저장 됐다면
-                    io.emit('public message',username, msg);
+                    io.emit('public message', publicMessage);
                   }
                 })
               }
