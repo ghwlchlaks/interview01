@@ -112,12 +112,12 @@ export default class Chat extends Component {
   // }
 
   distinctMsg = (item) => {
-    const {username, sender, message, createdDate} = item;
+    const {_id, username, sender, message, createdDate} = item;
     // username = 송신자 , this.state.username = 현재 나의 계정 
     if (username !== this.state.username) {
       // 내가 보낸것이 아니라면
       return (
-      <div className="incoming_msg content" key={createdDate}>
+      <div className="incoming_msg content" key={_id}>
         <div className="received_msg">
           <div className="received_withd_msg">
             <strong>{username}</strong>
@@ -130,7 +130,7 @@ export default class Chat extends Component {
     } else {
       // 내가 보낸것이라면
       return (
-      <div className="outgoing_msg content" key={createdDate}>
+      <div className="outgoing_msg content" key={_id}>
         <div className="sent_msg">
           <p>{message}</p>
           <span className="tiem_date">{createdDate}</span>
