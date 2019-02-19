@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import {Redirect} from 'react-router-dom';
 import './Chat.css';
-import {ListGroup, 
-        ListGroupItem, 
+import {
         Container,
         Row, 
         Col, 
@@ -91,7 +90,7 @@ export default class Chat extends Component {
       })
     }
 
-    if (nextProps.allUsers) {
+    if (nextProps.allUsers) {  
       this.setState({
         allUsers: nextProps.allUsers
       })
@@ -158,15 +157,17 @@ export default class Chat extends Component {
     if (allUsers) {
       return (
         allUsers.map((user) => {
-          return (
-            <li 
-              key={user.socketId} 
-              onClick={this.userListClickHandler} 
-              id={user.username} 
-              className="list-group-item">
-              {user.username}
+          if (user.username !== this.state.username) {
+            return (         
+              <li 
+                key={user.socketId} 
+                onClick={this.userListClickHandler} 
+                id={user.username} 
+                className="list-group-item">
+                {user.username}
               </li>
-          )
+            )
+          }
         })
       )
     }

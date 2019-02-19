@@ -77,41 +77,33 @@ module.exports = function(io) {
           resolve(user)
         })
       }
-      
-      // 참여자 목록
-      socket.on('get all users', async() => {
-        // console.log('get all users : ' + socket.id);
 
+      getClientList = () => {
         const socketConnectedUsers = io.sockets.clients().connected;
         let connectedSockets = []
         for (let id in socketConnectedUsers) {
           connectedSockets.push(id)
         }
 
-
-        PublicRoom.find({}).ne('socketId', socket.id).exec((err, user) => {
-          let connectedUser = []
-          user.forEach((value) => {
-            connectedSockets.forEach((value1) => {
-              if (value.socketId === value1) {
-                connectedUser.push(value);
-              }
-            })
-          });
+        PublicRoom.find({})
+          .exec((err, user) => {
+            if (err) throw err;
+            let connectedUser = []
+            user.forEach((value) => {
+              connectedSockets.forEach((value1) => {
+                if (value.socketId === value1) {
+                  connectedUser.push(value);
+                }
+              })
+            });
           // console.log(connectedUser)
           io.emit('success get users', connectedUser);
         })
-        
-        
-        
-        // const query = PublicRoom.find().ne('socketId', socket.id);
-        // query.exec((err, allUsers) => {
-        //   // console.log(allUsers)
-        //   //자신을 제외한 모든 유저 정보 보내기
-        //   //console.log(allUsers)
-        //   io.emit('success get users', allUsers);
-        // })
+      }
 
+      // 참여자 목록
+      socket.on('get all users', () => {   
+        getClientList()
       })
 
       // 클라이언트에게 전체 메시지를 받으면
@@ -245,6 +237,7 @@ module.exports = function(io) {
             if (err) throw err;
             else {
               console.log('user disconnected: ', socket.id);
+              getClientList()
             }
           })
       })
