@@ -26,6 +26,10 @@ const privateMessageSchema = new mongoose.Schema({
         ref: 'users',
         required: true,
     },
+    username: {
+        type: String,
+        require: true,
+    },
     message: {
         type: String,
         required: true,
@@ -34,6 +38,10 @@ const privateMessageSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users',
         required: true
+    },
+    receiverName: {
+        type: String,
+        required: true,
     },
     createdDate: {
         type: Date, 

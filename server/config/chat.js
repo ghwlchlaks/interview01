@@ -123,7 +123,7 @@ module.exports = function(io) {
                   sender: user._id,
                   username: username,
                   message: msg,
-                  createDate: Date.now,
+                  createdDate: Date.now,
                 });
 
                 publicMessage.save((err) => {
@@ -175,8 +175,10 @@ module.exports = function(io) {
             //두 유저가 존재한다면
             const privateMessage = new PrivateMessage({
               sender: fromUser._id,
+              username: from,
               message: msg,
               receiver: toUser._id,
+              receiverName: to,
               createdDate: Date.now(),
             })
             // 귓속말 저장
@@ -184,8 +186,16 @@ module.exports = function(io) {
               if (err) throw err;
               else {
                 // 저장이 완료되면 귓속말 보내기
-                io.to(to._socketId).emit('private message', from, msg);
-                io.to(from._socketId).emit('private message', from, msg)
+                io.to(socket.id).emit('private message', privateMessage)
+
+                PublicRoom.findOne({username: to})
+                  .select('socketId')
+                  .exec((err, toSocketId)=> {
+                    if (err) throw err;
+                    else {
+                      io.to(toSocketId.socketId).emit('private message', privateMessage);
+                    }
+                  })
               }
             })
 
@@ -219,6 +229,12 @@ module.exports = function(io) {
             ]).then((messages) => {
               const [fromMsg, toMsg] = messages;
               const message = [...fromMsg, ...toMsg]
+            
+              const dateSort = (a, b) => {
+                if(a.createdDate == b.createdDate) { return 0 } return a.createdDate > b.createdDate ? 1: -1;
+              }
+
+              message.sort(dateSort);
 
               io.to(socket.id).emit('private get message', (message))
             })

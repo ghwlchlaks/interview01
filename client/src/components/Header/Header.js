@@ -53,27 +53,24 @@ export default class Header extends Component {
       // 전체 채팅 이벤트 연결
       socket.on('public message', (publicMessage) => {
         this.setState({publicMessage: publicMessage});
-        //console.log('public message ',publicMessage)
         this.props.receivePublicMessageHandler(publicMessage);
       })
 
       // 전체 채팅 내역 
       socket.on('public all message', (allMessage) => {
-        //console.log(allMessage);
         //Chat.js 컴포넌트로 전달 예정 (전체 메시지)
         this.props.getPublicMessageHandler(allMessage)
       })
 
       // 귓속말 채팅 이벤트 연결
-      socket.on('private message', (from, msg) => {
-        this.setState({msg: msg});
-        this.props.receiveprivateMessageHandler(from, msg)
+      socket.on('private message', (privateMessage) => {
+        this.setState({privateMessage: privateMessage});
+        this.props.receiveprivateMessageHandler(privateMessage)
       })
 
       // 귓속말 내역
       socket.on('private get message', (message) => {
         this.props.getPrivateMessageHandler(message)
-        // chat.js 컴포넌트로 전달예정 (귓속말 메시지)
       })
 
     } 

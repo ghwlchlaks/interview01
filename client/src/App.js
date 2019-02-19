@@ -37,7 +37,6 @@ class App extends Component {
   }
 
   receivePublicMessageHandler = (publicMessage) => {
-    // console.log(msg);
     this.setState({
       publicMessage :publicMessage
     })
@@ -49,13 +48,10 @@ class App extends Component {
     })
   }
 
-  receiveprivateMessageHandler = (username, msg) => {
+  receiveprivateMessageHandler = (privateMessage) => {
     // console.log(msg);
     this.setState({
-      privateReceivedInfo : {
-        username: username,
-        msg: msg
-      }
+      privateReceivedInfo : privateMessage
     })
   }
 
