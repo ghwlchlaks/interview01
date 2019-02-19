@@ -68,23 +68,32 @@ export default class Chat extends Component {
 
   componentWillReceiveProps(nextProps) {
     // 메시지 (props) 변경이벤트
-    if (nextProps.publicMessage) {
-      this.setState({
-        publicMessage: nextProps.publicMessage,
-      }, () => {
-        // 전달받은 전체 메시지 추가
+    if (nextProps.publicMessage && 
+      this.state.activeUserList === 'public') {
         this.setState({
-          publicAllMsg: [...this.state.publicAllMsg, this.state.publicMessage]
+          publicMessage: nextProps.publicMessage,
+        }, () => {
+          // 전달받은 전체 메시지 추가
+          this.setState({
+            publicAllMsg: [...this.state.publicAllMsg, this.state.publicMessage]
+          })
+        })
+    }
+    
+    if (nextProps.privateReceivedInfo &&
+        this.state.activeUserList !== 'public' &&
+        nextProps.privateReceivedInfo.username === this.state.activeUserList) {
+      this.setState({
+        privateMessage: nextProps.privateReceivedInfo.msg
+      }, () => {
+        this.setState({
+          publicAllMsg: [...this.state.publicAllMsg, this.state.privateMessage]
         })
       })
     }
-    
-    if (nextProps.privateReceivedInfo) {
-      // privateUsername = nextProps.privateReceivedInfo.username
-      // privateMsg = nextProps.privateReceivedInfo.msg;
-    }
 
-    if (nextProps.publicAllmessage && this.state.activeUserList === 'public') {
+    if (nextProps.publicAllmessage &&
+       this.state.activeUserList === 'public') {
       this.setState({
         publicAllMsg: nextProps.publicAllmessage
       })
@@ -96,7 +105,8 @@ export default class Chat extends Component {
       })
     }
 
-    if (nextProps.privateMessage && this.state.activeUserList !== 'public') {
+    if (nextProps.privateMessage && 
+      this.state.activeUserList !== 'public') {
       this.setState({
         privateMessage: nextProps.privateMessage,
         publicAllMsg: nextProps.privateMessage
@@ -200,6 +210,7 @@ export default class Chat extends Component {
         {/* 로그인 유무에 따른 리다이렉션 */}
         {!isAlreadyAuthentication ? <Redirect to={{pathname: '/'}}/> : (
         <Row>
+          {this.state.username}
           <Col md="8">
             <div id="chat_ul">
               {publicAllMsg ? this.makePublicChatList(publicAllMsg) : ''}
