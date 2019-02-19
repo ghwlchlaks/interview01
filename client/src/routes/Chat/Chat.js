@@ -18,8 +18,8 @@ export default class Chat extends Component {
 
     this.state = {
       socket: props.socket,
-      to: 'public',
-      username: props.username
+      username: props.username,
+      activeUserList: 'public'
     }
   }
 
@@ -47,7 +47,7 @@ export default class Chat extends Component {
 
   massageSendHandler = () => {
     const from = this.props.username
-    const to = this.state.to;
+    const to = this.state.activeUserList;
     const msg  = this.state.message
     console.log('messageSendHandler : ', to);
 
@@ -114,9 +114,6 @@ export default class Chat extends Component {
       this.state.socket.emit('get private message', from, to)
     }
   }
-  // test = (e) => {
-  //   console.log(e.target.name)
-  // }
 
   distinctMsg = (item) => {
     const {_id, username, sender, message, createdDate} = item;
@@ -162,15 +159,28 @@ export default class Chat extends Component {
       return (
         allUsers.map((user) => {
           return (
-            <ListGroupItem 
-              name={user.username}
-              key={user.socketId}
-              >{user.username}
-              </ListGroupItem>
+            <li 
+              key={user.socketId} 
+              onClick={this.userListClickHandler} 
+              id={user.username} 
+              className="list-group-item">
+              {user.username}
+              </li>
           )
         })
       )
     }
+  }
+
+  userListClickHandler = (e) => {
+
+    const beforeActiveTag = document.getElementsByClassName('list-group-item active')[0]
+    beforeActiveTag.classList.toggle('active')
+    const afterActiveTag = e.target;
+    afterActiveTag.classList.toggle('active');
+    this.setState({
+      activeUserList: afterActiveTag.id
+    })
   }
 
   render() {
@@ -192,7 +202,7 @@ export default class Chat extends Component {
             <Row>
               <Col>
                 <InputGroup>
-                  <InputGroupAddon addonType="prepend">{this.state.to}</InputGroupAddon>
+                  <InputGroupAddon addonType="prepend">{this.state.activeUserList}</InputGroupAddon>
                   <Input placeholder="메시지를 입력하세요" onChange={this.messageChangeHandler} />
                   <Button onClick={this.massageSendHandler}>전송</Button>
                 </InputGroup>
@@ -201,20 +211,18 @@ export default class Chat extends Component {
           </Col>
         
           <Col md="4">
-            <ListGroup onClick={this.test} id="partcipant_list">
-              <ListGroupItem name="public">전체</ListGroupItem>
-              {allUsers ? this.makeUserList(allUsers) : ''}
-            </ListGroup>
+            <div className="panel panel-info">
+                <ul className="list-group">
+                    <li onClick={this.userListClickHandler} id="public" className="list-group-item active">전체</li>
+                    {allUsers ? this.makeUserList(allUsers) : ''}
+                </ul>
+            </div>
           </Col>
+
+
         </Row>
         )}
       </Container>
     )
   }
 }
-
-              {/* <select onChange={this.chatListChangeHandler}>
-              <option value="public">전체</option>
-              <option value="test">test</option>
-              <option value="test1">test1</option>
-            </select> */}
