@@ -72,8 +72,8 @@ export default class Header extends Component {
 
       // 귓속말 내역
       socket.on('private get message', (message) => {
-        console.log(message)
-        // chat.js 컴포넌트로 전달예정 (귓속막 메시지)
+        this.props.getPrivateMessageHandler(message)
+        // chat.js 컴포넌트로 전달예정 (귓속말 메시지)
       })
 
     } 

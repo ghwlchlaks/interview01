@@ -84,7 +84,7 @@ export default class Chat extends Component {
       // privateMsg = nextProps.privateReceivedInfo.msg;
     }
 
-    if (nextProps.publicAllmessage) {
+    if (nextProps.publicAllmessage && this.state.activeUserList === 'public') {
       this.setState({
         publicAllMsg: nextProps.publicAllmessage
       })
@@ -95,23 +95,14 @@ export default class Chat extends Component {
         allUsers: nextProps.allUsers
       })
     }
-  }
 
-  chatListChangeHandler = (e) => {
-
-    const to = e.target.value
-    const from = this.props.username
-
-    this.setState({
-      to: to
-    })
-    if (to === 'public'){
-      // 전체 채팅 보내기
-      this.state.socket.emit('get public message', from);
-    } else {
-      // 귓속말 채팅 보내기
-      this.state.socket.emit('get private message', from, to)
+    if (nextProps.privateMessage && this.state.activeUserList !== 'public') {
+      this.setState({
+        privateMessage: nextProps.privateMessage,
+        publicAllMsg: nextProps.privateMessage
+      })
     }
+
   }
 
   distinctMsg = (item) => {
@@ -181,7 +172,21 @@ export default class Chat extends Component {
     afterActiveTag.classList.toggle('active');
     this.setState({
       activeUserList: afterActiveTag.id
+    }, () => {
+
+      const from = this.props.username
+      const to = this.state.activeUserList
+      if ( to === 'public') {
+        // 전체 채팅 가져오기
+        this.state.socket.emit('get public message', from);
+      } else {
+        // from 과 to의 채팅 가져오기
+        this.state.socket.emit('get private message', from, to)
+      }
+
     })
+    
+
   }
 
   render() {

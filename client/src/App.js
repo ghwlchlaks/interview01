@@ -59,6 +59,12 @@ class App extends Component {
     })
   }
 
+  getPrivateMessageHandler = (message) => {
+    this.setState({
+      privateMessage: message
+    })
+  }
+
   render() {
     return (
       <div>
@@ -69,6 +75,7 @@ class App extends Component {
             receivePublicMessageHandler={this.receivePublicMessageHandler}
             receiveprivateMessageHandler={this.receiveprivateMessageHandler}
             getPublicMessageHandler={this.getPublicMessageHandler}
+            getPrivateMessageHandler={this.getPrivateMessageHandler}
             >
           </Header>
           <Switch>
@@ -89,6 +96,7 @@ class App extends Component {
                   publicMessage={this.state.publicMessage}
                   privateReceivedInfo={this.state.privateReceivedInfo}
                   publicAllmessage={this.state.publicAllmessage}
+                  privateMessage={this.state.privateMessage}
                   {...props}
                   />}
                 />
