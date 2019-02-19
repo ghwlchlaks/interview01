@@ -45,15 +45,73 @@ module.exports = function(io) {
         })
       })
       
-      // 참여자 목록
-      socket.on('get all users', () => {
-        // console.log('get all users : ' + socket.id);
-        const query = PublicRoom.find().ne('socketId', socket.id);
-        query.exec((err, allUsers) => {
-          // console.log(allUsers)
-          //자신을 제외한 모든 유저 정보 보내기
-          io.emit('success get users', allUsers);
+      function findClientsSocketByRoomId(roomId) {
+        let res = []
+        , room = io.sockets.adapter.rooms[roomId];
+        if (room) {
+            for (let id in room) {
+            res.push(io.sockets.adapter.nsp.connected[id]);
+            }
+        }
+        return res;
+        }
+
+
+      function findConnectedClient (socketConnectedUsers) {
+        return new Promise((resolve, reject) => {
+          var user = []
+          for (let key in socketConnectedUsers) {
+            // console.log(key);
+            (function () {
+              PublicRoom.findOne({socketId : key}, (err, connectedUser) => {
+                if (err) reject(err);
+                if (connectedUser) {
+                  // console.log(connectedUser)
+                  user.push(connectedUser)
+                }
+              })(key)
+            })
+              
+          }
+          console.log(user)
+          resolve(user)
         })
+      }
+      
+      // 참여자 목록
+      socket.on('get all users', async() => {
+        // console.log('get all users : ' + socket.id);
+
+        const socketConnectedUsers = io.sockets.clients().connected;
+        let connectedSockets = []
+        for (let id in socketConnectedUsers) {
+          connectedSockets.push(id)
+        }
+
+
+        PublicRoom.find({}).ne('socketId', socket.id).exec((err, user) => {
+          let connectedUser = []
+          user.forEach((value) => {
+            connectedSockets.forEach((value1) => {
+              if (value.socketId === value1) {
+                connectedUser.push(value);
+              }
+            })
+          });
+          // console.log(connectedUser)
+          io.emit('success get users', connectedUser);
+        })
+        
+        
+        
+        // const query = PublicRoom.find().ne('socketId', socket.id);
+        // query.exec((err, allUsers) => {
+        //   // console.log(allUsers)
+        //   //자신을 제외한 모든 유저 정보 보내기
+        //   //console.log(allUsers)
+        //   io.emit('success get users', allUsers);
+        // })
+
       })
 
       // 클라이언트에게 전체 메시지를 받으면

@@ -28,7 +28,8 @@ export default class Header extends Component {
     const check = await authService.isAuthenticated();
     if (check) {
       this.setState({
-        isloggined: true
+        isloggined: true,
+        username: check.msg
       })
 
       const socket = socketIOClient(this.state.endpoint);
@@ -45,7 +46,7 @@ export default class Header extends Component {
           allUsers: allUsers
         }, () => {
           // 부모(App.js)로 로그인 유무 전달, 채팅 모든 유저 정보 전달
-          this.props.isLogginHandler(this.state.isloggined, check.msg, this.state.allUsers, socket)
+          this.props.isLogginHandler(this.state.isloggined, this.state.username, this.state.allUsers, socket)
         })
       })
       

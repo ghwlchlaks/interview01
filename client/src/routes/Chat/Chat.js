@@ -29,6 +29,7 @@ export default class Chat extends Component {
     }, () => {
       // 전체 채팅 받아오기
       this.state.socket.emit('get public message', this.props.username);
+      this.state.socket.emit('get all users');
     })
   }
 
@@ -87,6 +88,12 @@ export default class Chat extends Component {
     if (nextProps.publicAllmessage) {
       this.setState({
         publicAllMsg: nextProps.publicAllmessage
+      })
+    }
+
+    if (nextProps.allUsers) {
+      this.setState({
+        allUsers: nextProps.allUsers
       })
     }
   }
@@ -150,10 +157,27 @@ export default class Chat extends Component {
     }
   }
 
+  makeUserList = (allUsers) => {
+    if (allUsers) {
+      return (
+        allUsers.map((user) => {
+          return (
+            <ListGroupItem 
+              name={user.username}
+              key={user.socketId}
+              >{user.username}
+              </ListGroupItem>
+          )
+        })
+      )
+    }
+  }
+
   render() {
     // App.js에서 전달받은 로그인 유무
     const isAlreadyAuthentication = this.props.isloggined
     const publicAllMsg = this.state.publicAllMsg
+    const allUsers = this.state.allUsers
 
     return (
       <Container>
@@ -179,8 +203,7 @@ export default class Chat extends Component {
           <Col md="4">
             <ListGroup onClick={this.test} id="partcipant_list">
               <ListGroupItem name="public">전체</ListGroupItem>
-              <ListGroupItem name="test">test</ListGroupItem>
-              <ListGroupItem name="test1">test1</ListGroupItem>
+              {allUsers ? this.makeUserList(allUsers) : ''}
             </ListGroup>
           </Col>
         </Row>
