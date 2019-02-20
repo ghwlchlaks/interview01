@@ -21,6 +21,9 @@ router.put('/login', (req, res,) =>{
     if (!user) {
       return res.status(200).send({status: false, msg: info})
     } else {
+      req.login(user, err => {
+        if (err) return res.status(500).send({status: false, msg: 'login sessin save error'})
+      })
       return res.status(200).send({status: true, msg: '로그인성공'});
     }
   })(req, res)

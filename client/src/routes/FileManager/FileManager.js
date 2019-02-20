@@ -42,7 +42,7 @@ export default class FileManager extends Component {
           })
         }
       }).then((res) => {
-        if (res.data.stats) {
+        if (res.data) {
           alert('업로드 성공!');
           this.setState({
             selectFile: null,
@@ -50,8 +50,8 @@ export default class FileManager extends Component {
           })
         } else {
           alert('로그인이 필요합니다.');
-          window.location.reload()
         }
+        window.location.reload()
       })
     } else {
       alert('업로드할 파일을 선택해주세요');
