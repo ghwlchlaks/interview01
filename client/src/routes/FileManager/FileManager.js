@@ -3,7 +3,6 @@ import FileList from '../../components/FileList/FileList';
 import FileContent from '../../components/FileContent/FileContent';
 import './FileManager.css'
 import {Container, Row, Col} from 'reactstrap'
-import * as fileManagerService from '../../services/fileManager';
 import axios from 'axios'
 
 export default class FileManager extends Component {

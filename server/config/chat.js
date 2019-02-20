@@ -123,7 +123,7 @@ module.exports = function(io) {
                   sender: user._id,
                   username: username,
                   message: msg,
-                  createdDate: Date.now,
+                  createdDate: Date.now(),
                 });
 
                 publicMessage.save((err) => {

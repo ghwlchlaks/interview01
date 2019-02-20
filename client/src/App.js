@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-import socketIOClient from "socket.io-client";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import './App.css';
 
-import * as testService from "./services/test";
-
 import Home from './routes/Home/Home';
 import FileManager from './routes/FileManager/FileManager';
-import Posts from './routes/Posts/Posts';
 import Chat from './routes/Chat/Chat';
 import Login from './routes/Login/Login';
 import Signup from './routes/Signup/Signup';
@@ -77,8 +73,6 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/fileManager/:username" component={FileManager} />
-            <Route path="/posts" component={Posts} />
-            {/* <Route path="/login" render={(props) => } component={Login} /> */}
             <Route path="/login" render={(props) => <Login isloggined={this.state.isloggined} {...props} />} />
             <Route path="/signup" component={Signup} />
             <Route 
