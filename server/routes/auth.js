@@ -15,18 +15,29 @@ router.get('/',isAuthentication, (req, res) => {
   res.status(200).send({status: true, msg: req.user.username});
 });
 
-router.put('/login', passport.authenticate('login'),
-  (req, res) => {
-  res.status(200).send({status: true, msg: '로그인성공'});
+router.put('/login', (req, res,) =>{
+  passport.authenticate('login', (err, user, info) => {
+    if (err) return res.status(500).send({status: false, msg: 'login server error'})
+    if (!user) {
+      return res.status(200).send({status: false, msg: info})
+    } else {
+      return res.status(200).send({status: true, msg: '로그인성공'});
+    }
+  })(req, res)
 })
 
-router.post('/signup', passport.authenticate('signup'),
- (req, res) => {
-  res.status(200).send({status: true, msg: req.user.username});
+router.post('/signup', (req, res) => {
+  passport.authenticate('signup', (err, user, info) => {
+    if (err) return res.status(500).send({status: false, msg: 'login server error'})
+    if (!user) {
+      return res.status(200).send({status: false, msg: info});
+    } else {
+      return res.status(200).send({status: true, msg: '회원가입 성공'})
+    }
+  })(req, res)
 })
 
 router.get('/logout', (req, res) => {
-  // console.log(req.user)
   req.logout();
   res.status(200).send({status: true, msg:'logout success'});
 })

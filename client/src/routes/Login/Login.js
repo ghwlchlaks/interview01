@@ -17,11 +17,23 @@ export default class Login extends Component {
   }
 
   loginHandler = async() => {
-    const auth = await authService.login(this.state.loginInfo);
-    if(auth) {
-      window.location.reload()
-    } else {
-      alert('잘못된 계정!');
+    const {username, password} = this.state.loginInfo
+    if (username === '' || password === ''){
+      alert('입력칸을 모두 작성해주세요');
+    }
+    else {
+      const auth = await authService.login(this.state.loginInfo);
+      if(auth.status) {
+        window.location.reload()
+      } else {
+        this.setState({
+          loginInfo: {
+            username: '',
+            password: '',
+          }
+        })
+        alert(auth.msg.message);
+      }
     }
   }
 
@@ -49,6 +61,7 @@ export default class Login extends Component {
           <Form>
             <FormGroup>
               <Input 
+                value={this.state.loginInfo.username}
                 type="email" 
                 name="email" 
                 id="email" 
@@ -59,6 +72,7 @@ export default class Login extends Component {
             </FormGroup>
             <FormGroup>
               <Input 
+                value={this.state.loginInfo.password}
                 type="password" 
                 name="password"
                 id="password" 

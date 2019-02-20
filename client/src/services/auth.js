@@ -17,11 +17,11 @@ export const login = (loginInfo) => {
     password: loginInfo.password
   })
   .then((result) => {
-    if (result.status === 200 && result.data.status) return result.data
+    if (result.status === 200 && result.data) return result.data
     else return null;
   })
   .catch((err) => {
-    console.log(err);
+    console.log('err', err);
     return null;
   })
 }
@@ -33,10 +33,11 @@ export const signup = (signupInfo) => {
     email : signupInfo.email,
     sex : signupInfo.sex
   }).then((result) => {
-    if (result.status === 200 && result.data.status) return result.data
+    if (result.status === 200 && result.data) return result.data
     else return null;
   })
   .catch((err) => {
+    console.log(err)
     return null;
   })
 }
