@@ -9,9 +9,11 @@ import socketIOClient from 'socket.io-client';
 export default class Header extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       isloggined: false,
       endpoint: 'http://localhost:4000',
+      isUpdate: false,
     }
 
     this.authenticatedHandler()
@@ -23,9 +25,42 @@ export default class Header extends Component {
     window.location.reload();
   }
 
+  componentDidUpdate = () => {
+    //현재 state가 로그인된 상태에서만 적용
+    if (this.state.isloggined) {
+
+    // 로그인 유무 검사
+    this.authCheck().then((auth) => {
+      // 로그아웃상태라면 state수정후 
+      if(!auth) {
+        this.setState({
+          isloggined: false,
+          username: null,
+        }, () => {
+          // 로그인 페이지로
+          if (!this.state.isUpdate) {
+            this.setState({
+              isUpdate: true,
+            }, () => {
+              alert('세션이 만료되어 로그아웃 처리됐습니다.');
+              window.location.reload();
+            })
+          }
+        })
+      } else {
+        console.log('로그인 상태')
+      }
+    })
+  }
+  }
+
+  authCheck = () => {
+    return authService.isAuthenticated();
+  }
   authenticatedHandler = async() => {
     // 로그인 유무 확인
-    const check = await authService.isAuthenticated();
+    // const check = await authService.isAuthenticated();
+    const check = await this.authCheck()
     if (check) {
       this.setState({
         isloggined: true,

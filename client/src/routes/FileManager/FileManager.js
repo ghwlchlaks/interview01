@@ -5,6 +5,7 @@ import './FileManager.css'
 import {Container, Row, Col} from 'reactstrap'
 import axios from 'axios'
 import {Redirect} from 'react-router-dom';
+import {isAuthenticated} from '../../services/auth';
 
 export default class FileManager extends Component {
   constructor(props){
@@ -20,7 +21,7 @@ export default class FileManager extends Component {
       }
     }
   }
-  
+
   // 자식 filelist에서 클릭한 파일들에 대한 정보 받는 핸들러
   contentReceivedHandler = (fileData) => {
     this.setState({
@@ -41,12 +42,15 @@ export default class FileManager extends Component {
           })
         }
       }).then((res) => {
-        if (res.data) {
+        if (res.data.stats) {
           alert('업로드 성공!');
           this.setState({
             selectFile: null,
             loaded: 0
           })
+        } else {
+          alert('로그인이 필요합니다.');
+          window.location.reload()
         }
       })
     } else {
@@ -65,7 +69,7 @@ export default class FileManager extends Component {
     // App.js에서 전달받은 로그인 유무
     const isAlreadyAuthentication = this.props.isloggined
     const username = this.state.username;
-
+    console.log(isAlreadyAuthentication)
     return (
     <div>
       {!isAlreadyAuthentication ? <Redirect to={{pathname: '/'}} /> : (

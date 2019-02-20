@@ -23,6 +23,7 @@ class App extends Component {
     }
   }
 
+
   isLogginHandler = (isloggined, username, allUsers, socket) => {
     this.setState({
       isloggined : isloggined,
@@ -57,6 +58,12 @@ class App extends Component {
     })
   }
 
+  checkLogined = (isloggined) => {
+    // this.setState({
+    //   isloggined: isloggined
+    // })
+  }
+
   render() {
     return (
       <div>
@@ -72,7 +79,7 @@ class App extends Component {
           </Header>
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/fileManager/:username" component={FileManager} />
+            <Route path="/fileManager/:username" render={(props) => <FileManager isloggined={this.state.isloggined} checkLogined={this.checkLogined} {...props} />}  />
             <Route path="/login" render={(props) => <Login isloggined={this.state.isloggined} {...props} />} />
             <Route path="/signup" render={(props) => <Signup isloggined={this.state.isloggined} {...props}/>} />
             <Route 
