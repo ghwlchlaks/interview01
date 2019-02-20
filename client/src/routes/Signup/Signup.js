@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Input, ButtonGroup, FormGroup, Form } from "reactstrap";
+import {Redirect} from 'react-router-dom';
 
 import './Signup.css';
 import * as authService from "../../services/auth";
@@ -41,6 +42,7 @@ export default class Login extends Component {
 
   signupHandler = async() => {
     const {username, email, password, confirmPassword, sex} = this.state.signupInfo;
+    
     //empty check
     if(password === confirmPassword) {
       if (username && email && password && confirmPassword && sex !== undefined) {
@@ -61,9 +63,13 @@ export default class Login extends Component {
   }
 
   render() {
+    // App.js에서 전달받은 로그인 유무
+    const isAlreadyAuthentication = this.props.isloggined
     return (
       <div className="Login">
-        <Form>
+      {/* 로그인 유무에 따른 리다이렉션 */}
+      {isAlreadyAuthentication ? <Redirect to={{pathname: '/'}} /> : (
+          <Form>
           <FormGroup>
             <Input type="text" name="username" id="username" onChange={this.changeHandler} placeholder="아이디" />
           </FormGroup>
@@ -82,6 +88,7 @@ export default class Login extends Component {
         </ButtonGroup>
           <Button id="signupBtn" onClick={this.signupHandler}>계정 만들기</Button>
         </Form>
+        )}
       </div>
     )
   }

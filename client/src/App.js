@@ -74,7 +74,7 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route path="/fileManager/:username" component={FileManager} />
             <Route path="/login" render={(props) => <Login isloggined={this.state.isloggined} {...props} />} />
-            <Route path="/signup" component={Signup} />
+            <Route path="/signup" render={(props) => <Signup isloggined={this.state.isloggined} {...props}/>} />
             <Route 
               path="/chat" 
               render={(props) => 
@@ -88,10 +88,10 @@ class App extends Component {
                   publicAllmessage={this.state.publicAllmessage}
                   privateMessage={this.state.privateMessage}
                   isLogginHandler={this.isLogginHandler} 
-            receivePublicMessageHandler={this.receivePublicMessageHandler}
-            receiveprivateMessageHandler={this.receiveprivateMessageHandler}
-            getPublicMessageHandler={this.getPublicMessageHandler}
-            getPrivateMessageHandler={this.getPrivateMessageHandler}
+                  receivePublicMessageHandler={this.receivePublicMessageHandler}
+                  receiveprivateMessageHandler={this.receiveprivateMessageHandler}
+                  getPublicMessageHandler={this.getPublicMessageHandler}
+                  getPrivateMessageHandler={this.getPrivateMessageHandler}
                   {...props}
                   />}
                 />

@@ -4,6 +4,7 @@ import FileContent from '../../components/FileContent/FileContent';
 import './FileManager.css'
 import {Container, Row, Col} from 'reactstrap'
 import axios from 'axios'
+import {Redirect} from 'react-router-dom';
 
 export default class FileManager extends Component {
   constructor(props){
@@ -61,11 +62,16 @@ export default class FileManager extends Component {
   }
 
   render() {
+    // App.js에서 전달받은 로그인 유무
+    const isAlreadyAuthentication = this.props.isloggined
+    const username = this.state.username;
+
     return (
     <div>
-        {this.state.username}
-
-      <Container>
+      {!isAlreadyAuthentication ? <Redirect to={{pathname: '/'}} /> : (
+        <div>
+          {username}
+        <Container>
         <Row>
           {/* 1. 자식 FileList에서 클릭한 파일의 데이터를 받아옴 */}
           <Col className="left" xs="4"><FileList sendContentHandler={this.contentReceivedHandler}></FileList></Col>
@@ -73,11 +79,12 @@ export default class FileManager extends Component {
           <Col className="right" xs="8"><FileContent fileData={this.state.fileData}></FileContent></Col>
         </Row>
       </Container>
-
       <input type='file' accept=".zip, .tar" onChange={this.changeUploadFile} />
       <button onClick={this.uploadHandler}>업로드</button>
       <div> {Math.round(this.state.loaded, 2)}</div>
-    </div>
+      </div>
+      )}
+      </div>
     )
   }
 }

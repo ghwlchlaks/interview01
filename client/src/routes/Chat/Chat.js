@@ -73,7 +73,6 @@ export default class Chat extends Component {
 
     if (nextProps.publicMessage && 
       this.state.activeUserList === 'public') {
-        console.log('1');
         this.setState({
           publicMessage: nextProps.publicMessage,
           publicAllMsg: [...this.state.publicAllMsg, nextProps.publicMessage]
@@ -84,7 +83,6 @@ export default class Chat extends Component {
 
      else if (nextProps.publicAllmessage &&
         this.state.activeUserList === 'public') {
-          console.log('2');
        this.setState({
          publicAllMsg: nextProps.publicAllmessage
        })
@@ -97,7 +95,6 @@ export default class Chat extends Component {
         this.state.activeUserList !== 'public' &&
         (nextProps.privateReceivedInfo.username === this.state.activeUserList ||
         nextProps.privateReceivedInfo.username === this.state.username)) {
-          console.log('3')
       this.setState({
         privateMessage: nextProps.privateReceivedInfo,
         privateAllMsg: [...this.state.privateAllMsg,  nextProps.privateReceivedInfo],
@@ -108,7 +105,6 @@ export default class Chat extends Component {
 
     else if (nextProps.privateMessage && 
       this.state.activeUserList !== 'public') {
-        console.log('4')
       this.setState({
         privateMessage: nextProps.privateMessage,
         privateAllMsg: nextProps.privateMessage,
@@ -218,9 +214,8 @@ export default class Chat extends Component {
     // App.js에서 전달받은 로그인 유무
     const isAlreadyAuthentication = this.props.isloggined
     const publicAllMsg = this.state.publicAllMsg
-    const privateMsg = this.state.privateMessage
     const allUsers = this.state.allUsers
-    // console.log(privateMsg)
+
     return (
       <Container>
         {/* 로그인 유무에 따른 리다이렉션 */}
