@@ -47,9 +47,7 @@ export default class Header extends Component {
             })
           }
         })
-      } else {
-        console.log('로그인 상태')
-      }
+      } 
     })
   }
   }

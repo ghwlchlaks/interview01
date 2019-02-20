@@ -51,7 +51,7 @@ export default class FileManager extends Component {
         } else {
           alert('로그인이 필요합니다.');
         }
-        window.location.reload()
+        //window.location.reload()
       })
     } else {
       alert('업로드할 파일을 선택해주세요');
@@ -69,7 +69,6 @@ export default class FileManager extends Component {
     // App.js에서 전달받은 로그인 유무
     const isAlreadyAuthentication = this.props.isloggined
     const username = this.state.username;
-    console.log(isAlreadyAuthentication)
     return (
     <div>
       {!isAlreadyAuthentication ? <Redirect to={{pathname: '/'}} /> : (
