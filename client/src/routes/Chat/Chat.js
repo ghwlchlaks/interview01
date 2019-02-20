@@ -70,6 +70,7 @@ export default class Chat extends Component {
 
   componentWillReceiveProps(nextProps) {
     // 메시지 (props) 변경이벤트
+
     if (nextProps.publicMessage && 
       this.state.activeUserList === 'public') {
         console.log('1');
@@ -77,31 +78,46 @@ export default class Chat extends Component {
           publicMessage: nextProps.publicMessage,
           publicAllMsg: [...this.state.publicAllMsg, nextProps.publicMessage]
         })
-      }  else if (nextProps.publicAllmessage &&
+        this.props.receivePublicMessageHandler( null);
+      } 
+
+
+     else if (nextProps.publicAllmessage &&
         this.state.activeUserList === 'public') {
           console.log('2');
        this.setState({
          publicAllMsg: nextProps.publicAllmessage
        })
+       this.props.getPublicMessageHandler( null);
      }
 
-    if (nextProps.privateReceivedInfo &&
+
+
+      if (nextProps.privateReceivedInfo &&
         this.state.activeUserList !== 'public' &&
         (nextProps.privateReceivedInfo.username === this.state.activeUserList ||
         nextProps.privateReceivedInfo.username === this.state.username)) {
           console.log('3')
       this.setState({
         privateMessage: nextProps.privateReceivedInfo,
+        privateAllMsg: [...this.state.privateAllMsg,  nextProps.privateReceivedInfo],
         publicAllMsg: [...this.state.publicAllMsg, nextProps.privateReceivedInfo]
       })
-    } else if (nextProps.privateMessage && 
+      this.props.receiveprivateMessageHandler(null);
+    } 
+
+    else if (nextProps.privateMessage && 
       this.state.activeUserList !== 'public') {
         console.log('4')
       this.setState({
         privateMessage: nextProps.privateMessage,
+        privateAllMsg: nextProps.privateMessage,
         publicAllMsg: nextProps.privateMessage
       })
+      this.props.getPrivateMessageHandler(null)
     }
+
+    
 
     if (nextProps.allUsers) {  
       this.setState({
@@ -202,17 +218,18 @@ export default class Chat extends Component {
     // App.js에서 전달받은 로그인 유무
     const isAlreadyAuthentication = this.props.isloggined
     const publicAllMsg = this.state.publicAllMsg
+    const privateMsg = this.state.privateMessage
     const allUsers = this.state.allUsers
-
+    // console.log(privateMsg)
     return (
       <Container>
         {/* 로그인 유무에 따른 리다이렉션 */}
         {!isAlreadyAuthentication ? <Redirect to={{pathname: '/'}}/> : (
         <Row>
-          {this.state.username}
           <Col md="8">
             <div id="chat_ul">
-              {publicAllMsg ? this.makePublicChatList(publicAllMsg) : ''}
+              {publicAllMsg ? 
+                this.makePublicChatList(publicAllMsg): ''}
             </div>
 
             <Row>

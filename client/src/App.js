@@ -87,6 +87,11 @@ class App extends Component {
                   privateReceivedInfo={this.state.privateReceivedInfo}
                   publicAllmessage={this.state.publicAllmessage}
                   privateMessage={this.state.privateMessage}
+                  isLogginHandler={this.isLogginHandler} 
+            receivePublicMessageHandler={this.receivePublicMessageHandler}
+            receiveprivateMessageHandler={this.receiveprivateMessageHandler}
+            getPublicMessageHandler={this.getPublicMessageHandler}
+            getPrivateMessageHandler={this.getPrivateMessageHandler}
                   {...props}
                   />}
                 />
