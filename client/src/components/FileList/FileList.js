@@ -3,6 +3,9 @@ import './FileList.css';
 import * as fileManagerService from '../../services/fileManager';
 
 export default class FileList extends Component {
+  constructor(props) {
+    super(props)
+  }
   state = {
     allFileData : null,
     fileData : {
@@ -12,16 +15,11 @@ export default class FileList extends Component {
   }
   //컴포넌트 로딩후 호출
   componentDidMount() {
-    fileManagerService.getAllData().then((data) => {
-      if (data) {
-        this.setState({
-          allFileData: data.children
-        })
-      }
-    });
+    this.getAllFileData();
   }
 
-  componentWillUpdate() {
+  //모든 파일 데이터 가져오기
+  getAllFileData = () => {
     fileManagerService.getAllData().then((data) => {
       if (data) {
         this.setState({
@@ -29,7 +27,17 @@ export default class FileList extends Component {
         })
       }
     });
+
+  
   }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.isSuccessUpload !== this.props.isSuccessUpload) {
+      this.getAllFileData()
+    }
+  }
+
+
   // 리스트 클릭 이벤트
   listClickHandler = (path ,e) => {
     fileManagerService.readFile(path).then((content) => {
@@ -55,7 +63,8 @@ export default class FileList extends Component {
           /* 폴더 구조 리스트 생성 및 click 이벤트로 item.path값 바인드*/
           <li key={item.path} className={item.type}>
           {
-            item.type === 'file' ? (<a onClick={this.listClickHandler.bind(this, item.path)}>{item.name}</a>) : (<span className="caret">{item.name}</span>)
+            item.type === 'file' ? (<a onClick={this.listClickHandler.bind(this, item.path)}>{item.name}</a>) : 
+            (<span onClick={this.bindDictionaryEvent.bind(this)} className="caret">{item.name}</span>)
           }
           
             {(item.children) ? this.makeFolderStructure(item.children) : '' }
@@ -67,22 +76,17 @@ export default class FileList extends Component {
     }
   }
 
-  componentDidUpdate() {
-    let toggler = document.getElementsByClassName("caret");
-
-    for (let i = 0; i < toggler.length; i++) {
-      toggler[i].addEventListener("click", function() {
-        this.parentElement.querySelector(".nested").classList.toggle("active");
-        this.classList.toggle("caret-down");
-      });
-    }
+  bindDictionaryEvent (e) {
+    console.log(e.target)
+    e.target.parentElement.querySelector(".nested").classList.toggle("active");
+    e.target.classList.toggle("caret-down");
   }
 
   render() {
     const username = this.props.username
     return (
         <ul id="myUL">
-          <li><span className="caret">{username}</span>
+          <li><span onClick={this.bindDictionaryEvent} className="caret">{username}</span>
             {this.state.allFileData ? this.makeFolderStructure(this.state.allFileData) : '' }
           </li>
         </ul>

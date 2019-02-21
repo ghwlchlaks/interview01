@@ -14,7 +14,7 @@ export default class FileManager extends Component {
       username: props.match.params.username,
       fileName: 'Choose file',
       selectFile: null,
-      isSuccessUplad: false,
+      isSuccessUpload: false,
       loaded: 0,
       fileData : {
         fileContent: null,
@@ -53,10 +53,14 @@ export default class FileManager extends Component {
         if (res.data) {
           window.document.getElementById('upload_input').classList.toggle('disabled');
           window.document.getElementById('upload_button').classList.toggle('disabled');
-
+          
           this.setState({
             selectFile: null,
+            isSuccessUpload: true,
           })
+          
+         
+
         } else {
           alert('로그인이 필요합니다.');
         }
@@ -99,7 +103,7 @@ export default class FileManager extends Component {
  
             </div>
             <div id="fileList">
-              <FileList username={username} sendContentHandler={this.contentReceivedHandler}>
+              <FileList  username={username} {...this.props} isSuccessUpload={this.state.isSuccessUpload} isSuccessUpload={this.state.isSuccessUpload} sendContentHandler={this.contentReceivedHandler}>
               </FileList>
             </div>
           </Col>
