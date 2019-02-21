@@ -220,12 +220,28 @@ export default class Chat extends Component {
       <Container>
         {/* 로그인 유무에 따른 리다이렉션 */}
         {!isAlreadyAuthentication ? <Redirect to={{pathname: '/'}}/> : (
-        <Row>
-          <Col md="8">
-            <div id="chat_ul">
-              {publicAllMsg ? 
-                this.makePublicChatList(publicAllMsg): ''}
+        <Row id="chat_wrapper">
+        
+          <Col md="4" id="user_list_wrapper">
+            <div className="panel panel-info">
+                <ul className="list-group">
+                    <li 
+                      onClick={this.userListClickHandler} 
+                      id="public" 
+                      className="list-group-item active">전체
+                      </li>
+                    {allUsers ? this.makeUserList(allUsers) : ''}
+                </ul>
             </div>
+          </Col>
+
+          <Col md="8" id="chat_list_wrapper">
+            <Row>
+              <div id="chat_ul">
+                {publicAllMsg ? 
+                  this.makePublicChatList(publicAllMsg): ''}
+              </div>
+            </Row>
 
             <Row>
               <Col>
@@ -236,17 +252,8 @@ export default class Chat extends Component {
                 </InputGroup>
               </Col>
             </Row>
+            
           </Col>
-        
-          <Col md="4">
-            <div className="panel panel-info">
-                <ul className="list-group">
-                    <li onClick={this.userListClickHandler} id="public" className="list-group-item active">전체</li>
-                    {allUsers ? this.makeUserList(allUsers) : ''}
-                </ul>
-            </div>
-          </Col>
-
 
         </Row>
         )}

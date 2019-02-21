@@ -29,16 +29,6 @@
     color: #777777;
 }
 
-.panel-heading {
-    background-color: cornflowerblue
-}
-.panel-body
-{
-    overflow-y: scroll;
-    background-color: aliceblue;
-    height: 500px;
-}
-
 ::-webkit-scrollbar-track
 {
     background-color: #F5F5F5;
@@ -56,36 +46,16 @@
 }
 
 #chat_ul {
-    height: 500px;
+    height: 600px;
     overflow: auto;
-
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 #partcipant_list {
     height: 500px;
     overflow: auto;
-}
-
-
-.chat_list {
-    border-bottom: 1px solid #c4c4c4;
-    margin: 0;
-    padding: 18px 16px 10px;
-  }
-
-.chat_people{ overflow:hidden; clear:both;}
-
-.chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}
-.chat_ib h5 span{ font-size:13px; float:right;}
-.chat_ib p{ font-size:14px; color:#989898; margin:auto}
-.chat_img {
-  float: left;
-  width: 11%;
-}
-.chat_ib {
-  float: left;
-  padding: 0 0 0 15px;
-  width: 88%;
 }
 
 .received_msg {
@@ -129,6 +99,7 @@
 .panel > .list-group .list-group-item
 {
     border-width: 1px 0;
+    background-color: #eee;
 }
 .panel > .list-group .list-group-item:first-child
 {
@@ -154,6 +125,23 @@
 .panel li.list-group-item:hover, li.list-group-item.active:focus
 {
     color: #000;
-    background-color: #DDD;
-    border-color: #DDD;
+    background-color: #ccc;
+    border-color: #ccc;
+}
+#chat_wrapper{
+    margin-top: 30px;
+    height: 650px;
+    margin-bottom: 20px;
+}
+
+#user_list_wrapper{
+    border: 2px solid #ccc;
+    padding-left: 0%;
+    padding-right: 0%;
+}
+
+#chat_list_wrapper{
+    border: 2px solid #ccc;
+    padding-left: 0%;
+    padding-right: 0%;
 }

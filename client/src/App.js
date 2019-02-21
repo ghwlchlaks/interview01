@@ -99,11 +99,9 @@ class App extends Component {
                 />
             <Route component={NoMatch} />
           </Switch>
+          <Footer></Footer>
         </div>
       </Router>
-      <div id="footer">
-        <Footer></Footer>
-      </div>  
       </Container>
       
 
