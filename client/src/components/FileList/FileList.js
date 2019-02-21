@@ -21,6 +21,15 @@ export default class FileList extends Component {
     });
   }
 
+  componentWillUpdate() {
+    fileManagerService.getAllData().then((data) => {
+      if (data) {
+        this.setState({
+          allFileData: data.children
+        })
+      }
+    });
+  }
   // 리스트 클릭 이벤트
   listClickHandler = (path ,e) => {
     fileManagerService.readFile(path).then((content) => {
