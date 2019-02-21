@@ -40,16 +40,14 @@ export default class FileList extends Component {
   makeFolderStructure = (array) => {
     if(array) {
       return (
-      <ul>
+      <ul className="nested">
       {array.map((item) => {
         return (
           /* 폴더 구조 리스트 생성 및 click 이벤트로 item.path값 바인드*/
           <li key={item.path} className={item.type}>
-            {
-              item.type === 'file' ? 
-              (<a  onClick={this.listClickHandler.bind(this, item.path)}>{item.name}</a>)
-              : (<a>{item.name}</a>)
-            }
+          {
+            item.type === 'file' ? (<a onClick={this.listClickHandler.bind(this, item.path)}>{item.name}</a>) : (<span className="caret">{item.name}</span>)
+          }
           
             {(item.children) ? this.makeFolderStructure(item.children) : '' }
           </li>
@@ -60,11 +58,26 @@ export default class FileList extends Component {
     }
   }
 
+  componentDidUpdate() {
+    let toggler = document.getElementsByClassName("caret");
+
+    for (let i = 0; i < toggler.length; i++) {
+      toggler[i].addEventListener("click", function() {
+        this.parentElement.querySelector(".nested").classList.toggle("active");
+        this.classList.toggle("caret-down");
+      });
+    }
+  }
+
   render() {
+    const username = this.props.username
     return (
-      <div className="tree">
-        {this.state.allFileData ? this.makeFolderStructure(this.state.allFileData) : '' }
-      </div>
+        <ul id="myUL">
+          <li><span className="caret">{username}</span>
+            {this.state.allFileData ? this.makeFolderStructure(this.state.allFileData) : '' }
+          </li>
+        </ul>
+
     )
   }
 }

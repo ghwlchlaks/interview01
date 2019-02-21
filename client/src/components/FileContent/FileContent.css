@@ -1,0 +1,9 @@
+#save_button{
+    width: 100%;
+}
+
+#fileContent{
+    height: 600px;
+    background-color: #fff;
+    color: #000;
+}

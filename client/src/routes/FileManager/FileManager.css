@@ -1,11 +1,33 @@
 .left {
-    max-height: 300px;
-    overflow-y: scroll;
-    background-color: blue;
+    max-height: 700px;
+    /* background-color: #ccc; */
+    border-radius: 15px;
+    margin-top: 30px;
 }
 
 .right {
-    overflow-y: scroll;
-    max-height: 300px;
-    background-color: pink;
+    margin-top: 30px;
+    max-height: 700px;
+    /* background-color: #ccc; */
+    border-radius: 15px;
+}
+
+/* #272822; */
+
+#fileList{
+    background-color: #fff;
+    overflow: scroll;
+    height: 550px;
+    border: 2px solid #bbb;
+    border-radius: 20px 0 0 0;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+#fileContent{
+    border-radius: 0 20px 0 0;
+}
+
+#upload_button {
+    width:100%;
 }

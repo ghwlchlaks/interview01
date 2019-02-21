@@ -4,9 +4,9 @@ import './Footer.css';
 export default class Footer extends Component {
   render() {
     return (
-      <div className="header">
-        test
-      </div>
+      <footer>
+        Footer입니다.
+      </footer>
     )
   }
 }

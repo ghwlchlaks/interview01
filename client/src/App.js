@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import './App.css';
+import {Container} from 'reactstrap';
 
 import Home from './routes/Home/Home';
 import FileManager from './routes/FileManager/FileManager';
@@ -46,7 +47,6 @@ class App extends Component {
   }
 
   receiveprivateMessageHandler = (privateMessage) => {
-    // console.log(msg);
     this.setState({
       privateReceivedInfo : privateMessage
     })
@@ -58,15 +58,9 @@ class App extends Component {
     })
   }
 
-  checkLogined = (isloggined) => {
-    // this.setState({
-    //   isloggined: isloggined
-    // })
-  }
-
   render() {
     return (
-      <div>
+      <Container>
       <Router>
         <div id="contents">
           <Header 
@@ -75,6 +69,7 @@ class App extends Component {
             receiveprivateMessageHandler={this.receiveprivateMessageHandler}
             getPublicMessageHandler={this.getPublicMessageHandler}
             getPrivateMessageHandler={this.getPrivateMessageHandler}
+            username={this.state.username}
             >
           </Header>
           <Switch>
@@ -106,10 +101,11 @@ class App extends Component {
           </Switch>
         </div>
       </Router>
-      <div>
+      <div id="footer">
         <Footer></Footer>
       </div>  
-      </div>
+      </Container>
+      
 
     );
   }

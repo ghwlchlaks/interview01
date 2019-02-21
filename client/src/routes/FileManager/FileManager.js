@@ -2,10 +2,9 @@ import React, { Component } from 'react'
 import FileList from '../../components/FileList/FileList';
 import FileContent from '../../components/FileContent/FileContent';
 import './FileManager.css'
-import {Container, Row, Col} from 'reactstrap'
+import {Container, Row, Col, FormGroup, CustomInput, Button, Progress } from 'reactstrap'
 import axios from 'axios'
 import {Redirect} from 'react-router-dom';
-import {isAuthenticated} from '../../services/auth';
 
 export default class FileManager extends Component {
   constructor(props){
@@ -13,7 +12,9 @@ export default class FileManager extends Component {
 
     this.state = {
       username: props.match.params.username,
+      fileName: 'Choose file',
       selectFile: null,
+      isSuccessUplad: false,
       loaded: 0,
       fileData : {
         fileContent: null,
@@ -35,6 +36,13 @@ export default class FileManager extends Component {
       const data = new FormData()
       data.append('file', this.state.selectFile, this.state.selectFile.name);
 
+      window.document.getElementById('upload_input').classList.toggle('disabled');
+      window.document.getElementById('upload_button').classList.toggle('disabled');
+
+      this.setState({
+        loaded: 0
+      })
+
       axios.post('/api/fileManager/upload', data, {
         onUploadProgress: ProgressEvent => {
           this.setState({
@@ -43,15 +51,15 @@ export default class FileManager extends Component {
         }
       }).then((res) => {
         if (res.data) {
-          alert('업로드 성공!');
+          window.document.getElementById('upload_input').classList.toggle('disabled');
+          window.document.getElementById('upload_button').classList.toggle('disabled');
+
           this.setState({
             selectFile: null,
-            loaded: 0
           })
         } else {
           alert('로그인이 필요합니다.');
         }
-        //window.location.reload()
       })
     } else {
       alert('업로드할 파일을 선택해주세요');
@@ -59,8 +67,14 @@ export default class FileManager extends Component {
   }
 
   changeUploadFile = (e) => {
+    const files = e.target.files[0]
+    let fileName = files.name
+    if (e.target.files[0].name === undefined) {
+      fileName = 'Choose file'
+    }
     this.setState({
-      selectFile: e.target.files[0],
+      fileName: fileName,
+      selectFile: files,
       loaded: 0
     })
   }
@@ -73,18 +87,29 @@ export default class FileManager extends Component {
     <div>
       {!isAlreadyAuthentication ? <Redirect to={{pathname: '/'}} /> : (
         <div>
-          {username}
-        <Container>
         <Row>
           {/* 1. 자식 FileList에서 클릭한 파일의 데이터를 받아옴 */}
-          <Col className="left" xs="4"><FileList sendContentHandler={this.contentReceivedHandler}></FileList></Col>
+          <Col className="left" sm="4" xs="12">
+            <div>
+              <FormGroup>
+                  <CustomInput id="upload_input" type="file" accept=".zip, .tar" onChange={this.changeUploadFile} label={this.state.fileName} />
+                  <Button id="upload_button" size="sm" color="secondary" onClick={this.uploadHandler}>업로드</Button>
+                  <Progress striped color="success" value={(this.state.loaded)} />
+              </FormGroup>
+ 
+            </div>
+            <div id="fileList">
+              <FileList username={username} sendContentHandler={this.contentReceivedHandler}>
+              </FileList>
+            </div>
+          </Col>
           {/* 2. 받아온 FileList의 값을 자식인 FileContent컴포넌트에게 전달 */}
-          <Col className="right" xs="8"><FileContent fileData={this.state.fileData}></FileContent></Col>
+          <Col className="right" sm="8" xs="12">
+            <FileContent id="fileContent" fileData={this.state.fileData}>
+            </FileContent>
+          </Col>
         </Row>
-      </Container>
-      <input type='file' accept=".zip, .tar" onChange={this.changeUploadFile} />
-      <button onClick={this.uploadHandler}>업로드</button>
-      <div> {Math.round(this.state.loaded, 2)}</div>
+
       </div>
       )}
       </div>

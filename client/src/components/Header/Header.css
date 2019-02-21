@@ -13,10 +13,6 @@
     color: rgba(0, 0, 0, 0.5);
 }
 
-/* .item:hover {
-    background: #748ffc;
-} */
-
 .item:active {
     background: #fff;
     color: #5c7cfa
