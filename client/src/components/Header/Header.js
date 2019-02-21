@@ -37,8 +37,7 @@ export default class Header extends Component {
           isloggined: false,
           username: null,
         }, () => {
-          // 로그인 페이지로
-          if (!this.state.isUpdate) {
+           if (!this.state.isUpdate) {
             this.setState({
               isUpdate: true,
             }, () => {
@@ -57,7 +56,6 @@ export default class Header extends Component {
   }
   authenticatedHandler = async() => {
     // 로그인 유무 확인
-    // const check = await authService.isAuthenticated();
     const check = await this.authCheck()
     if (check) {
       this.setState({
@@ -91,7 +89,6 @@ export default class Header extends Component {
 
       // 전체 채팅 내역 
       socket.on('public all message', (allMessage) => {
-        //Chat.js 컴포넌트로 전달 예정 (전체 메시지)
         this.props.getPublicMessageHandler(allMessage)
       })
 
@@ -106,11 +103,20 @@ export default class Header extends Component {
         this.props.getPrivateMessageHandler(message)
       })
 
-    } 
 
-    
+      // 중복 로그인되어있는 상대에게 
+      socket.on('duplicated login', (duplicatedIp) => {
+        authService.logout();
+        alert(duplicatedIp + ' 에서 로그인으로 인해 로그아웃 처리됩니다.');
+      })
 
-    
+      // 로그인 한 상대에게
+      socket.on('duplicated relogin', () => {
+        authService.logout()
+        alert('중복로그인으로 인해 재접속해주시기 바랍니다.')
+      })
+  
+    }   
   }
 
   render() {

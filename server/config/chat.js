@@ -6,21 +6,21 @@ module.exports = function(io) {
   // 클라이언트가 접속 했을때의 이벤트
   io.on('connection', (socket) => {
       console.log('user connected: ', socket.id);
-
+      // console.log(socket.request.connection.remoteAddress)
 
       // 로그인시 참여자로 설정
       socket.on('enter public room', (username) => {
-
+    
         User.findOne({username: username}, (err, user) => {
           if(err) throw err;
           if(!user) console.log('존재하는 유저가 아닙니다.');
           else {
-
+            // 유저가 존재 한다면
             
             PublicRoom.findOne({username: username}, (err, participant) => {
               if (err) throw err;
               if (!participant) {
-                //유저가 존재하고 디비에 정보가 없다면 publicRoom에 참여자로 저장
+                //참여자 정보가 없다면 publicRoom에 참여자로 저장
                 const publicRoom = new PublicRoom({
                   username: username,
                   socketId: socket.id,
@@ -33,10 +33,24 @@ module.exports = function(io) {
                   io.emit('success public room')
                 })
               } else {
-                // 만약 이전에 참여한 이력이 존재한다면
+                // 만약 이전에 참여한 이력이 존재하거나 중복 로그인 시
+
+                Object.entries(io.sockets.clients().connected).forEach(([key, value]) => {
+                  if (key === participant.socketId) {
+                     // 만약 저장되어있는 socket이 연결되어있다면 (중복로그인)
+                     // 기존에 연결된 socket id에 연결해제 메시지 알림
+                     // 접속한 ip를 알려줌 .
+                     io.to(participant.socketId).emit('duplicated login', socket.request.connection.remoteAddress);
+                     io.to(socket.id).emit('duplicated relogin');
+                    }
+                })
+               
+                // 만약 저장되어있는 socket이 현재 연결되어있는 소켓이 아니라면 (이력만 남아있거나 페이지 새로고침했을경우)
+                // 이후 동일하게 새롭게 로그인한 socket에 id를 저장하고 알림
                 participant.socketId = socket.id;
                 participant.accessTime = Date.now()
                 participant.save((err) => {
+                  if (err) throw err;
                   io.emit('success public room')
                 })
               }
@@ -44,39 +58,6 @@ module.exports = function(io) {
           }
         })
       })
-      
-      function findClientsSocketByRoomId(roomId) {
-        let res = []
-        , room = io.sockets.adapter.rooms[roomId];
-        if (room) {
-            for (let id in room) {
-            res.push(io.sockets.adapter.nsp.connected[id]);
-            }
-        }
-        return res;
-        }
-
-
-      function findConnectedClient (socketConnectedUsers) {
-        return new Promise((resolve, reject) => {
-          var user = []
-          for (let key in socketConnectedUsers) {
-            // console.log(key);
-            (function () {
-              PublicRoom.findOne({socketId : key}, (err, connectedUser) => {
-                if (err) reject(err);
-                if (connectedUser) {
-                  // console.log(connectedUser)
-                  user.push(connectedUser)
-                }
-              })(key)
-            })
-              
-          }
-          console.log(user)
-          resolve(user)
-        })
-      }
 
       getClientList = () => {
         const socketConnectedUsers = io.sockets.clients().connected;
@@ -249,13 +230,7 @@ module.exports = function(io) {
 
       // 연결 끊겼을때
       socket.on('disconnect', () => {
-          PublicRoom.deleteOne({socketId: socket.id}, (err) => {
-            if (err) throw err;
-            else {
-              console.log('user disconnected: ', socket.id);
-              getClientList()
-            }
-          })
+        getClientList()
       })
   })
 }
