@@ -19,7 +19,8 @@ export default class Chat extends Component {
       socket: props.socket,
       username: props.username,
       activeUserList: 'public',
-      publicAllMsg: []
+      publicAllMsg: [],
+      message: ''
     }
   }
 
@@ -46,16 +47,26 @@ export default class Chat extends Component {
   }
 
   massageSendHandler = () => {
-    const from = this.props.username
-    const to = this.state.activeUserList;
-    const msg  = this.state.message
 
-    if(to === 'public'){
-      // 전체 채팅 전송
-      this.state.socket.emit('public send message', from, msg);
+    if (this.state.message.length > 0) {
+      const from = this.props.username
+      const to = this.state.activeUserList;
+      const msg  = this.state.message
+    
+      if(to === 'public'){
+        // 전체 채팅 전송
+        this.state.socket.emit('public send message', from, msg);
+      } else {
+        // 귓속말 전송
+        this.state.socket.emit('private send message', from, to, msg)
+      }
+
+      this.setState({
+        message: ''
+      })
+
     } else {
-      // 귓속말 전송
-      this.state.socket.emit('private send message', from, to, msg)
+      alert('메시지를 입력해주세요');
     }
   }
 
@@ -210,6 +221,12 @@ export default class Chat extends Component {
     }
   }
 
+  keyPressHandler = (e) => {
+    if (e.key === 'Enter') {
+      this.massageSendHandler();
+    }
+  }
+
   render() {
     // App.js에서 전달받은 로그인 유무
     const isAlreadyAuthentication = this.props.isloggined
@@ -247,7 +264,7 @@ export default class Chat extends Component {
               <Col>
                 <InputGroup>
                   <InputGroupAddon addonType="prepend">{this.state.activeUserList}</InputGroupAddon>
-                  <Input placeholder="메시지를 입력하세요" onChange={this.messageChangeHandler} />
+                  <Input placeholder="메시지를 입력하세요" onChange={this.messageChangeHandler} value={this.state.message} onKeyDown={this.keyPressHandler}/>
                   <Button onClick={this.massageSendHandler}>전송</Button>
                 </InputGroup>
               </Col>
