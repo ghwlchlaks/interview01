@@ -55,7 +55,8 @@ export default class FileManager extends Component {
           window.document.getElementById('upload_button').classList.toggle('disabled');
           this.setState({
             selectFile: null,
-            isSuccessUpload: true,
+            isSuccessUpload: !this.state.isSuccessUpload,
+            fileName: 'Choose file'
           })
           
         } else {
@@ -68,7 +69,7 @@ export default class FileManager extends Component {
   }
 
   changeUploadFile = (e) => {
-
+    
     const files = e.target.files[0];
     if (!files) {
       this.setState({

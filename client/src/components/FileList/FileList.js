@@ -83,11 +83,18 @@ export default class FileList extends Component {
 
   render() {
     const username = this.props.username
+    const allFileData = this.state.allFileData
     return (
         <ul id="myUL">
+        {allFileData ? (
           <li><span onClick={this.bindDictionaryEvent} className="caret">{username}</span>
-            {this.state.allFileData ? this.makeFolderStructure(this.state.allFileData) : '' }
+            {
+              allFileData ? this.makeFolderStructure(allFileData) : ''
+            }
           </li>
+          ) : (
+            <li><span className="caret">{username}</span></li>
+          )}
         </ul>
 
     )

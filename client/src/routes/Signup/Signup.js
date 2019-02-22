@@ -72,6 +72,12 @@ export default class Login extends Component {
     return;
   }
 
+  keyPressHandler = (e) => {
+    if (e.key === 'Enter') {
+      this.signupHandler();
+    }
+  }
+
   render() {
     // App.js에서 전달받은 로그인 유무
     const isAlreadyAuthentication = this.props.isloggined
@@ -81,16 +87,16 @@ export default class Login extends Component {
       {isAlreadyAuthentication ? <Redirect to={{pathname: '/'}} /> : (
           <Form>
           <FormGroup>
-            <Input value={this.state.signupInfo.username} type="text" name="username" id="username" onChange={this.changeHandler} placeholder="아이디" />
+            <Input value={this.state.signupInfo.username} type="text" name="username" id="username" onChange={this.changeHandler} onKeyPress={this.keyPressHandler} placeholder="아이디" />
           </FormGroup>
           <FormGroup>
-            <Input value={this.state.signupInfo.email} type="email" name="email" id="email" onChange={this.changeHandler} placeholder="이메일" />
+            <Input value={this.state.signupInfo.email} type="email" name="email" id="email" onChange={this.changeHandler} onKeyPress={this.keyPressHandler} placeholder="이메일" />
           </FormGroup>
           <FormGroup>
-            <Input value={this.state.signupInfo.password} type="password" name="password" id="password" onChange={this.changeHandler} placeholder="비밀번호" />
+            <Input value={this.state.signupInfo.password} type="password" name="password" id="password" onChange={this.changeHandler} onKeyPress={this.keyPressHandler} placeholder="비밀번호" />
           </FormGroup>
           <FormGroup>
-            <Input value={this.state.signupInfo.confirmPassword} type="password" name="confirmPassword" id="confirmPassword" onChange={this.changeHandler} placeholder="비밀번호 확인" />
+            <Input value={this.state.signupInfo.confirmPassword} type="password" name="confirmPassword" id="confirmPassword" onChange={this.changeHandler} onKeyPress={this.keyPressHandler} placeholder="비밀번호 확인" />
           </FormGroup>
           <ButtonGroup>
           <Button color="primary" onClick={() => this.onRadioBtnClick(true)} active={this.state.signupInfo.sex === true}>남</Button>

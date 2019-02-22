@@ -10,6 +10,8 @@ const uploadZipDir = multer({
     dest: 'uploadFiles/zip'
 })
 const uploadUnZipDir = 'uploadFiles/unzip/'
+const User = require('../models/users');
+const File = require('../models/files');
 
 // 로그인 검사
 const isAuthentication = (req, res, next) => {
@@ -36,12 +38,27 @@ router.post('/upload',isAuthentication, uploadZipDir.single('file'),async (req, 
         
         const file = req.file;
         const user = req.user;
-
         const check = await fileCheckAndExtract(file, user.username);
         if (!check) {
             res.send({status: false, msg: 'zip, tar 확장자 파일이 아닙니다.'})
         } else {
-            res.send(check);
+            //압축해제와 파일 체크가 완료되었다면
+            
+            const fileData = new File({
+                filename: file.filename,
+                path: file.path,
+                createdDate: Date.now(),
+                size: file.size,
+            })
+            const fileSaveResult = await fileData.save();
+            const userData  = await User.findOne({username: user.username});
+            userData.files.push(fileSaveResult._id);
+            const userSaveResult = await userData.save();
+            if (userSaveResult) {
+                res.send(true);
+            } else {
+                res.send(false);
+            }
         }
     } catch(e) {
         console.error(e);
@@ -62,7 +79,12 @@ const fileCheckAndExtract = (file, username) => {
                 //해당 유저의 디렉토리가 존재 하지 않다면 username 디렉토리 생성
                 fs.mkdirSync(userDir)
             } 
-            fileType === 'zip' ? fs.createReadStream(path).pipe(unzip.Extract({path: userDir})) : fs.createReadStream(path).pipe( tar.extract(userDir));
+            fileType === 'zip' ? 
+                fs.createReadStream(path)
+                .pipe(unzip.Extract({path: userDir})) : 
+                fs.createReadStream(path)
+                .pipe( tar.extract(userDir));
+
             resolve(true)
         }
         else {

@@ -73,6 +73,7 @@ export default class Login extends Component {
                 id="email" 
                 placeholder="아이디" 
                 onChange={this.changeHandler}
+                onKeyPress={this.keyPressHandler}
                 name="username"
                 />
             </FormGroup>

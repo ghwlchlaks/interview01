@@ -17,6 +17,9 @@ const userSchema = new mongoose.Schema({
         lowercase: true, 
         unique: true
     },
+    files: [
+        mongoose.Schema.Types.ObjectId,
+    ],
     sex: {
         type: Boolean, 
         required: true
@@ -36,23 +39,6 @@ const userSchema = new mongoose.Schema({
         default: Date.now, 
         required: true
     },
-    // publicMessages: [{
-    //     types: mongoose.Schema.Types.ObjectId,
-    //     ref: 'publicMessage'
-    // }],
-
-    // privateMessages: [{
-    //     types: mongoose.Schema.Types.ObjectId,
-    //     ref: 'privateMessage'
-    // }],
-
-    // socketId: {
-    //     type: String,
-    // },
-    // isloggined: {
-    //     type: Boolean,
-    //     required: true, 
-    // }
 })
 
 userSchema.methods.comparePassword = (inputPass, originPass) => {

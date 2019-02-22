@@ -50,22 +50,6 @@ const privateMessageSchema = new mongoose.Schema({
     }
 })
 
-// const publicRoomsSchema = new mongoose.Schema({
-//     participants: [{
-//         socketId: {
-//             type: String,
-//         },
-//         userId: {
-//             type: mongoose.Schema.Types.ObjectId,
-//             ref: 'users'
-//         },
-//         accessTime: {
-//             type: Date,
-//             default: Date.now
-//         }
-//     }]
-// })
-
 const publicRoomsSchema = new mongoose.Schema({
     username: {
         type: String,
