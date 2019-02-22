@@ -50,6 +50,12 @@ export default class Login extends Component {
   isAuthentication = () => {
     return authService.isAuthenticated();
   }
+
+  keyPressHandler = (e) => {
+    if (e.key === 'Enter') {
+      this.loginHandler();
+    }
+  }
   render() {
     // App.js에서 전달받은 로그인 유무
     const isAlreadyAuthentication = this.props.isloggined
@@ -79,6 +85,7 @@ export default class Login extends Component {
                 placeholder="비밀번호"
                 onChange={this.changeHandler}
                 name="password"
+                onKeyPress={this.keyPressHandler}
                 />
             </FormGroup>
             <Button 
