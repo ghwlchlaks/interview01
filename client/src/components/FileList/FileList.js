@@ -77,7 +77,6 @@ export default class FileList extends Component {
   }
 
   bindDictionaryEvent (e) {
-    console.log(e.target)
     e.target.parentElement.querySelector(".nested").classList.toggle("active");
     e.target.classList.toggle("caret-down");
   }
