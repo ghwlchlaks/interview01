@@ -3,7 +3,7 @@ import { Button, Input, FormGroup, Form, Container } from "reactstrap";
 import {Redirect} from 'react-router-dom';
 
 import './Login.css';
-import * as authService from '../../services/auth';
+import {login, isAuthenticated} from './action';
 
 export default class Login extends Component {
   constructor(props) {
@@ -22,7 +22,7 @@ export default class Login extends Component {
       alert('입력칸을 모두 작성해주세요');
     }
     else {
-      const auth = await authService.login(this.state.loginInfo);
+      const auth = await login(this.state.loginInfo);
       if(auth.status) {
         window.location.reload()
       } else {
@@ -48,7 +48,7 @@ export default class Login extends Component {
   }
 
   isAuthentication = () => {
-    return authService.isAuthenticated();
+    return isAuthenticated();
   }
 
   keyPressHandler = (e) => {

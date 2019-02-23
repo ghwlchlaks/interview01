@@ -3,7 +3,7 @@ import { Button, Input,Container, FormGroup, Form, Col } from "reactstrap";
 import {Redirect} from 'react-router-dom';
 
 import './Signup.css';
-import * as authService from "../../services/auth";
+import {signup} from './action';
 
 export default class Login extends Component {
   constructor(props) {
@@ -47,7 +47,7 @@ export default class Login extends Component {
     //empty check
     if(password === confirmPassword) {
       if (username && email && password && confirmPassword && sex !== undefined) {
-        const auth = await authService.signup(this.state.signupInfo);
+        const auth = await signup(this.state.signupInfo);
         if(auth.status) {
           alert('회원가입 성공');
           this.props.history.push('/login');

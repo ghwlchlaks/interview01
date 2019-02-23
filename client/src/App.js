@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import {Container} from 'reactstrap';
 
-import Home from './routes/Home/Home';
-import FileManager from './routes/FileManager/FileManager';
-import Chat from './routes/Chat/Chat';
-import Login from './routes/Login/Login';
-import Signup from './routes/Signup/Signup';
-import NoMatch from './routes/NotFound/NotFound';
+import Home from './components/Home/Home';
+import FileManager from './components/FileManager/FileManager';
+import Chat from './components/Chat/Chat';
+import Login from './components/Login/Login';
+import Signup from './components/Signup/Signup';
+import NoMatch from './components/NotFound/NotFound';
 
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';

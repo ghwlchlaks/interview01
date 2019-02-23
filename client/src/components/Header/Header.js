@@ -16,7 +16,7 @@ import {
   Container
 } from "reactstrap";
 import logo_img from '../../images/logo.svg';
-import * as authService from '../../services/auth';
+import {logout, isAuthenticated} from './action';
 import socketIOClient from 'socket.io-client';
 
 export default class Header extends Component {
@@ -43,7 +43,7 @@ export default class Header extends Component {
 
   // 로그아웃
   logoutHandler = async() => {
-    await authService.logout();
+    await logout();
     window.location.reload();
   }
 
@@ -75,7 +75,7 @@ export default class Header extends Component {
   }
 
   authCheck = () => {
-    return authService.isAuthenticated();
+    return isAuthenticated();
   }
   authenticatedHandler = async() => {
     // 로그인 유무 확인
@@ -129,13 +129,13 @@ export default class Header extends Component {
 
       // 중복 로그인되어있는 상대에게 
       socket.on('duplicated login', (duplicatedIp) => {
-        authService.logout();
+        logout();
         alert(duplicatedIp + ' 에서 로그인으로 인해 로그아웃 처리됩니다.');
       })
 
       // 로그인 한 상대에게
       socket.on('duplicated relogin', () => {
-        authService.logout()
+        logout();
         alert('중복로그인으로 인해 재접속해주시기 바랍니다.')
       })
   

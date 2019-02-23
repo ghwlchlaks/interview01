@@ -27,3 +27,8 @@
 #upload_button {
     width:100%;
 }
+
+#progressbar{
+    padding-left: 0%;
+    padding-right: 0%;
+}

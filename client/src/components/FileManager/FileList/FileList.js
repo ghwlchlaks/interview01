@@ -1,18 +1,21 @@
 import React, { Component } from 'react'
 import './FileList.css';
-import * as fileManagerService from '../../services/fileManager';
+import { getAllData, readFile } from '../action';
 
 export default class FileList extends Component {
   constructor(props) {
-    super(props)
-  }
-  state = {
-    allFileData : null,
-    fileData : {
-      fileContent: null,
-      path: null,
+    super(props);
+
+      this.state = {
+        isSuccessUpload: props.isSuccessUpload,
+        allFileData : null,
+        fileData : {
+          fileContent: null,
+          path: null,
+      }
     }
   }
+  
   //컴포넌트 로딩후 호출
   componentDidMount() {
     this.getAllFileData();
@@ -20,7 +23,7 @@ export default class FileList extends Component {
 
   //모든 파일 데이터 가져오기
   getAllFileData = () => {
-    fileManagerService.getAllData().then((data) => {
+    getAllData().then((data) => {
       if (data) {
         this.setState({
           allFileData: data.children
@@ -40,7 +43,7 @@ export default class FileList extends Component {
 
   // 리스트 클릭 이벤트
   listClickHandler = (path ,e) => {
-    fileManagerService.readFile(path).then((content) => {
+    readFile(path).then((content) => {
       this.setState({
         fileData : {
           fileContent: content,

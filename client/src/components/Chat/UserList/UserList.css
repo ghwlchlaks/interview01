@@ -1,0 +1,41 @@
+#partcipant_list {
+    height: 500px;
+    overflow: auto;
+}
+
+  .panel > .list-group
+{
+    margin-bottom: 0;
+}
+.panel > .list-group .list-group-item
+{
+    border-width: 1px 0;
+    background-color: #eee;
+}
+.panel > .list-group .list-group-item:first-child
+{
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}
+.panel > .list-group .list-group-item:last-child
+{
+    border-bottom: 0;
+}
+.panel-heading + .list-group .list-group-item:first-child
+{
+    border-top-width: 0;
+}
+
+.panel-info .list-group-item.active
+{
+    color: #31708F;
+    background-color: #D9EDF7;
+    border-color: #BCE8F1;
+}
+
+.panel li.list-group-item:hover, li.list-group-item.active:focus
+{
+    color: #000;
+    background-color: #ccc;
+    border-color: #ccc;
+}

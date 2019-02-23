@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {updateFile} from "../../services/fileManager";
+import {updateFile} from "../action";
 import {Button, FormGroup, Input} from 'reactstrap'
 import './FileContent.css';
 
