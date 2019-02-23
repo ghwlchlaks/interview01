@@ -13,7 +13,9 @@ import {
   Collapse, 
   Nav,
   NavItem,
-  Container
+  Container,
+  Badge,
+  Alert
 } from "reactstrap";
 import logo_img from '../../images/logo.svg';
 import {logout, isAuthenticated} from './action';
@@ -29,9 +31,11 @@ export default class Header extends Component {
       isloggined: false,
       endpoint: 'http://localhost:4000',
       isUpdate: false,
-      isOpen: false
+      isOpen: false,
+      visible: false
     }
 
+    this.onDismiss = this.onDismiss.bind(this);
     this.authenticatedHandler()
   }
 
@@ -117,6 +121,17 @@ export default class Header extends Component {
 
       // 귓속말 채팅 이벤트 연결
       socket.on('private message', (privateMessage) => {
+        const currentUrl = window.location.href.split('/');
+        if (currentUrl[currentUrl.length - 1] !== 'chat') {
+          this.setState({
+            visible: true,
+          })
+          if (!localStorage.getItem('message')) {
+            localStorage.setItem('message', 1)
+          } else {
+            localStorage.setItem('message',parseInt(localStorage.getItem('message')) + 1)
+          }
+        }
         this.setState({privateMessage: privateMessage});
         this.props.receiveprivateMessageHandler(privateMessage)
       })
@@ -142,8 +157,14 @@ export default class Header extends Component {
     }   
   }
 
+  onDismiss() {
+    this.setState({ visible: false });
+  }
+
   render() {
-    const isAlreadyAuthentication = this.state.isloggined
+    const isAlreadyAuthentication = this.state.isloggined;
+    const privateMessage = this.state.privateMessage;
+
     return (   
       <div>
       {isAlreadyAuthentication ? (
@@ -157,7 +178,7 @@ export default class Header extends Component {
                 <NavLink tag={Link} className="item" to={`/fileManager/${this.props.username}`}>파일매니저</NavLink>
               </NavItem>     
               <NavItem>
-                <NavLink tag={Link} className="item" to="/chat">채팅</NavLink>
+                <NavLink tag={Link} className="item" to="/chat">채팅<Badge color="info" pill>{localStorage.getItem('message')}</Badge></NavLink>
               </NavItem>
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle className="item"  nav caret>
@@ -191,6 +212,13 @@ export default class Header extends Component {
         </Container>
         </Navbar>
       )}
+      {privateMessage ? (
+      <Alert color="info" isOpen={this.state.visible} toggle={this.onDismiss}>
+        <strong>{privateMessage.username}</strong> 님이 메시지를 보냈습니다.   
+        <span></span>[{privateMessage.message}]
+      </Alert>
+      ) : ''}
+
     </div>
     )
   }

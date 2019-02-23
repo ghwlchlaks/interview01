@@ -19,6 +19,7 @@ export default class Chat extends Component {
   }
 
   componentDidMount() {
+    localStorage.removeItem('message');
     this.setState({
       socket: this.props.socket
     }, () => {
