@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { Container } from "reactstrap";
+
 export default class home extends Component {
   render() {
     return (
-      <Container>
+      <div>
         홈
-      </Container>
+      
+      </div>
     )
   }
 }

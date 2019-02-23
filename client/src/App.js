@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import './App.css';
 import {Container} from 'reactstrap';
 
 import Home from './routes/Home/Home';
@@ -60,9 +59,9 @@ class App extends Component {
 
   render() {
     return (
-      <Container>
+      <div>
       <Router>
-        <div id="contents">
+        <div>
           <Header 
             isLogginHandler={this.isLogginHandler} 
             receivePublicMessageHandler={this.receivePublicMessageHandler}
@@ -72,11 +71,24 @@ class App extends Component {
             username={this.state.username}
             >
           </Header>
+          <Container>
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/fileManager/:username" render={(props) => <FileManager isloggined={this.state.isloggined} checkLogined={this.checkLogined} {...props} />}  />
-            <Route path="/login" render={(props) => <Login isloggined={this.state.isloggined} {...props} />} />
-            <Route path="/signup" render={(props) => <Signup isloggined={this.state.isloggined} {...props}/>} />
+            <Route 
+              path="/fileManager/:username" 
+              render={(props) => 
+              <FileManager isloggined={this.state.isloggined} checkLogined={this.checkLogined} {...props} />}  
+              />
+            <Route 
+              path="/login" 
+              render={(props) =>
+                 <Login isloggined={this.state.isloggined} {...props} />} 
+              />
+            <Route 
+              path="/signup" 
+              render={(props) => 
+              <Signup isloggined={this.state.isloggined} {...props}/>} 
+              />
             <Route 
               path="/chat" 
               render={(props) => 
@@ -100,9 +112,10 @@ class App extends Component {
             <Route component={NoMatch} />
           </Switch>
           <Footer></Footer>
+          </Container>
         </div>
       </Router>
-      </Container>
+      </div>
       
 
     );

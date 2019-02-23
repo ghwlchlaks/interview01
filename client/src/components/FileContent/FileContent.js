@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {updateFile} from "../../services/fileManager";
-import {Button, FormGroup, Input, Container} from 'reactstrap'
+import {Button, FormGroup, Input} from 'reactstrap'
 import './FileContent.css';
 
 export default class FileContent extends Component {
@@ -46,14 +46,14 @@ export default class FileContent extends Component {
   render() {
     const content = this.state.fileData.fileContent ? this.state.fileData.fileContent : '';
     return (
-      <Container>
+      <div>
         <FormGroup>
           <Input type="textarea" name="text" id="fileContent" value={content} onChange={this.changeContentHandler} />
         </FormGroup>
         <FormGroup>
           <Button id="save_button" color="secondary" onClick={this.saveClickHandler}>저장</Button>
         </FormGroup>
-      </Container>
+      </div>
     )
   }
 }

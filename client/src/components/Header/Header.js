@@ -1,8 +1,21 @@
 import React, { Component } from 'react'
 import './Header.css';
 import {Link} from 'react-router-dom'
-import { Button} from "reactstrap";
-import goorm_img from '../../images/goorm_img.svg';
+import { 
+  UncontrolledDropdown,
+  DropdownMenu,
+  DropdownItem,
+  NavLink,
+  DropdownToggle, 
+  Navbar,
+  NavbarBrand, 
+  NavbarToggler,
+  Collapse, 
+  Nav,
+  NavItem,
+  Container
+} from "reactstrap";
+import logo_img from '../../images/logo.svg';
 import * as authService from '../../services/auth';
 import socketIOClient from 'socket.io-client';
 
@@ -10,13 +23,22 @@ export default class Header extends Component {
   constructor(props) {
     super(props);
 
+    this.toggle = this.toggle.bind(this);
+
     this.state = {
       isloggined: false,
       endpoint: 'http://localhost:4000',
       isUpdate: false,
+      isOpen: false
     }
 
     this.authenticatedHandler()
+  }
+
+  toggle() {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
   }
 
   // 로그아웃
@@ -122,23 +144,54 @@ export default class Header extends Component {
 
   render() {
     const isAlreadyAuthentication = this.state.isloggined
-    if (isAlreadyAuthentication) {
-      return (
-        <div className="header">
-          <Link to="/" className="item"><img src={goorm_img} id="App-head-logo" alt="goorm_img" /></Link>
-          <Link to={`/fileManager/${this.props.username}`} className="item">파일매니저</Link>
-          <Link to="/chat" className="item">채팅 </Link>
-          <Button className="item" onClick={this.logoutHandler}>로그아웃</Button>
-        </div>
-      )
-    } else {
-      return (
-        <div className="header">
-          <Link to="/" className="item"><img src={goorm_img} id="App-head-logo" alt="goorm_img" /></Link>
-          <Link to="/login" className="item">로그인</Link>
-          <Link to="/signup" className="item">회원가입</Link>
-        </div>
-      )
-    }
+    return (   
+      <div>
+      {isAlreadyAuthentication ? (
+         <Navbar color="light" light expand="md">
+         <Container>
+          <NavbarBrand href="/"><img src={logo_img} id="App-head-logo" alt="goorm_img" /></NavbarBrand>
+          <NavbarToggler onClick={this.toggle} />
+          <Collapse isOpen={this.state.isOpen} navbar>
+            <Nav className="ml-auto" navbar>
+              <NavItem>
+                <NavLink tag={Link} className="item" to={`/fileManager/${this.props.username}`}>파일매니저</NavLink>
+              </NavItem>     
+              <NavItem>
+                <NavLink tag={Link} className="item" to="/chat">채팅</NavLink>
+              </NavItem>
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle className="item"  nav caret>
+                  정보
+                </DropdownToggle>
+                <DropdownMenu right>
+                  <DropdownItem  onClick={this.logoutHandler}>
+                    로그아웃
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+              </Nav>
+            </Collapse>
+          </Container>
+        </Navbar>
+      ) : (
+        <Navbar color="light" light expand="md">
+        <Container>
+          <NavbarBrand href="/"><img src={logo_img} id="App-head-logo" alt="goorm_img" /></NavbarBrand>
+          <NavbarToggler onClick={this.toggle} />
+          <Collapse isOpen={this.state.isOpen} navbar>
+            <Nav className="ml-auto" navbar>
+              <NavItem>
+                <NavLink tag={Link} className="item" to="/login">로그인</NavLink>
+              </NavItem>     
+              <NavItem>
+                <NavLink tag={Link} className="item" to="/signup">회원가입</NavLink>
+              </NavItem>
+            </Nav>
+          </Collapse>
+        </Container>
+        </Navbar>
+      )}
+    </div>
+    )
   }
 }

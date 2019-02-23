@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Input,Container, Label, FormGroup, Form, Col } from "reactstrap";
+import { Button, Input,Container, FormGroup, Form, Col } from "reactstrap";
 import {Redirect} from 'react-router-dom';
 
 import './Signup.css';
@@ -87,25 +87,67 @@ export default class Login extends Component {
       {isAlreadyAuthentication ? <Redirect to={{pathname: '/'}} /> : (
         <Form>
           <FormGroup row>
-            <Input value={this.state.signupInfo.username} type="text" name="username" id="username" onChange={this.changeHandler} onKeyPress={this.keyPressHandler} placeholder="아이디" />
+            <Input 
+              value={this.state.signupInfo.username} 
+              type="text" 
+              name="username"
+              id="username" 
+              onChange={this.changeHandler}
+              onKeyPress={this.keyPressHandler} 
+              placeholder="아이디" />
           </FormGroup>
           <FormGroup row>
-            <Input value={this.state.signupInfo.email} type="email" name="email" id="email" onChange={this.changeHandler} onKeyPress={this.keyPressHandler} placeholder="이메일" />
+            <Input 
+              value={this.state.signupInfo.email} 
+              type="email" 
+              name="email" 
+              id="email" 
+              onChange={this.changeHandler} 
+              onKeyPress={this.keyPressHandler} 
+              placeholder="이메일" />
           </FormGroup>
           <FormGroup row>
-            <Input value={this.state.signupInfo.password} type="password" name="password" id="password" onChange={this.changeHandler} onKeyPress={this.keyPressHandler} placeholder="비밀번호" />
+            <Input 
+              value={this.state.signupInfo.password} 
+              type="password" 
+              name="password" 
+              id="password" 
+              onChange={this.changeHandler} 
+              onKeyPress={this.keyPressHandler} 
+              placeholder="비밀번호" />
           </FormGroup>
           <FormGroup row>
-            <Input value={this.state.signupInfo.confirmPassword} type="password" name="confirmPassword" id="confirmPassword" onChange={this.changeHandler} onKeyPress={this.keyPressHandler} placeholder="비밀번호 확인" />
+            <Input 
+              value={this.state.signupInfo.confirmPassword} 
+              type="password" 
+              name="confirmPassword" 
+              id="confirmPassword" 
+              onChange={this.changeHandler} 
+              onKeyPress={this.keyPressHandler} 
+              placeholder="비밀번호 확인" />
           </FormGroup>
           <FormGroup row>
             <Col sm={{size: 4, offset: 4}} id="genderRadio">
-              <Button color="info" onClick={() => this.onRadioBtnClick(true)} active={this.state.signupInfo.sex === true}>남</Button>
-              <Button color="info" onClick={() => this.onRadioBtnClick(false)}  active={this.state.signupInfo.sex === false}>여</Button>
+              <Button 
+                color="info" 
+                onClick={() => this.onRadioBtnClick(true)} 
+                active={this.state.signupInfo.sex === true}>
+                남
+                </Button>
+              <Button 
+                color="info" 
+                onClick={() => this.onRadioBtnClick(false)}  
+                active={this.state.signupInfo.sex === false}>
+                여
+                </Button>
             </Col>
           </FormGroup>
           <FormGroup row>
-            <Button id="signupBtn" onClick={this.signupHandler}>계정 만들기</Button>
+            <Button 
+              id="signupBtn" 
+              onClick={this.signupHandler}>
+              계정 만들기
+              </Button>
           </FormGroup>
         </Form>
         )}

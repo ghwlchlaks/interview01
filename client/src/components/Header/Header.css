@@ -1,21 +1,5 @@
-.header {
-    background: #fff;
-    display: table;
-    table-layout: fixed;
-    width: 100%;
-}
-
 .item {
     text-align: center;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    display: table-cell;
-    color: rgba(0, 0, 0, 0.5);
-}
-
-.item:active {
-    background: #fff;
-    color: #5c7cfa
 }
 
 @media all{
