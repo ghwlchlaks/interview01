@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Input, ButtonGroup, FormGroup, Form } from "reactstrap";
+import { Button, Input,Container, Label, FormGroup, Form, Col } from "reactstrap";
 import {Redirect} from 'react-router-dom';
 
 import './Signup.css';
@@ -82,30 +82,34 @@ export default class Login extends Component {
     // App.js에서 전달받은 로그인 유무
     const isAlreadyAuthentication = this.props.isloggined
     return (
-      <div className="Login">
+      <Container id="signup">
       {/* 로그인 유무에 따른 리다이렉션 */}
       {isAlreadyAuthentication ? <Redirect to={{pathname: '/'}} /> : (
-          <Form>
-          <FormGroup>
+        <Form>
+          <FormGroup row>
             <Input value={this.state.signupInfo.username} type="text" name="username" id="username" onChange={this.changeHandler} onKeyPress={this.keyPressHandler} placeholder="아이디" />
           </FormGroup>
-          <FormGroup>
+          <FormGroup row>
             <Input value={this.state.signupInfo.email} type="email" name="email" id="email" onChange={this.changeHandler} onKeyPress={this.keyPressHandler} placeholder="이메일" />
           </FormGroup>
-          <FormGroup>
+          <FormGroup row>
             <Input value={this.state.signupInfo.password} type="password" name="password" id="password" onChange={this.changeHandler} onKeyPress={this.keyPressHandler} placeholder="비밀번호" />
           </FormGroup>
-          <FormGroup>
+          <FormGroup row>
             <Input value={this.state.signupInfo.confirmPassword} type="password" name="confirmPassword" id="confirmPassword" onChange={this.changeHandler} onKeyPress={this.keyPressHandler} placeholder="비밀번호 확인" />
           </FormGroup>
-          <ButtonGroup>
-          <Button color="primary" onClick={() => this.onRadioBtnClick(true)} active={this.state.signupInfo.sex === true}>남</Button>
-          <Button color="primary" onClick={() => this.onRadioBtnClick(false)}  active={this.state.signupInfo.sex === false}>여</Button>
-        </ButtonGroup>
-          <Button id="signupBtn" onClick={this.signupHandler}>계정 만들기</Button>
+          <FormGroup row>
+            <Col sm={{size: 4, offset: 4}} id="genderRadio">
+              <Button color="info" onClick={() => this.onRadioBtnClick(true)} active={this.state.signupInfo.sex === true}>남</Button>
+              <Button color="info" onClick={() => this.onRadioBtnClick(false)}  active={this.state.signupInfo.sex === false}>여</Button>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Button id="signupBtn" onClick={this.signupHandler}>계정 만들기</Button>
+          </FormGroup>
         </Form>
         )}
-      </div>
+      </Container>
     )
   }
 }

@@ -6,7 +6,6 @@ export default class Footer extends Component {
     return (
       <div>
       <footer>
-        Footer입니다.
       </footer>
       </div>
     )

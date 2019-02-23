@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Input, FormGroup, Form } from "reactstrap";
+import { Button, Input, FormGroup, Form, Container } from "reactstrap";
 import {Redirect} from 'react-router-dom';
 
 import './Login.css';
@@ -60,43 +60,45 @@ export default class Login extends Component {
     // App.js에서 전달받은 로그인 유무
     const isAlreadyAuthentication = this.props.isloggined
     return (
-      <div>
+      <Container id="login">
       {/* 로그인 유무에 따른 리다이렉션 */}
       {isAlreadyAuthentication ? <Redirect to={{pathname: '/'}} /> : (
-          <div className="Login">
-          <Form>
-            <FormGroup>
-              <Input 
-                value={this.state.loginInfo.username}
-                type="email" 
-                name="email" 
-                id="email" 
-                placeholder="아이디" 
-                onChange={this.changeHandler}
-                onKeyPress={this.keyPressHandler}
-                name="username"
-                />
-            </FormGroup>
-            <FormGroup>
-              <Input 
-                value={this.state.loginInfo.password}
-                type="password" 
-                name="password"
-                id="password" 
-                placeholder="비밀번호"
-                onChange={this.changeHandler}
-                name="password"
-                onKeyPress={this.keyPressHandler}
-                />
-            </FormGroup>
+        
+        <Form>
+          <FormGroup row>
+            <Input 
+              value={this.state.loginInfo.username}
+              type="email" 
+              name="email" 
+              id="email" 
+              placeholder="아이디" 
+              onChange={this.changeHandler}
+              onKeyPress={this.keyPressHandler}
+              name="username"
+              />
+          </FormGroup>
+          <FormGroup row>
+            <Input 
+              value={this.state.loginInfo.password}
+              type="password" 
+              name="password"
+              id="password" 
+              placeholder="비밀번호"
+              onChange={this.changeHandler}
+              name="password"
+              onKeyPress={this.keyPressHandler}
+              />
+          </FormGroup>
+          <FormGroup row>
             <Button 
-              id="LoginBtn"
+              id="loginBtn"
               onClick={this.loginHandler}
-              >로그인</Button>
-          </Form>
-        </div>
+              >로그인
+            </Button>
+          </FormGroup>
+        </Form>
         )}
-      </div>
+      </Container>
     )
   }
 }

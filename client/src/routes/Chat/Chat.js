@@ -1,15 +1,7 @@
 import React, { Component } from "react";
 import {Redirect} from 'react-router-dom';
 import './Chat.css';
-import {
-        Container,
-        Row, 
-        Col, 
-        Button, 
-        InputGroup, 
-        InputGroupAddon,
-        Input 
-      } from 'reactstrap'
+import { Container,Row, Col, Button, InputGroup, InputGroupAddon, Input } from 'reactstrap'
 
 export default class Chat extends Component {
   constructor(props) {
@@ -40,7 +32,7 @@ export default class Chat extends Component {
 
   // 마지막 메시지 스크롤 포커스
   lastLineFocus = () => {
-    const lists = document.getElementsByClassName('content')
+    const lists = document.getElementsByClassName('chat_content')
     if (lists.length > 0) {
       lists[lists.length - 1].scrollIntoView()
     }
@@ -142,7 +134,7 @@ export default class Chat extends Component {
     if (username !== this.state.username) {
       // 내가 보낸것이 아니라면
       return (
-      <div className="incoming_msg content" key={_id}>
+      <div className="incoming_msg chat_content" key={_id}>
         <div className="received_msg">
           <div className="received_withd_msg">
             <strong>{username}</strong>
@@ -155,7 +147,7 @@ export default class Chat extends Component {
     } else {
       // 내가 보낸것이라면
       return (
-      <div className="outgoing_msg content" key={_id}>
+      <div className="outgoing_msg chat_content" key={_id}>
         <div className="sent_msg">
           <p>{message}</p>
           <span className="tiem_date">{createdDate}</span>
@@ -245,27 +237,44 @@ export default class Chat extends Component {
                     <li 
                       onClick={this.userListClickHandler} 
                       id="public" 
-                      className="list-group-item active">전체
+                      className="list-group-item active">
+                      전체
                       </li>
-                    {allUsers ? this.makeUserList(allUsers) : ''}
+                    {
+                      allUsers ? 
+                      this.makeUserList(allUsers) : ''
+                    }
                 </ul>
             </div>
           </Col>
 
           <Col md="8" id="chat_list_wrapper">
+
             <Row>
               <div id="chat_ul">
-                {publicAllMsg ? 
-                  this.makePublicChatList(publicAllMsg): ''}
+                {
+                  publicAllMsg ? 
+                  this.makePublicChatList(publicAllMsg): ''
+                }
               </div>
             </Row>
 
             <Row>
               <Col>
                 <InputGroup>
-                  <InputGroupAddon addonType="prepend">{this.state.activeUserList}</InputGroupAddon>
-                  <Input placeholder="메시지를 입력하세요" onChange={this.messageChangeHandler} value={this.state.message} onKeyDown={this.keyPressHandler}/>
-                  <Button onClick={this.massageSendHandler}>전송</Button>
+                  <InputGroupAddon 
+                    addonType="prepend">
+                    {this.state.activeUserList}
+                  </InputGroupAddon>
+                  <Input 
+                    placeholder="메시지를 입력하세요" 
+                    onChange={this.messageChangeHandler} 
+                    value={this.state.message} 
+                    onKeyDown={this.keyPressHandler}/>
+                  <Button 
+                    onClick={this.massageSendHandler}>
+                    전송
+                  </Button>
                 </InputGroup>
               </Col>
             </Row>

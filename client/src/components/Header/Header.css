@@ -18,7 +18,7 @@
     color: #5c7cfa
 }
 
-@media all and (min-width: 480px) {
+@media all{
     #App-head-logo{
         height: 25px;
     }

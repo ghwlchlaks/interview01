@@ -41,6 +41,7 @@ export default class Header extends Component {
             this.setState({
               isUpdate: true,
             }, () => {
+              // 세션 만료시
               alert('세션이 만료되어 로그아웃 처리됐습니다.');
               window.location.reload();
             })

@@ -1,14 +1,18 @@
-@media all and (min-width: 480px) {
-    .Login {
-      padding: 100px 0 190px 0;
-    }
-  
-    .Login form {
-      margin: 0 auto;
-      max-width: 340px;
-    }
-  }
-
 #signupBtn {
     width: 100%;
+}
+
+@media all and (min-width: 480px) {
+  #signup {
+    padding: 100px 0 190px 0;
+  }
+
+  #signup form {
+    margin: 0 auto;
+    max-width: 340px;
+  }
+}
+
+#genderRadio{
+  text-align: center;
 }

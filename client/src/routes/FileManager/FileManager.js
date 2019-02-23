@@ -89,29 +89,45 @@ export default class FileManager extends Component {
     const isAlreadyAuthentication = this.props.isloggined
     const username = this.state.username;
     return (
-    <div>
+    <Container>
       {!isAlreadyAuthentication ? <Redirect to={{pathname: '/'}} /> : (
-        <div>
         <Row>
+          
           {/* 1. 자식 FileList에서 클릭한 파일의 데이터를 받아옴 */}
           <Col className="left" sm="4" xs="12">
-            <div>
-              <FormGroup>
-                  <CustomInput id="upload_input" type="file" accept=".zip, .tar" onChange={this.changeUploadFile} label={this.state.fileName} />
-                  <Button id="upload_button" size="sm" color="secondary" onClick={this.uploadHandler}>업로드</Button>
-                  <Progress striped color="success" value={(this.state.loaded)} />
-              </FormGroup>
+            <FormGroup row>
+                <CustomInput 
+                  id="upload_input" 
+                  type="file" 
+                  accept=".zip, .tar" 
+                  onChange={this.changeUploadFile} 
+                  label={this.state.fileName} 
+                  />
+                <Button 
+                  id="upload_button" 
+                  size="sm" 
+                  color="secondary"
+                  onClick={this.uploadHandler}>
+                  업로드
+                </Button>
+                <Progress 
+                  striped 
+                  color="success" 
+                  value={(this.state.loaded)} 
+                />
+            </FormGroup>
  
-            </div>
-            <div id="fileList">
+            <Row id="fileList">
               <FileList  
                 username={username} 
                 {...this.props} 
                 isSuccessUpload={this.state.isSuccessUpload} 
                 sendContentHandler={this.contentReceivedHandler}>
               </FileList>
-            </div>
+            </Row>
+
           </Col>
+
           {/* 2. 받아온 FileList의 값을 자식인 FileContent컴포넌트에게 전달 */}
           <Col className="right" sm="8" xs="12">
             <FileContent 
@@ -120,10 +136,8 @@ export default class FileManager extends Component {
             </FileContent>
           </Col>
         </Row>
-
-      </div>
       )}
-      </div>
+      </Container>
     )
   }
 }
