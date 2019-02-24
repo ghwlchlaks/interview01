@@ -18,8 +18,6 @@ export default class Login extends Component {
         sex: true
       }
     }
-
-    this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
   }
 
   changeHandler = (e) => {
