@@ -1,7 +1,4 @@
-#partcipant_list {
-    height: 500px;
-    overflow: auto;
-}
+
 
   .panel > .list-group
 {
@@ -39,3 +36,5 @@
     background-color: #ccc;
     border-color: #ccc;
 }
+
+

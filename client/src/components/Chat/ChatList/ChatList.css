@@ -50,12 +50,3 @@
     background-color: #555;
 }
 
-/* Chatlist wrapper div*/
-#chat_ul {
-  height: 600px;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  width: 100%;
-  padding-left: 10px;
-  padding-right: 10px;
-}

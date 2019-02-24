@@ -1,6 +1,6 @@
+/* 이외의 설정 */
 #chat_wrapper{
     margin-top: 30px;
-    height: 650px;
     margin-bottom: 20px;
 }
 
@@ -15,3 +15,173 @@
     padding-left: 0%;
     padding-right: 0%;
 }
+#userlist_ui{
+    height: 650px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    width: 100%;
+}
+
+#chat_ul {
+    height: 610px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  /* 일반 데스크탑 */
+  @media (min-width: 1281px) {
+  
+    #chat_wrapper{
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+    
+    #user_list_wrapper{
+        border: 2px solid #ccc;
+        padding-left: 0%;
+        padding-right: 0%;
+    }
+    
+    #chat_list_wrapper{
+        border: 2px solid #ccc;
+        padding-left: 0%;
+        padding-right: 0%;
+    }
+    #userlist_ui{
+        height: 650px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        width: 100%;
+    }
+    
+    #chat_ul {
+        height: 610px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        width: 100%;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    
+  }
+  
+  /* 노트북 해상도 */
+  @media (min-width: 1025px) and (max-width: 1280px) {
+    #chat_wrapper{
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+    
+    #user_list_wrapper{
+        border: 2px solid #ccc;
+        padding-left: 0%;
+        padding-right: 0%;
+    }
+    
+    #chat_list_wrapper{
+        border: 2px solid #ccc;
+        padding-left: 0%;
+        padding-right: 0%;
+    }
+    #userlist_ui{
+        height: 600px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        width: 100%;
+    }
+    
+    #chat_ul {
+        height: 550px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        width: 100%;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+  }
+  
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+  }
+  
+
+  @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  }
+  
+
+  /* 아이폰 갤럭시 landscape */
+  @media (min-width: 481px) and (max-width: 767px) {
+    #chat_wrapper{
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+    
+    #user_list_wrapper{
+        border: 2px solid #ccc;
+        padding-left: 0%;
+        padding-right: 0%;
+    }
+    
+    #chat_list_wrapper{
+        border: 2px solid #ccc;
+        padding-left: 0%;
+        padding-right: 0%;
+    }
+    #userlist_ui{
+        height: 350px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        width: 100%;
+    }
+    
+    #chat_ul {
+        height: 310px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        width: 100%;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+ 
+  }
+  
+  /* 모바일 */
+  @media (min-width: 320px) and (max-width: 480px) {
+    
+    #chat_wrapper{
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+    
+    #user_list_wrapper{
+        border: 2px solid #ccc;
+        padding-left: 0%;
+        padding-right: 0%;
+    }
+    
+    #chat_list_wrapper{
+        border: 2px solid #ccc;
+        padding-left: 0%;
+        padding-right: 0%;
+    }
+    #userlist_ui{
+        height: 300px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        width: 100%;
+    }
+    
+    #chat_ul {
+        height: 610px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        width: 100%;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    
+    
+  }

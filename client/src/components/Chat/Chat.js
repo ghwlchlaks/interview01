@@ -112,7 +112,7 @@ export default class Chat extends Component {
         {/* 로그인 유무에 따른 리다이렉션 */}
         {!isAlreadyAuthentication ? <Redirect to={{pathname: '/'}}/> : (
         <Row id="chat_wrapper">
-          <Col md="4" id="user_list_wrapper">
+          <Col md="4" sm="4" xs="12" id="user_list_wrapper">
             <UserList
               allUsers={allUsers}
               username={username}
@@ -120,7 +120,8 @@ export default class Chat extends Component {
               receiveActiveUser={this.receiveActiveUser}
             ></UserList>
           </Col>
-          <Col md="8" id="chat_list_wrapper">
+
+          <Col md="8" sm="8" xs="12" id="chat_list_wrapper">
             <Row>
               <ChatList
                 publicAllMsg={publicAllMsg}
@@ -135,6 +136,7 @@ export default class Chat extends Component {
               ></Controller>
             </Row>
           </Col>
+          
         </Row>
         )}
       </Container>

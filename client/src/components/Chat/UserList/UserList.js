@@ -83,19 +83,21 @@ export default class UserList extends Component {
     const allUsers = this.state.allUsers;
 
     return (
-      <div className="panel panel-info">
-      <ul className="list-group">
-          <li 
-            onClick={this.userListClickHandler} 
-            id="public" 
-            className="list-group-item active">
-            전체
-            </li>
-          {
-            allUsers ? 
-            this.makeUserList(allUsers) : ''
-          }
-      </ul>
+      <div id="userlist_ui">
+        <div className="panel panel-info">
+          <ul className="list-group">
+              <li 
+                onClick={this.userListClickHandler} 
+                id="public" 
+                className="list-group-item active">
+                전체
+                </li>
+              {
+                allUsers ? 
+                this.makeUserList(allUsers) : ''
+              }
+          </ul>
+      </div>
     </div>
     )
   }
