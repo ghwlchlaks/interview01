@@ -25,8 +25,7 @@ export default class Header extends Component {
   constructor(props) {
     super(props);
 
-    this.toggle = this.toggle.bind(this);
-
+    //해당 컴포넌트에서 사용할 state정의
     this.state = {
       isloggined: false,
       endpoint: 'http://localhost:4000',
@@ -34,16 +33,25 @@ export default class Header extends Component {
       isOpen: false,
       visible: false,
       alertTimeout: null,
+      privateMessage: null,
     }
 
-    this.onDismiss = this.onDismiss.bind(this);
-    this.authenticatedHandler()
   }
 
-  toggle() {
+  componentDidMount = () => {
+    this.authenticatedHandler();
+  }
+
+  // 메시지 alert show toggle
+  toggle = () => {
     this.setState({
       isOpen: !this.state.isOpen
     });
+  }
+
+  // 메시지 alert 삭제 버튼
+  onDismiss = () => {
+    this.setState({ visible: false });
   }
 
   // 로그아웃
@@ -51,11 +59,39 @@ export default class Header extends Component {
     await logout();
     window.location.reload();
   }
+  
+  // 로그인 유무 리턴
+  authCheck = () => {
+    return isAuthenticated();
+  }
+
+  // 메시지도착했을때 alert창 timeout이벤트
+  messageAlertShow = () => {
+    this.setState({
+      visible: true,
+    }, () => {
+      clearTimeout(this.state.alertTimeout);
+      // 3초후 alert 창 삭제
+      this.state.alertTimeout = setTimeout(() => {
+        this.setState({
+          visible: false,
+        })
+      }, 3000);
+    })
+  }
+
+  // 메시지 도착시 localstorage 저장 및 변경
+  messageLogcalStrageHandler = () => {
+    if (!localStorage.getItem('message')) {
+      localStorage.setItem('message', 1)
+    } else {
+      localStorage.setItem('message',parseInt(localStorage.getItem('message')) + 1)
+    }
+  }
 
   componentDidUpdate = () => {
     //현재 state가 로그인된 상태에서만 적용
     if (this.state.isloggined) {
-
     // 로그인 유무 검사
     this.authCheck().then((auth) => {
       // 로그아웃상태라면 state수정후 
@@ -79,9 +115,6 @@ export default class Header extends Component {
   }
   }
 
-  authCheck = () => {
-    return isAuthenticated();
-  }
   authenticatedHandler = async() => {
     // 로그인 유무 확인
     const check = await this.authCheck()
@@ -90,7 +123,7 @@ export default class Header extends Component {
         isloggined: true,
         username: check.msg
       })
-
+      
       const socket = socketIOClient(this.state.endpoint);
       // publicRoom 참여 check.msg = username
       socket.emit('enter public room', check.msg)
@@ -101,17 +134,12 @@ export default class Header extends Component {
 
       // 모든 유저 정보 이벤트 연결
       socket.on('success get users', (allUsers) => {
-        this.setState({
-          allUsers: allUsers
-        }, () => {
-          // 부모(App.js)로 로그인 유무 전달, 채팅 모든 유저 정보 전달
-          this.props.isLogginHandler(this.state.isloggined, this.state.username, this.state.allUsers, socket)
-        })
+        this.props.isLogginHandler(this.state.isloggined, this.state.username, allUsers, socket)
       })
       
       // 전체 채팅 이벤트 연결
       socket.on('public message', (publicMessage) => {
-        this.setState({publicMessage: publicMessage});
+        //this.setState({publicMessage: publicMessage});
         this.props.receivePublicMessageHandler(publicMessage);
       })
 
@@ -124,23 +152,8 @@ export default class Header extends Component {
       socket.on('private message', (privateMessage) => {
         const currentUrl = window.location.href.split('/');
         if (currentUrl[currentUrl.length - 1] !== 'chat') {
-          this.setState({
-            visible: true,
-          }, () => {
-            clearTimeout(this.state.alertTimeout);
-            // 3초후 alert 창 삭제
-            this.state.alertTimeout = setTimeout(() => {
-              console.log('alert 창 삭제')
-              this.setState({
-                visible: false,
-              })
-            }, 3000);
-          })
-          if (!localStorage.getItem('message')) {
-            localStorage.setItem('message', 1)
-          } else {
-            localStorage.setItem('message',parseInt(localStorage.getItem('message')) + 1)
-          }
+          this.messageAlertShow();
+          this.messageLogcalStrageHandler();
         }
         this.setState({privateMessage: privateMessage});
         this.props.receiveprivateMessageHandler(privateMessage)
@@ -150,7 +163,6 @@ export default class Header extends Component {
       socket.on('private get message', (message) => {
         this.props.getPrivateMessageHandler(message)
       })
-
 
       // 중복 로그인되어있는 상대에게 
       socket.on('duplicated login', (duplicatedIp) => {
@@ -163,12 +175,7 @@ export default class Header extends Component {
         logout();
         alert('중복로그인으로 인해 재접속해주시기 바랍니다.')
       })
-  
-    }   
-  }
-
-  onDismiss() {
-    this.setState({ visible: false });
+    } 
   }
 
   render() {
@@ -177,10 +184,13 @@ export default class Header extends Component {
 
     return (   
       <div>
+      {/* 로그인 유무 판단 후 렌더링 */}
       {isAlreadyAuthentication ? (
          <Navbar color="light" light expand="md">
          <Container>
-          <NavbarBrand href="/"><img src={logo_img} id="App-head-logo" alt="goorm_img" /></NavbarBrand>
+          <NavbarBrand href="/">
+            <img src={logo_img} id="App-head-logo" alt="goorm_img" />
+          </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
@@ -188,16 +198,14 @@ export default class Header extends Component {
                 <NavLink tag={Link} className="item" to={`/fileManager/${this.props.username}`}>파일매니저</NavLink>
               </NavItem>     
               <NavItem>
-                <NavLink tag={Link} className="item" to="/chat">채팅<Badge color="info" pill>{localStorage.getItem('message')}</Badge></NavLink>
+                <NavLink tag={Link} className="item" to="/chat">채팅
+                  <Badge color="info" pill>{localStorage.getItem('message')}</Badge>
+                </NavLink>
               </NavItem>
               <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle className="item"  nav caret>
-                  정보
-                </DropdownToggle>
+                <DropdownToggle className="item"  nav caret>정보</DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem  onClick={this.logoutHandler}>
-                    로그아웃
-                  </DropdownItem>
+                  <DropdownItem  onClick={this.logoutHandler}>로그아웃</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
               </Nav>
@@ -207,7 +215,9 @@ export default class Header extends Component {
       ) : (
         <Navbar color="light" light expand="md">
         <Container>
-          <NavbarBrand href="/"><img src={logo_img} id="App-head-logo" alt="goorm_img" /></NavbarBrand>
+          <NavbarBrand href="/">
+            <img src={logo_img} id="App-head-logo" alt="goorm_img" />
+          </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
@@ -223,6 +233,7 @@ export default class Header extends Component {
         </Navbar>
       )}
       {privateMessage ? (
+        // 메시지 알림 창
       <Alert color="info" isOpen={this.state.visible} toggle={this.onDismiss}>
         <strong>{privateMessage.username}</strong> 님이 메시지를 보냈습니다.   
         <span id="alert_margin"></span>[{privateMessage.message}]
