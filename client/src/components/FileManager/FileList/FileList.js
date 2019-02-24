@@ -8,6 +8,7 @@ export default class FileList extends Component {
 
       this.state = {
         isSuccessUpload: props.isSuccessUpload,
+        username: props.username,
         allFileData : null,
         fileData : {
           fileContent: null,
@@ -30,8 +31,6 @@ export default class FileList extends Component {
         })
       }
     });
-
-  
   }
 
   componentWillReceiveProps(nextProps) {
@@ -56,7 +55,7 @@ export default class FileList extends Component {
     })
   }
 
-  //렌더링
+  // 디렉토리 구조 렌더링
   makeFolderStructure = (array) => {
     if(array) {
       return (
@@ -69,7 +68,6 @@ export default class FileList extends Component {
             item.type === 'file' ? (<a onClick={this.listClickHandler.bind(this, item.path)}>{item.name}</a>) : 
             (<span onClick={this.bindDictionaryEvent.bind(this)} className="caret">{item.name}</span>)
           }
-          
             {(item.children) ? this.makeFolderStructure(item.children) : '' }
           </li>
         )
@@ -79,14 +77,16 @@ export default class FileList extends Component {
     }
   }
 
+  // 디렉토리 구조 up down 이벤트 연결
   bindDictionaryEvent (e) {
     e.target.parentElement.querySelector(".nested").classList.toggle("active");
     e.target.classList.toggle("caret-down");
   }
 
   render() {
-    const username = this.props.username
+    const username = this.state.username
     const allFileData = this.state.allFileData
+
     return (
         <ul id="myUL">
         {allFileData ? (

@@ -4,20 +4,19 @@ import { CustomInput, Button, Container, Progress } from "reactstrap";
 import axios from 'axios'
 
 export default class Controller extends Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
+      isSuccessUpload: props.isSuccessUpload,
       fileName: 'Choose file',
       selectFile: null,
       loaded: 0,
-      isSuccessUpload: props.isSuccessUpload,
     }
   }
 
+  // 업로드 파일 변경 이벤트
   changeUploadFile = (e) => {
-    
     const files = e.target.files[0];
     if (!files) {
       this.setState({
@@ -31,6 +30,7 @@ export default class Controller extends Component {
       })
     }
   }
+
   // 파일 선택후 업로드 버튼 이벤트 핸들러
   uploadHandler = () => {
     if(this.state.selectFile) {
@@ -61,8 +61,6 @@ export default class Controller extends Component {
           }, () => {
             this.props.getSuccessUploadHandler(this.state.isSuccessUpload);
           })
-          
-          
         } else {
           alert('로그인이 필요합니다.');
         }

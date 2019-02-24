@@ -27,6 +27,7 @@ export default class Header extends Component {
 
     //해당 컴포넌트에서 사용할 state정의
     this.state = {
+      username: props.username,
       isloggined: false,
       endpoint: 'http://localhost:4000',
       isUpdate: false,
@@ -36,10 +37,11 @@ export default class Header extends Component {
       privateMessage: null,
     }
 
+    this.authenticatedHandler();
   }
 
   componentDidMount = () => {
-    this.authenticatedHandler();
+    
   }
 
   // 메시지 alert show toggle
@@ -195,7 +197,7 @@ export default class Header extends Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink tag={Link} className="item" to={`/fileManager/${this.props.username}`}>파일매니저</NavLink>
+                <NavLink tag={Link} className="item" to={`/fileManager/${this.state.username}`}>파일매니저</NavLink>
               </NavItem>     
               <NavItem>
                 <NavLink tag={Link} className="item" to="/chat">채팅

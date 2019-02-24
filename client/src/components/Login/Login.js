@@ -8,6 +8,7 @@ import {login} from './action';
 export default class Login extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       loginInfo: {
         username: '',
@@ -54,8 +55,8 @@ export default class Login extends Component {
 
   render() {
     // App.js에서 전달받은 로그인 유무
-    const isAlreadyAuthentication = this.props.isloggined
-    
+    const isAlreadyAuthentication = this.props.isloggined;
+
     return (
       <Container id="login">
       {/* 로그인 유무에 따른 리다이렉션 */}

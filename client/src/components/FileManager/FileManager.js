@@ -29,6 +29,7 @@ export default class FileManager extends Component {
     })
   }
   
+  // 파일업로드 성공 유무를 받는 핸들러
   getSuccessUploadHandler = (isSuccessUpload) => {
     this.setState({
       isSuccessUpload: isSuccessUpload
@@ -37,8 +38,9 @@ export default class FileManager extends Component {
 
   render() {
     // App.js에서 전달받은 로그인 유무
-    const isAlreadyAuthentication = this.props.isloggined
+    const isAlreadyAuthentication = this.props.isloggined;
     const username = this.state.username;
+    
     return (
     <Container>
       {!isAlreadyAuthentication ? <Redirect to={{pathname: '/'}} /> : (
