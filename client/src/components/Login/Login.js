@@ -3,7 +3,7 @@ import { Button, Input, FormGroup, Form, Container } from "reactstrap";
 import {Redirect} from 'react-router-dom';
 
 import './Login.css';
-import {login, isAuthenticated} from './action';
+import {login} from './action';
 
 export default class Login extends Component {
   constructor(props) {
@@ -18,13 +18,12 @@ export default class Login extends Component {
 
   loginHandler = async() => {
     const {username, password} = this.state.loginInfo
-    if (username === '' || password === ''){
+    if (username === '' || password === '') {
       alert('입력칸을 모두 작성해주세요');
-    }
-    else {
+    } else {
       const auth = await login(this.state.loginInfo);
       if(auth.status) {
-        window.location.reload()
+        window.location.reload();
       } else {
         this.setState({
           loginInfo: {
@@ -47,18 +46,16 @@ export default class Login extends Component {
     })
   }
 
-  isAuthentication = () => {
-    return isAuthenticated();
-  }
-
   keyPressHandler = (e) => {
     if (e.key === 'Enter') {
       this.loginHandler();
     }
   }
+
   render() {
     // App.js에서 전달받은 로그인 유무
     const isAlreadyAuthentication = this.props.isloggined
+    
     return (
       <Container id="login">
       {/* 로그인 유무에 따른 리다이렉션 */}
