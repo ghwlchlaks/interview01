@@ -32,7 +32,8 @@ export default class Header extends Component {
       endpoint: 'http://localhost:4000',
       isUpdate: false,
       isOpen: false,
-      visible: false
+      visible: false,
+      alertTimeout: null,
     }
 
     this.onDismiss = this.onDismiss.bind(this);
@@ -125,6 +126,15 @@ export default class Header extends Component {
         if (currentUrl[currentUrl.length - 1] !== 'chat') {
           this.setState({
             visible: true,
+          }, () => {
+            clearTimeout(this.state.alertTimeout);
+            // 3초후 alert 창 삭제
+            this.state.alertTimeout = setTimeout(() => {
+              console.log('alert 창 삭제')
+              this.setState({
+                visible: false,
+              })
+            }, 3000);
           })
           if (!localStorage.getItem('message')) {
             localStorage.setItem('message', 1)
@@ -215,7 +225,7 @@ export default class Header extends Component {
       {privateMessage ? (
       <Alert color="info" isOpen={this.state.visible} toggle={this.onDismiss}>
         <strong>{privateMessage.username}</strong> 님이 메시지를 보냈습니다.   
-        <span></span>[{privateMessage.message}]
+        <span id="alert_margin"></span>[{privateMessage.message}]
       </Alert>
       ) : ''}
 

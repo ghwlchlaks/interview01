@@ -1,7 +1,9 @@
 .item {
     text-align: center;
 }
-
+#alert_margin {
+    margin-left: 10px;
+}
 @media all{
     #App-head-logo{
         height: 25px;
