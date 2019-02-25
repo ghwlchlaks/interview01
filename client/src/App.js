@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import {Container} from 'reactstrap';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Container } from 'reactstrap';
 
 import Home from './components/Home/Home';
 import FileManager from './components/FileManager/FileManager';
@@ -23,107 +23,114 @@ class App extends Component {
       publicMessage: null,
       publicAllmessage: null,
       privateReceivedInfo: null,
-      privateMessage: null,
-    }
+      privateMessage: null
+    };
   }
-
 
   isLogginHandler = (isloggined, username, allUsers, socket) => {
     this.setState({
-      isloggined : isloggined,
-      allUsers: allUsers, 
+      isloggined: isloggined,
+      allUsers: allUsers,
       socket: socket,
       username: username
-    })
-  }
+    });
+  };
 
-  receivePublicMessageHandler = (publicMessage) => {
+  receivePublicMessageHandler = publicMessage => {
     this.setState({
-      publicMessage :publicMessage
-    })
-  }
+      publicMessage: publicMessage
+    });
+  };
 
-  getPublicMessageHandler = (allMessage) => {
+  getPublicMessageHandler = allMessage => {
     this.setState({
       publicAllmessage: allMessage
-    })
-  }
+    });
+  };
 
-  receiveprivateMessageHandler = (privateMessage) => {
+  receiveprivateMessageHandler = privateMessage => {
     this.setState({
-      privateReceivedInfo : privateMessage
-    })
-  }
+      privateReceivedInfo: privateMessage
+    });
+  };
 
-  getPrivateMessageHandler = (message) => {
+  getPrivateMessageHandler = message => {
     this.setState({
       privateMessage: message
-    })
-  }
+    });
+  };
 
   render() {
     return (
       <div>
-      <Router>
-        <div>
-          <Header 
-            isLogginHandler={this.isLogginHandler} 
-            receivePublicMessageHandler={this.receivePublicMessageHandler}
-            receiveprivateMessageHandler={this.receiveprivateMessageHandler}
-            getPublicMessageHandler={this.getPublicMessageHandler}
-            getPrivateMessageHandler={this.getPrivateMessageHandler}
-            username={this.state.username}
-            >
-          </Header>
-          <Container>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route 
-              path="/fileManager/:username" 
-              render={(props) => 
-              <FileManager isloggined={this.state.isloggined} checkLogined={this.checkLogined} {...props} />}  
-              />
-            <Route 
-              path="/login" 
-              render={(props) =>
-                 <Login isloggined={this.state.isloggined} {...props} />} 
-              />
-            <Route 
-              path="/signup" 
-              render={(props) => 
-              <Signup isloggined={this.state.isloggined} {...props}/>} 
-              />
-            <Route 
-              path="/chat" 
-              render={(props) => 
-                <Chat 
-                  isloggined={this.state.isloggined} 
-                  username={this.state.username} 
-                  allUsers={this.state.allUsers} 
-                  socket={this.state.socket}
-                  publicMessage={this.state.publicMessage}
-                  privateReceivedInfo={this.state.privateReceivedInfo}
-                  publicAllmessage={this.state.publicAllmessage}
-                  privateMessage={this.state.privateMessage}
-                  isLogginHandler={this.isLogginHandler} 
-                  receivePublicMessageHandler={this.receivePublicMessageHandler}
-                  receiveprivateMessageHandler={this.receiveprivateMessageHandler}
-                  getPublicMessageHandler={this.getPublicMessageHandler}
-                  getPrivateMessageHandler={this.getPrivateMessageHandler}
-                  {...props}
-                  />}
+        <Router>
+          <div>
+            <Header
+              isLogginHandler={this.isLogginHandler}
+              receivePublicMessageHandler={this.receivePublicMessageHandler}
+              receiveprivateMessageHandler={this.receiveprivateMessageHandler}
+              getPublicMessageHandler={this.getPublicMessageHandler}
+              getPrivateMessageHandler={this.getPrivateMessageHandler}
+              username={this.state.username}
+            />
+            <Container>
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route
+                  path="/fileManager/:username"
+                  render={props => (
+                    <FileManager
+                      isloggined={this.state.isloggined}
+                      checkLogined={this.checkLogined}
+                      {...props}
+                    />
+                  )}
                 />
-            <Route component={NoMatch} />
-          </Switch>
-                    
-          <Footer></Footer>
-          </Container>
+                <Route
+                  path="/login"
+                  render={props => (
+                    <Login isloggined={this.state.isloggined} {...props} />
+                  )}
+                />
+                <Route
+                  path="/signup"
+                  render={props => (
+                    <Signup isloggined={this.state.isloggined} {...props} />
+                  )}
+                />
+                <Route
+                  path="/chat"
+                  render={props => (
+                    <Chat
+                      isloggined={this.state.isloggined}
+                      username={this.state.username}
+                      allUsers={this.state.allUsers}
+                      socket={this.state.socket}
+                      publicMessage={this.state.publicMessage}
+                      privateReceivedInfo={this.state.privateReceivedInfo}
+                      publicAllmessage={this.state.publicAllmessage}
+                      privateMessage={this.state.privateMessage}
+                      isLogginHandler={this.isLogginHandler}
+                      receivePublicMessageHandler={
+                        this.receivePublicMessageHandler
+                      }
+                      receiveprivateMessageHandler={
+                        this.receiveprivateMessageHandler
+                      }
+                      getPublicMessageHandler={this.getPublicMessageHandler}
+                      getPrivateMessageHandler={this.getPrivateMessageHandler}
+                      {...props}
+                    />
+                  )}
+                />
+                <Route component={NoMatch} />
+              </Switch>
 
-        </div>
-      </Router>
+              <Footer />
+            </Container>
+          </div>
+        </Router>
       </div>
-      
-
     );
   }
 }

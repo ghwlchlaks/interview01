@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import { Button, Input,Container, FormGroup, Form, Col } from "reactstrap";
-import {Redirect} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Button, Input, Container, FormGroup, Form, Col } from 'reactstrap';
+import { Redirect } from 'react-router-dom';
 
 import './Signup.css';
-import {signup} from './action';
+import { signup } from './action';
 
 export default class Login extends Component {
   constructor(props) {
@@ -11,55 +11,66 @@ export default class Login extends Component {
 
     this.state = {
       isloggined: props.isloggined,
-      signupInfo : {
+      signupInfo: {
         username: '',
         email: '',
         password: '',
         confirmPassword: '',
         sex: true
       }
-    }
+    };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.isloggined !== prevState.isloggined) {
       return {
-        isloggined: nextProps.isloggined,
-      }
+        isloggined: nextProps.isloggined
+      };
     }
     return null;
   }
 
-
   //input값 변경
-  changeHandler = (e) => {
-    const {name, value} = e.target;
+  changeHandler = e => {
+    const { name, value } = e.target;
     this.setState({
       signupInfo: {
         ...this.state.signupInfo,
         [name]: value
       }
-    })
-  }
+    });
+  };
 
   // 성별 변경
-  onRadioBtnClick = (sex) => {
+  onRadioBtnClick = sex => {
     this.setState({
       signupInfo: {
         ...this.state.signupInfo,
         sex: sex
       }
-    })
-  }
+    });
+  };
 
-  signupHandler = async() => {
-    const {username, email, password, confirmPassword, sex} = this.state.signupInfo;
-    
+  signupHandler = async () => {
+    const {
+      username,
+      email,
+      password,
+      confirmPassword,
+      sex
+    } = this.state.signupInfo;
+
     //empty check
-    if(password === confirmPassword) {
-      if (username && email && password && confirmPassword && sex !== undefined) {
+    if (password === confirmPassword) {
+      if (
+        username &&
+        email &&
+        password &&
+        confirmPassword &&
+        sex !== undefined
+      ) {
         const auth = await signup(this.state.signupInfo);
-        if(auth.status) {
+        if (auth.status) {
           alert('회원가입 성공');
           this.props.history.push('/login');
         } else {
@@ -69,25 +80,25 @@ export default class Login extends Component {
               username: '',
               email: '',
               password: '',
-              confirmPassword: '',
+              confirmPassword: ''
             }
-          })
-          alert(auth.msg.message)
+          });
+          alert(auth.msg.message);
         }
         return;
       }
-      alert('모두 입력해주세요')
+      alert('모두 입력해주세요');
       return;
     }
-    alert('비밀번호가 맞지 않습니다.')
+    alert('비밀번호가 맞지 않습니다.');
     return;
-  }
+  };
 
-  keyPressHandler = (e) => {
+  keyPressHandler = e => {
     if (e.key === 'Enter') {
       this.signupHandler();
     }
-  }
+  };
 
   render() {
     // App.js에서 전달받은 로그인 유무
@@ -95,75 +106,81 @@ export default class Login extends Component {
 
     return (
       <Container id="signup">
-      {/* 로그인 유무에 따른 리다이렉션 */}
-      {isAlreadyAuthentication ? <Redirect to={{pathname: '/'}} /> : (
-        <Form>
-          <FormGroup row>
-            <Input 
-              value={this.state.signupInfo.username} 
-              type="text" 
-              name="username"
-              id="username" 
-              onChange={this.changeHandler}
-              onKeyPress={this.keyPressHandler} 
-              placeholder="아이디" />
-          </FormGroup>
-          <FormGroup row>
-            <Input 
-              value={this.state.signupInfo.email} 
-              type="email" 
-              name="email" 
-              id="email" 
-              onChange={this.changeHandler} 
-              onKeyPress={this.keyPressHandler} 
-              placeholder="이메일" />
-          </FormGroup>
-          <FormGroup row>
-            <Input 
-              value={this.state.signupInfo.password} 
-              type="password" 
-              name="password" 
-              id="password" 
-              onChange={this.changeHandler} 
-              onKeyPress={this.keyPressHandler} 
-              placeholder="비밀번호" />
-          </FormGroup>
-          <FormGroup row>
-            <Input 
-              value={this.state.signupInfo.confirmPassword} 
-              type="password" 
-              name="confirmPassword" 
-              id="confirmPassword" 
-              onChange={this.changeHandler} 
-              onKeyPress={this.keyPressHandler} 
-              placeholder="비밀번호 확인" />
-          </FormGroup>
-          <FormGroup row>
-            <Col sm={{size: 4, offset: 4}} id="genderRadio">
-              <Button 
-                color="info" 
-                onClick={() => this.onRadioBtnClick(true)} 
-                active={this.state.signupInfo.sex === true}>
-                남
+        {/* 로그인 유무에 따른 리다이렉션 */}
+        {isAlreadyAuthentication ? (
+          <Redirect to={{ pathname: '/' }} />
+        ) : (
+          <Form>
+            <FormGroup row>
+              <Input
+                value={this.state.signupInfo.username}
+                type="text"
+                name="username"
+                id="username"
+                onChange={this.changeHandler}
+                onKeyPress={this.keyPressHandler}
+                placeholder="아이디"
+              />
+            </FormGroup>
+            <FormGroup row>
+              <Input
+                value={this.state.signupInfo.email}
+                type="email"
+                name="email"
+                id="email"
+                onChange={this.changeHandler}
+                onKeyPress={this.keyPressHandler}
+                placeholder="이메일"
+              />
+            </FormGroup>
+            <FormGroup row>
+              <Input
+                value={this.state.signupInfo.password}
+                type="password"
+                name="password"
+                id="password"
+                onChange={this.changeHandler}
+                onKeyPress={this.keyPressHandler}
+                placeholder="비밀번호"
+              />
+            </FormGroup>
+            <FormGroup row>
+              <Input
+                value={this.state.signupInfo.confirmPassword}
+                type="password"
+                name="confirmPassword"
+                id="confirmPassword"
+                onChange={this.changeHandler}
+                onKeyPress={this.keyPressHandler}
+                placeholder="비밀번호 확인"
+              />
+            </FormGroup>
+            <FormGroup row>
+              <Col sm={{ size: 4, offset: 4 }} id="genderRadio">
+                <Button
+                  color="info"
+                  onClick={() => this.onRadioBtnClick(true)}
+                  active={this.state.signupInfo.sex === true}
+                >
+                  남
                 </Button>
-              <Button 
-                color="info" 
-                onClick={() => this.onRadioBtnClick(false)}  
-                active={this.state.signupInfo.sex === false}>
-                여
+                <Button
+                  color="info"
+                  onClick={() => this.onRadioBtnClick(false)}
+                  active={this.state.signupInfo.sex === false}
+                >
+                  여
                 </Button>
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Button 
-              id="signupBtn" 
-              onClick={this.signupHandler}>
-              계정 만들기
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Button id="signupBtn" onClick={this.signupHandler}>
+                계정 만들기
               </Button>
-          </FormGroup>
-        </Form>
+            </FormGroup>
+          </Form>
         )}
       </Container>
-    )
+    );
   }
 }

@@ -21,5 +21,8 @@
     "socket.io": "^2.2.0",
     "tar-fs": "^2.0.0",
     "unzip": "^0.1.11"
+  },
+  "devDependencies": {
+    "eslint": "^5.14.1"
   }
 }
