@@ -20,6 +20,7 @@ import {
 import logo_img from '../../images/logo.svg';
 import { logout, isAuthenticated } from './action';
 import socketIOClient from 'socket.io-client';
+import { SERVER_IP } from '../../config';
 
 export default class Header extends Component {
   constructor(props) {
@@ -28,7 +29,7 @@ export default class Header extends Component {
     this.state = {
       username: props.username,
       isloggined: false,
-      endpoint: 'http://localhost:4000',
+      endpoint: SERVER_IP,
       socket: null,
       isUpdate: false,
       isOpen: false,
@@ -38,9 +39,9 @@ export default class Header extends Component {
     };
   }
 
-  componentDidMount = () => {
+  componentDidMount() {
     this.authenticatedHandler();
-  };
+  }
 
   // 메시지 alert show toggle
   toggle = () => {
@@ -90,7 +91,7 @@ export default class Header extends Component {
     }
   };
 
-  componentDidUpdate = () => {
+  componentDidUpdate() {
     //현재 state가 로그인된 상태에서만 적용
 
     if (this.state.isloggined) {
@@ -121,7 +122,9 @@ export default class Header extends Component {
         }
       });
     }
-  };
+  }
+
+  componentDidCatch = (error, errorInfo) => {};
 
   authenticatedHandler = async () => {
     // 로그인 유무 확인
