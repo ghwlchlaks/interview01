@@ -41,11 +41,23 @@ export const updateFile = updateData => {
   return axios
     .put('/api/fileManager/update', updateData)
     .then(result => {
-      if (result.status === 200 && result.data.status) return result.data;
+      if (result.status === 200) return result.data;
       else return null;
     })
     .catch(err => {
       console.log(err);
+      return null;
+    });
+};
+
+export const duplicateFile = fileName => {
+  return axios
+    .get(`/api/fileManager/duplicateFile?fileName=${fileName}`)
+    .then(result => {
+      if (result.status === 200) return result.data;
+      else return null;
+    })
+    .catch(err => {
       return null;
     });
 };

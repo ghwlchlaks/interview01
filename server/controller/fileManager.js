@@ -32,6 +32,35 @@ router.get("/getAllData", isAuthentication, (req, res) => {
   res.send({ status: true, msg: tree });
 });
 
+router.get("/duplicateFile", isAuthentication, async (req, res) => {
+  const fileName = req.query.fileName;
+  const user = req.user;
+
+  const userFiles = await User.findOne({ username: user.username }).select(
+    "files"
+  );
+
+  if (!userFiles.files) {
+    res.send({ status: true, msg: "파일이 없으므로 업로드 가능", id: null });
+  } else {
+    const file = await File.findOne({
+      _id: { $in: userFiles.files },
+      originalname: fileName
+    });
+
+    if (file) {
+      // 유저가 가지고 있던 파일이름이라면
+      res.send({ status: false, msg: "존재", id: file._id });
+    } else {
+      res.send({
+        status: true,
+        msg: "비존재",
+        id: null
+      });
+    }
+  }
+});
+
 router.post(
   "/upload",
   isAuthentication,
@@ -40,23 +69,36 @@ router.post(
     try {
       const file = req.file;
       const user = req.user;
+      const duplicateId = req.body.id;
+
       const check = await fileCheckAndExtract(file, user.username);
       if (!check) {
         res.send({ status: false, msg: "zip, tar 확장자 파일이 아닙니다." });
       } else {
         //압축해제와 파일 체크가 완료되었다면
-
-        const fileData = new File({
+        const data = {
           filename: file.filename,
           path: file.path,
+          originalname: file.originalname,
           createdDate: Date.now(),
           size: file.size
-        });
-        const fileSaveResult = await fileData.save();
-        const userData = await User.findOne({ username: user.username });
-        userData.files.push(fileSaveResult._id);
-        const userSaveResult = await userData.save();
-        if (userSaveResult) {
+        };
+        let saveResult;
+
+        if (duplicateId !== "null") {
+          // 중복파일이 존재한다면
+          saveResult = await File.updateOne(
+            { _id: duplicateId },
+            { $set: data }
+          );
+        } else {
+          const fileData = new File(data);
+          const fileSaveResult = await fileData.save();
+          const userData = await User.findOne({ username: user.username });
+          userData.files.push(fileSaveResult._id);
+          saveResult = await userData.save();
+        }
+        if (saveResult) {
           res.send(true);
         } else {
           res.send(false);
