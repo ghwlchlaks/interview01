@@ -124,8 +124,6 @@ export default class Header extends Component {
     }
   }
 
-  componentDidCatch = (error, errorInfo) => {};
-
   authenticatedHandler = async () => {
     // 로그인 유무 확인
     const check = await this.authCheck();
