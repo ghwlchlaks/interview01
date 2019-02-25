@@ -1,40 +1,41 @@
- #myUL ul li a {
+#myUL ul li div {
   cursor: pointer;
- }
-  ul, #myUL {
-    list-style-type: none;
-  }
-  
-  #myUL {
-    margin: 0;
-    padding: 0;
-  }
+}
+ul,
+#myUL {
+  list-style-type: none;
+}
 
-  .caret {
-    cursor: pointer;
-    -webkit-user-select: none; 
-    -moz-user-select: none;
-    -ms-user-select: none; 
-    user-select: none;
-  }
-  
-  .caret::before {
-    content: "\25B6";
-    color: black;
-    display: inline-block;
-    margin-right: 6px;
-  }
-  
-  .caret-down::before {
-    -ms-transform: rotate(90deg);
-    -webkit-transform: rotate(90deg);
-    transform: rotate(90deg);  
-  }
-  
-  .nested {
-    display: none;
-  }
-  
-  .active {
-    display: block;
-  }
+#myUL {
+  margin: 0;
+  padding: 0;
+}
+
+.caret {
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.caret-down::before {
+  -ms-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.nested {
+  display: none;
+}
+
+.active {
+  display: block;
+}

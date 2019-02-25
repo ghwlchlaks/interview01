@@ -37,7 +37,8 @@ export default class ChatList extends Component {
   };
 
   distinctMsg = item => {
-    const { _id, username, sender, message, createdDate } = item;
+    // _id username, message, sender, createdDate
+    const { _id, username, message, createdDate } = item;
     // username = 송신자 , this.state.username = 현재 나의 계정
     if (username !== this.state.username) {
       // 내가 보낸것이 아니라면

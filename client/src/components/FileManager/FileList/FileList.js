@@ -67,9 +67,9 @@ export default class FileList extends Component {
               /* 폴더 구조 리스트 생성 및 click 이벤트로 item.path값 바인드*/
               <li key={item.path} className={item.type}>
                 {item.type === 'file' ? (
-                  <a onClick={this.listClickHandler.bind(this, item.path)}>
+                  <div onClick={this.listClickHandler.bind(this, item.path)}>
                     {item.name}
-                  </a>
+                  </div>
                 ) : (
                   <span
                     onClick={this.bindDictionaryEvent.bind(this)}

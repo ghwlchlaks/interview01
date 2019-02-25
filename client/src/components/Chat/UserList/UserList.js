@@ -69,20 +69,18 @@ export default class UserList extends Component {
   // 유저리스트 동적 생성
   makeUserList = allUsers => {
     if (allUsers) {
-      return allUsers.map(user => {
-        if (user.username !== this.state.username) {
-          return (
-            <li
-              key={user.socketId}
-              onClick={this.userListClickHandler}
-              id={user.username}
-              className="list-group-item"
-            >
-              {user.username}
-            </li>
-          );
-        }
-      });
+      return allUsers
+        .filter(user => user.username !== this.state.username)
+        .map(user => (
+          <li
+            key={user.socketId}
+            onClick={this.userListClickHandler}
+            id={user.username}
+            className="list-group-item"
+          >
+            {user.username}
+          </li>
+        ));
     }
   };
 

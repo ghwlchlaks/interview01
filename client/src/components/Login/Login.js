@@ -80,9 +80,7 @@ export default class Login extends Component {
             <FormGroup row>
               <Input
                 value={this.state.loginInfo.username}
-                type="email"
-                name="email"
-                id="email"
+                id="username"
                 placeholder="아이디"
                 onChange={this.changeHandler}
                 onKeyPress={this.keyPressHandler}
@@ -97,7 +95,6 @@ export default class Login extends Component {
                 id="password"
                 placeholder="비밀번호"
                 onChange={this.changeHandler}
-                name="password"
                 onKeyPress={this.keyPressHandler}
               />
             </FormGroup>

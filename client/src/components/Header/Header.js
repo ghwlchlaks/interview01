@@ -67,20 +67,15 @@ export default class Header extends Component {
 
   // 메시지도착했을때 alert창 timeout이벤트
   messageAlertShow = () => {
-    this.setState(
-      {
-        visible: true
-      },
-      () => {
-        clearTimeout(this.state.alertTimeout);
-        // 3초후 alert 창 삭제
-        this.state.alertTimeout = setTimeout(() => {
-          this.setState({
-            visible: false
-          });
-        }, 3000);
-      }
-    );
+    clearTimeout(this.state.alertTimeout);
+    this.setState({
+      visible: true,
+      alertTimeout: setTimeout(() => {
+        this.setState({
+          visible: false
+        });
+      }, 3000)
+    });
   };
 
   // 메시지 도착시 localstorage 저장 및 변경
