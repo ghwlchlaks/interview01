@@ -6,7 +6,6 @@ module.exports = function(io) {
   // 클라이언트가 접속 했을때의 이벤트
   io.on('connection', (socket) => {
       console.log('user connected: ', socket.id);
-      // console.log(socket.request.connection.remoteAddress)
 
       // 로그인시 참여자로 설정
       socket.on('enter public room', (username) => {
@@ -77,7 +76,6 @@ module.exports = function(io) {
                 }
               })
             });
-          // console.log(connectedUser)
           io.emit('success get users', connectedUser);
         })
       }

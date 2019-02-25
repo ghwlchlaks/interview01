@@ -9,9 +9,9 @@ const connectRedis = require('connect-redis');
 const RedisStore = connectRedis(session);
 const passport = require('passport');
 
-// routes files
-const authRouter = require('./routes/auth');
-const fileManagerRouter = require('./routes/fileManager');
+// controller files
+const authRouter = require('./controller/auth');
+const fileManagerRouter = require('./controller/fileManager');
 
 const redis = require('./config/redis');
 const mongoose = require('./config/mongoose');
@@ -27,7 +27,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 const server = http.createServer(app);
 const io = socketIO(server);
-require('./config/chat')(io);
+require('./controller/chat')(io);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -46,12 +46,6 @@ app.use(passport.session());
 passportConfig();
 
 app.use(express.static(path.join(__dirname, '..', 'public/')));
-
-// if you need api routes add them here
-app.get("/api/getUsername", function(req, res, next){
-res.send({ username: os.userInfo().username });
-});
-
 
 app.use('/api/auth', authRouter);
 app.use('/api/fileManager', fileManagerRouter);
