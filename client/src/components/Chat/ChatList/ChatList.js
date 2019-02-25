@@ -11,18 +11,21 @@ export default class ChatList extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.publicAllMsg) {
-      this.setState({
+  static getDerivedStateFromProps(nextProps, prevState) {
+    // 메시지 변경되었을떄
+    if (nextProps.publicAllMsg !== prevState.publicAllMsg) {
+      return {
         publicAllMsg: nextProps.publicAllMsg
-      })
+      }
     }
 
-    if (nextProps.username !== this.state.username) {
-      this.setState({
+    if (nextProps.username !== prevState.username) {
+      return {
         username: nextProps.username
-      })
+      }
     }
+
+    return null;
   }
 
   makePublicChatList = (list) => {

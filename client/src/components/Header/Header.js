@@ -25,23 +25,21 @@ export default class Header extends Component {
   constructor(props) {
     super(props);
 
-    //해당 컴포넌트에서 사용할 state정의
     this.state = {
       username: props.username,
       isloggined: false,
       endpoint: 'http://localhost:4000',
+      socket: null,
       isUpdate: false,
       isOpen: false,
       visible: false,
       alertTimeout: null,
       privateMessage: null,
     }
-
-    this.authenticatedHandler();
   }
 
   componentDidMount = () => {
-    
+    this.authenticatedHandler();
   }
 
   // 메시지 alert show toggle
@@ -93,6 +91,7 @@ export default class Header extends Component {
 
   componentDidUpdate = () => {
     //현재 state가 로그인된 상태에서만 적용
+    
     if (this.state.isloggined) {
     // 로그인 유무 검사
     this.authCheck().then((auth) => {
@@ -177,7 +176,8 @@ export default class Header extends Component {
         logout();
         alert('중복로그인으로 인해 재접속해주시기 바랍니다.')
       })
-    } 
+    }
+
   }
 
   render() {

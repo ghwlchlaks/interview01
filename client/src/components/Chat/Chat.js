@@ -1,16 +1,17 @@
 import React, { Component } from "react";
-import {Redirect} from 'react-router-dom';
 import './Chat.css';
 import { Container,Row, Col } from 'reactstrap'
 import ChatList from './ChatList/ChatList';
 import UserList from './UserList/UserList';
 import Controller from './Controller/Controller';
+import {Redirect} from 'react-router-dom';
 
 export default class Chat extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      isloggined: props.isloggined,
       socket: props.socket,
       username: props.username,
       activeUserList: 'public',
@@ -19,14 +20,14 @@ export default class Chat extends Component {
   }
 
   componentDidMount() {
-    localStorage.removeItem('message');
     this.setState({
       socket: this.props.socket
     }, () => {
-      // 전체 채팅 받아오기'
-      this.state.socket.emit('get public message', this.props.username);
+      // 전체 메시지, 유저리스트 가져오기
+      this.state.socket.emit('get public message', this.state.username)
       this.state.socket.emit('get all users');
     })
+    localStorage.removeItem('message');
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -41,55 +42,58 @@ export default class Chat extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    // 메시지 (props) 변경이벤트
-
-    if (nextProps.publicMessage && 
-      this.state.activeUserList === 'public') {
-        this.setState({
-          publicMessage: nextProps.publicMessage,
-          publicAllMsg: [...this.state.publicAllMsg, nextProps.publicMessage]
-        })
-        this.props.receivePublicMessageHandler( null);
-      } 
-
-     else if (nextProps.publicAllmessage &&
-        this.state.activeUserList === 'public') {
-       this.setState({
-         publicAllMsg: nextProps.publicAllmessage
-       })
-       this.props.getPublicMessageHandler( null);
-     }
-
-      if (nextProps.privateReceivedInfo &&
-        this.state.activeUserList !== 'public' &&
-        (nextProps.privateReceivedInfo.username === this.state.activeUserList ||
-        nextProps.privateReceivedInfo.username === this.state.username)) {
-      this.setState({
-        privateMessage: nextProps.privateReceivedInfo,
-        privateAllMsg: [...this.state.privateAllMsg,  nextProps.privateReceivedInfo],
-        publicAllMsg: [...this.state.publicAllMsg, nextProps.privateReceivedInfo]
-      })
-      this.props.receiveprivateMessageHandler(null);
-    } 
-
-    else if (nextProps.privateMessage && 
-      this.state.activeUserList !== 'public') {
-      this.setState({
-        privateMessage: nextProps.privateMessage,
-        privateAllMsg: nextProps.privateMessage,
-        publicAllMsg: nextProps.privateMessage
-      })
-      this.props.getPrivateMessageHandler(null)
-    }
-
-
-    if (nextProps.allUsers) {  
-      this.setState({
+  static getDerivedStateFromProps (nextProps, prevState) {
+    
+    // 유저리스트 비교
+    if (nextProps.allUsers !== prevState.allUsers) {
+      return {
         allUsers: nextProps.allUsers
-      })
+      }
     }
 
+    if (nextProps.isloggined !== prevState.isloggined) {
+      return {
+        isloggined: nextProps.isloggined
+      }
+    }
+
+    if(nextProps.username !== prevState.username) {
+      return{
+        username: nextProps.username
+      }
+    }
+
+    // 현재 active된것이 전체 채팅
+    if (nextProps.publicMessage && prevState.activeUserList === 'public') {
+      nextProps.receivePublicMessageHandler(null);
+      return {
+        publicAllMsg: [...prevState.publicAllMsg, nextProps.publicMessage]
+      }
+    } else if (nextProps.publicAllmessage && prevState.activeUserList === 'public') {
+      // 전체 메시지 props전달받았을때
+      nextProps.getPublicMessageHandler(null);
+      return {
+        publicAllMsg: nextProps.publicAllmessage
+      }
+    }
+
+    if (nextProps.privateReceivedInfo && prevState.activeUserList !== 'public' &&
+        (nextProps.privateReceivedInfo.username === prevState.activeUserList ||
+        nextProps.privateReceivedInfo.username === prevState.username)) {
+          // 귓속말 전달
+      nextProps.receiveprivateMessageHandler(null);
+      return {
+        publicAllMsg: [...prevState.publicAllMsg, nextProps.privateReceivedInfo]
+      }
+    } else if (nextProps.privateMessage && prevState.activeUserList !== 'public') {
+      // 귓속말 모든 데이터
+      nextProps.getPrivateMessageHandler(null)
+      return {
+        publicAllMsg: nextProps.privateMessage
+      }  
+    }
+
+    return null;
   }
 
   receiveActiveUser = (activeUser) => {
@@ -99,8 +103,7 @@ export default class Chat extends Component {
   }
 
   render() {
-    // App.js에서 전달받은 로그인 유무
-    const isAlreadyAuthentication = this.props.isloggined
+    const isAlreadyAuthentication = this.state.isloggined;
     const publicAllMsg = this.state.publicAllMsg;
     const allUsers = this.state.allUsers;
     const username = this.state.username;
@@ -109,9 +112,8 @@ export default class Chat extends Component {
 
     return (
       <Container>
-        {/* 로그인 유무에 따른 리다이렉션 */}
-        {!isAlreadyAuthentication ? <Redirect to={{pathname: '/'}}/> : (
-        <Row id="chat_wrapper">
+        {isAlreadyAuthentication ? (
+          <Row id="chat_wrapper">
           <Col md="4" sm="4" xs="12" id="user_list_wrapper">
             <UserList
               allUsers={allUsers}
@@ -138,7 +140,8 @@ export default class Chat extends Component {
           </Col>
           
         </Row>
-        )}
+        ) : <Redirect to="/" />}
+        
       </Container>
     )
   }

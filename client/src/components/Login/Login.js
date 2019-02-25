@@ -10,6 +10,7 @@ export default class Login extends Component {
     super(props);
 
     this.state = {
+      isloggined: props.isloggined,
       loginInfo: {
         username: '',
         password: '',
@@ -17,6 +18,16 @@ export default class Login extends Component {
     }
   }
 
+  static getDerivedStateFromProps (nextProps, prevState) {
+    if (nextProps.isloggined !== prevState.isloggined) {
+      return {
+        isloggined: nextProps.isloggined,
+      }
+    }
+    return null;
+  }
+
+  // 로그인 버튼 이벤트
   loginHandler = async() => {
     const {username, password} = this.state.loginInfo
     if (username === '' || password === '') {
@@ -37,6 +48,7 @@ export default class Login extends Component {
     }
   }
 
+  // input 변경
   changeHandler = (e) => {
     const {name, value} = e.target;
     this.setState({
@@ -47,6 +59,7 @@ export default class Login extends Component {
     })
   }
 
+  // 키이벤트
   keyPressHandler = (e) => {
     if (e.key === 'Enter') {
       this.loginHandler();
@@ -55,7 +68,7 @@ export default class Login extends Component {
 
   render() {
     // App.js에서 전달받은 로그인 유무
-    const isAlreadyAuthentication = this.props.isloggined;
+    const isAlreadyAuthentication = this.state.isloggined;
 
     return (
       <Container id="login">

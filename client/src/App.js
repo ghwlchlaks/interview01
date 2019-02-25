@@ -20,6 +20,10 @@ class App extends Component {
       allUsers: null,
       socket: null,
       username: null,
+      publicMessage: null,
+      publicAllmessage: null,
+      privateReceivedInfo: null,
+      privateMessage: null,
     }
   }
 

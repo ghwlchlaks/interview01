@@ -10,6 +10,7 @@ export default class Login extends Component {
     super(props);
 
     this.state = {
+      isloggined: props.isloggined,
       signupInfo : {
         username: '',
         email: '',
@@ -20,6 +21,17 @@ export default class Login extends Component {
     }
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.isloggined !== prevState.isloggined) {
+      return {
+        isloggined: nextProps.isloggined,
+      }
+    }
+    return null;
+  }
+
+
+  //input값 변경
   changeHandler = (e) => {
     const {name, value} = e.target;
     this.setState({
@@ -30,6 +42,7 @@ export default class Login extends Component {
     })
   }
 
+  // 성별 변경
   onRadioBtnClick = (sex) => {
     this.setState({
       signupInfo: {
@@ -78,7 +91,7 @@ export default class Login extends Component {
 
   render() {
     // App.js에서 전달받은 로그인 유무
-    const isAlreadyAuthentication = this.props.isloggined;
+    const isAlreadyAuthentication = this.state.isloggined;
 
     return (
       <Container id="signup">

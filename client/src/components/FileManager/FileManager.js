@@ -14,12 +14,22 @@ export default class FileManager extends Component {
 
     this.state = {
       username: props.match.params.username,
+      isloggined: props.isloggined,
       isSuccessUpload: false,
       fileData : {
         fileContent: null,
         path: null,
       }
     }
+  }
+
+  static getDerivedStateFromProps (nextProps, prevState) {
+    if (nextProps.isloggined !== prevState.isloggined) {
+      return{
+        isloggined: nextProps.isloggined,
+      }
+    }
+    return null;
   }
 
   // 자식 filelist에서 클릭한 파일들에 대한 정보 받는 핸들러
@@ -37,44 +47,43 @@ export default class FileManager extends Component {
   }
 
   render() {
-    // App.js에서 전달받은 로그인 유무
-    const isAlreadyAuthentication = this.props.isloggined;
+    const isAlreadyAuthentication = this.state.isloggined; 
     const username = this.state.username;
     
     return (
     <Container>
-      {!isAlreadyAuthentication ? <Redirect to={{pathname: '/'}} /> : (
-        <Row>
+      {isAlreadyAuthentication ? (
+        <Row>        
+        {/* 1. 자식 FileList에서 클릭한 파일의 데이터를 받아옴 */}
+        <Col className="left" sm="4" xs="12">
+          <FormGroup row>
+              <Controller
+                isSuccessUpload={this.isSuccessUpload}
+                getSuccessUploadHandler={this.getSuccessUploadHandler}
+              ></Controller>
+          </FormGroup>
           
-          {/* 1. 자식 FileList에서 클릭한 파일의 데이터를 받아옴 */}
-          <Col className="left" sm="4" xs="12">
-            <FormGroup row>
-                <Controller
-                  isSuccessUpload={this.isSuccessUpload}
-                  getSuccessUploadHandler={this.getSuccessUploadHandler}
-                ></Controller>
-            </FormGroup>
-            
-            <Row id="fileList">
-              <FileList  
-                username={username} 
-                {...this.props} 
-                isSuccessUpload={this.state.isSuccessUpload} 
-                sendContentHandler={this.contentReceivedHandler}>
-              </FileList>
-            </Row>
-          </Col>
+          <Row id="fileList">
+            <FileList  
+              username={username} 
+              {...this.props} 
+              isSuccessUpload={this.state.isSuccessUpload} 
+              sendContentHandler={this.contentReceivedHandler}>
+            </FileList>
+          </Row>
+        </Col>
 
-          {/* 2. 받아온 FileList의 값을 자식인 FileContent컴포넌트에게 전달 */}
-          <Col className="right" sm="8" xs="12">
-            <FileContent 
-              id="fileContent" 
-              fileData={this.state.fileData}>
-            </FileContent>
-          </Col>
-        </Row>
-      )}
-      </Container>
+        {/* 2. 받아온 FileList의 값을 자식인 FileContent컴포넌트에게 전달 */}
+        <Col className="right" sm="8" xs="12">
+          <FileContent 
+            id="fileContent" 
+            fileData={this.state.fileData}>
+          </FileContent>
+        </Col>
+      </Row>
+  
+      ) : <Redirect to="/" />}
+    </Container>
     )
   }
 }

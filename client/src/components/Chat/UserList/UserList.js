@@ -13,26 +13,29 @@ export default class UserList extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.allUsers !== this.state.allUsers) {
-      this.setState({
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.allUsers !== prevState.allUsers) {
+      return {
         allUsers: nextProps.allUsers,
-      })
+      }
     }
 
-    if (nextProps.username !== this.state.username) {
-      this.setState({
+    if (nextProps.username !== prevState.username) {
+      return {
         username: nextProps.username,
-      })
+      }
     }
 
-    if (nextProps.socket !== this.state.socket) {
-      this.setState({
+    if (nextProps.socket !== prevState.socket) {
+      return {
         socket: nextProps.socket
-      })
+      }
     }
+
+    return null;
   }
 
+  // 유리 리스트 클릭이벤트
   userListClickHandler = (e) => {
     const beforeActiveTag = document.getElementsByClassName('list-group-item active')[0]
     if (beforeActiveTag) {
@@ -59,6 +62,7 @@ export default class UserList extends Component {
     }
   }
   
+  // 유저리스트 동적 생성
   makeUserList = (allUsers) => {
     if (allUsers) {
       return (

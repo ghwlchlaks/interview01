@@ -7,33 +7,36 @@ export default class Controller extends Component {
     super(props);
 
     this.state = {
-      activeUserList: props.activeUserList,
-      message: '',
       socket: props.socket,
       username: props.username,
+      activeUserList: props.activeUserList,
+      message: '',
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.socket !== this.state.socket) {
-      this.setState({
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.socket !== prevState.socket) {
+      return {
         socket: nextProps.socket
-      })
+      }
     }
 
-    if (nextProps.activeUserList !== this.state.activeUserList) {
-      this.setState({
+    if (nextProps.activeUserList !== prevState.activeUserList) {
+      return {
         activeUserList: nextProps.activeUserList
-      })
+      }
     }
 
-    if (nextProps.username !== this.state.username) {
-      this.setState({
+    if (nextProps.username !== prevState.username) {
+      return {
         username: nextProps.username
-      })
+      }
     }
+
+    return null;
   }
 
+  // 메시지 input값 변경
   messageChangeHandler = (e) => {
     const value = e.target.value
     this.setState({
@@ -65,6 +68,7 @@ export default class Controller extends Component {
     }
   }
 
+  // 키이벤트
   keyPressHandler = (e) => {
     if (e.key === 'Enter') {
       this.massageSendHandler();
