@@ -3,12 +3,17 @@ const LocalStrategy = require('passport-local').Strategy;
 const Users = require('../models/users');
 
 module.exports = () => {
+    //로그인시 세션저장
     passport.serializeUser((user, done) => {
         done(null, user);
     });
+
+    // 세션 정보 비교
     passport.deserializeUser((user, done) => {
         done(null, user);
     });
+
+    // 로그인 전략
     passport.use('login', new LocalStrategy({
         usernameField: 'username',
         passwordField: 'password',
@@ -28,6 +33,8 @@ module.exports = () => {
             });
         })
     }))
+
+    // 회원가입 전략
     passport.use('signup', new LocalStrategy({
         usernameField: 'username',
         passwordField: 'password',

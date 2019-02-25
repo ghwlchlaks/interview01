@@ -5,7 +5,6 @@ const {PublicRoom, PublicMessage, PrivateMessage} = require('../models/messages'
 module.exports = function(io) {
   // 클라이언트가 접속 했을때의 이벤트
   io.on('connection', (socket) => {
-      console.log('user connected: ', socket.id);
 
       // 로그인시 참여자로 설정
       socket.on('enter public room', (username) => {
@@ -58,6 +57,7 @@ module.exports = function(io) {
         })
       })
 
+      // 클라이언트 리스트와 유저정보 비교
       getClientList = () => {
         const socketConnectedUsers = io.sockets.clients().connected;
         let connectedSockets = []

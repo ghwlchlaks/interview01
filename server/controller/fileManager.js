@@ -111,6 +111,7 @@ router.get('/read',isAuthentication, async(req, res) => {
 
 })
 
+// 파일 읽기
 const readFile = (path) => {
     return new Promise((resolve, reject) => {
         fs.readFile(path, 'utf8', (err, result) => {
@@ -133,6 +134,8 @@ router.put('/update', isAuthentication, async(req, res) => {
         res.send({status: false, msg: e});
     }
 })
+
+// 경로에 파일 검사
 const isExistPath = (path) => {
     return new Promise((resolve, reject) => {
         fs.exists(path, (exists) => {
@@ -141,6 +144,8 @@ const isExistPath = (path) => {
         })
     })
 }
+
+// 파일 수정
 const updateFile = (path, newData) => {
     return new Promise((resolve, reject) => {
         fs.writeFile(path, newData, 'utf8', (err) => {
