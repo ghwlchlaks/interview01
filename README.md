@@ -103,7 +103,7 @@ npm start
 - passport, passport-local : 회원가입, 로그인,, 로그아웃 세션 관리를 쉽게 해주기 위한 모듈.
 - bcrypt-nodejs : 비밀번호를 암호화 복호화 하기위한 모듈.
 - express-session : passport 모듈과 같이 사용하여 세션을 저장하기위한 모듈.
-- connect-redis : 휘발성인 express-session과 같이 사용하여 세션을 저장하기위한 모듈.
+- connect-redis : 서버가 꺼지면 없어지는 express-session과 같이 사용하여 세션을 저장하기위한 모듈.
 
 **(2) 파일 매니저 기능**
 
