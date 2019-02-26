@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const publicMessageSchema = new mongoose.Schema({
   sender: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "users"
+    ref: 'users'
   },
   username: {
     type: String,
@@ -23,7 +23,7 @@ const publicMessageSchema = new mongoose.Schema({
 const privateMessageSchema = new mongoose.Schema({
   sender: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
+    ref: 'users',
     required: true
   },
   username: {
@@ -36,7 +36,7 @@ const privateMessageSchema = new mongoose.Schema({
   },
   receiver: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
+    ref: 'users',
     required: true
   },
   receiverName: {
@@ -61,7 +61,7 @@ const publicRoomsSchema = new mongoose.Schema({
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "users"
+    ref: 'users'
   },
   accessTime: {
     type: Date,
@@ -70,20 +70,20 @@ const publicRoomsSchema = new mongoose.Schema({
 });
 
 const privateMessage = mongoose.model(
-  "privateMessage",
+  'privateMessage',
   privateMessageSchema,
-  "privateMessage"
+  'privateMessage'
 );
 const publicMessage = mongoose.model(
-  "publicMessage",
+  'publicMessage',
   publicMessageSchema,
-  "publicMessage"
+  'publicMessage'
 );
 
 const publicRoom = mongoose.model(
-  "publicRoom",
+  'publicRoom',
   publicRoomsSchema,
-  "publicRoom"
+  'publicRoom'
 );
 
 module.exports = {

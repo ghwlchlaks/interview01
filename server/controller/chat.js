@@ -1,18 +1,18 @@
-const User = require("../models/users");
+const User = require('../models/users');
 const {
   PublicRoom,
   PublicMessage,
   PrivateMessage
-} = require("../models/messages");
+} = require('../models/messages');
 
 module.exports = function(io) {
   // 클라이언트가 접속 했을때의 이벤트
-  io.on("connection", socket => {
+  io.on('connection', socket => {
     // 로그인시 참여자로 설정
-    socket.on("enter public room", username => {
+    socket.on('enter public room', username => {
       User.findOne({ username: username }, (err, user) => {
         if (err) throw err;
-        if (!user) console.log("존재하는 유저가 아닙니다.");
+        if (!user) console.log('존재하는 유저가 아닙니다.');
         else {
           // 유저가 존재 한다면
 
@@ -29,22 +29,22 @@ module.exports = function(io) {
               publicRoom.save(err => {
                 if (err) throw err;
                 // 참여자로 저장이 됐다면
-                io.emit("success public room");
+                io.emit('success public room');
               });
             } else {
               // 만약 이전에 참여한 이력이 존재하거나 중복 로그인 시
 
               Object.entries(io.sockets.clients().connected).forEach(
-                ([key, value]) => {
+                ([key]) => {
                   if (key === participant.socketId) {
                     // 만약 저장되어있는 socket이 연결되어있다면 (중복로그인)
                     // 기존에 연결된 socket id에 연결해제 메시지 알림
                     // 접속한 ip를 알려줌 .
                     io.to(participant.socketId).emit(
-                      "duplicated login",
+                      'duplicated login',
                       socket.request.connection.remoteAddress
                     );
-                    io.to(socket.id).emit("duplicated relogin");
+                    io.to(socket.id).emit('duplicated relogin');
                   }
                 }
               );
@@ -55,7 +55,7 @@ module.exports = function(io) {
               participant.accessTime = Date.now();
               participant.save(err => {
                 if (err) throw err;
-                io.emit("success public room");
+                io.emit('success public room');
               });
             }
           });
@@ -81,26 +81,26 @@ module.exports = function(io) {
             }
           });
         });
-        io.emit("success get users", connectedUser);
+        io.emit('success get users', connectedUser);
       });
     };
 
     // 참여자 목록
-    socket.on("get all users", () => {
+    socket.on('get all users', () => {
       getClientList();
     });
 
     // 클라이언트에게 전체 메시지를 받으면
-    socket.on("public send message", (username, msg) => {
+    socket.on('public send message', (username, msg) => {
       User.findOne({ username: username }, (err, user) => {
         if (err) throw err;
-        if (!user) console.log("해당 유저가 없습니다. " + username);
+        if (!user) console.log('해당 유저가 없습니다. ' + username);
         else {
           //송신자가 회원이 등록되어있다면
           PublicRoom.findOne({ username: username }, (err, participant) => {
             if (err) throw err;
             if (!participant)
-              console.log("전체 채팅 참여자가 아닙니다. " + participant);
+              console.log('전체 채팅 참여자가 아닙니다. ' + participant);
             else {
               // 유저이면서 채팅 참여자이면
               // 전체 채팅 내용 저장
@@ -115,7 +115,7 @@ module.exports = function(io) {
                 if (err) throw err;
                 else {
                   // 채팅 내용이 저장 됐다면
-                  io.emit("public message", publicMessage);
+                  io.emit('public message', publicMessage);
                 }
               });
             }
@@ -125,28 +125,28 @@ module.exports = function(io) {
     });
 
     //모든 전체 채팅 내용
-    socket.on("get public message", username => {
+    socket.on('get public message', username => {
       // 요청한 사용자의 socket id검색
       PublicRoom.findOne({ username: username }, (err, user) => {
         if (err) throw err;
-        if (!user) console.log("전체 채팅 참여자가 아닙니다.");
+        if (!user) console.log('전체 채팅 참여자가 아닙니다.');
         else {
           // 전체 채팅에 참여한 유저라면
           //전체 채팅 컬렉션에서 최근 100개 데이터 가져오기
           PublicMessage.find({})
             .limit(100)
-            .sort({ createdDate: "asc" })
+            .sort({ createdDate: 'asc' })
             .exec((err, messages) => {
               if (err) throw err;
               // 요청한 클라이언트에게 전달 채팅 내역 전달
-              io.to(user.socketId).emit("public all message", messages);
+              io.to(user.socketId).emit('public all message', messages);
             });
         }
       });
     });
 
     // 귓속말 채팅 보내기
-    socket.on("private send message", (from, to, msg) => {
+    socket.on('private send message', (from, to, msg) => {
       console.log(`${from} 님이 ${to}님에게 ${msg} 를 보냈습니다.`);
 
       // 두 유저가 존재하는 유저인지 확인
@@ -172,15 +172,15 @@ module.exports = function(io) {
               if (err) throw err;
               else {
                 // 저장이 완료되면 귓속말 보내기
-                io.to(socket.id).emit("private message", privateMessage);
+                io.to(socket.id).emit('private message', privateMessage);
 
                 PublicRoom.findOne({ username: to })
-                  .select("socketId")
+                  .select('socketId')
                   .exec((err, toSocketId) => {
                     if (err) throw err;
                     else {
                       io.to(toSocketId.socketId).emit(
-                        "private message",
+                        'private message',
                         privateMessage
                       );
                     }
@@ -189,7 +189,7 @@ module.exports = function(io) {
             });
           } else {
             //둘 중한명이라도 존재 하지 않는다면
-            console.log("존재 하지 않는 유저입니다.");
+            console.log('존재 하지 않는 유저입니다.');
           }
         })
         .catch(err => {
@@ -198,7 +198,7 @@ module.exports = function(io) {
     });
 
     // 귓속말 채팅 내용
-    socket.on("get private message", (from, to) => {
+    socket.on('get private message', (from, to) => {
       console.log(`${from} 님과 ${to}님의 모든 대화 내용`);
 
       // 존재하는 유저인지 파악
@@ -226,17 +226,17 @@ module.exports = function(io) {
 
             message.sort(dateSort);
 
-            io.to(socket.id).emit("private get message", message);
+            io.to(socket.id).emit('private get message', message);
           });
         } else {
           // 존재하지 않는 유저라면
-          console.log("존재하지 않는 유저입니다.");
+          console.log('존재하지 않는 유저입니다.');
         }
       });
     });
 
     // 연결 끊겼을때
-    socket.on("disconnect", () => {
+    socket.on('disconnect', () => {
       getClientList();
     });
   });

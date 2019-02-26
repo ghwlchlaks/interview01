@@ -1,6 +1,6 @@
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-const Users = require("../models/users");
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const Users = require('../models/users');
 
 module.exports = () => {
   //로그인시 세션저장
@@ -15,11 +15,11 @@ module.exports = () => {
 
   // 로그인 전략
   passport.use(
-    "login",
+    'login',
     new LocalStrategy(
       {
-        usernameField: "username",
-        passwordField: "password",
+        usernameField: 'username',
+        passwordField: 'password',
         session: true,
         passReqToCallback: true
       },
@@ -28,15 +28,15 @@ module.exports = () => {
         Users.findOne({ username: userData.username }, (findError, user) => {
           if (findError) return done(findError);
           if (!user)
-            return done(null, false, { message: "존재하지않는 아이디" });
+            return done(null, false, { message: '존재하지않는 아이디' });
           if (!user.comparePassword(userData.password, user.password))
-            return done(null, false, { message: "비밀번호가 다릅니다." });
+            return done(null, false, { message: '비밀번호가 다릅니다.' });
           Users.updateOne(
             { username: user.username },
             {
               currentDate: Date.now()
             },
-            (updateError, updateResult) => {
+            updateError => {
               if (updateError) return done(updateError);
               return done(null, user);
             }
@@ -48,11 +48,11 @@ module.exports = () => {
 
   // 회원가입 전략
   passport.use(
-    "signup",
+    'signup',
     new LocalStrategy(
       {
-        usernameField: "username",
-        passwordField: "password",
+        usernameField: 'username',
+        passwordField: 'password',
         passReqToCallback: true
       },
       (req, username, password, done) => {
@@ -63,7 +63,7 @@ module.exports = () => {
             if (findError) return done(findError);
             if (user)
               return done(null, false, {
-                message: "존재하는 아이디 혹은 이메일입니다."
+                message: '존재하는 아이디 혹은 이메일입니다.'
               });
             const newUser = new Users();
             newUser.username = userData.username;

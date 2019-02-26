@@ -4,17 +4,14 @@ module.exports = {
     commonjs: true,
     es6: true
   },
-  extends: "eslint:recommended",
-  globals: {
-    Atomics: "readonly",
-    SharedArrayBuffer: "readonly"
-  },
   parserOptions: {
     ecmaVersion: 2018
   },
+  extends: 'eslint:recommended',
   rules: {
-    "no-console": true,
-    quotes: ["error", "single", { avoidEscape: true }],
-    indent: ["error", 2]
+    quotes: ['error', 'single'],
+    indent: ['error', 2],
+    'no-undef': 'off',
+    'no-console': ['error', { allow: ['warn', 'error', 'log'] }]
   }
 };
