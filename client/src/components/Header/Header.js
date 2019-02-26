@@ -17,7 +17,7 @@ import {
   Badge,
   Alert
 } from 'reactstrap';
-import logo_img from '../../images/logo.svg';
+import logo_img from '../../assets/images/logo.svg';
 import { logout, isAuthenticated } from './action';
 import socketIOClient from 'socket.io-client';
 import { SERVER_IP } from '../../config';

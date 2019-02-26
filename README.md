@@ -37,7 +37,7 @@ npm start
 
 ## 1. 페이지 구성도
 
-<img src="./page.png">
+<img src="./client/src/assets/images/page.png">
 
 **(1) Home** : 첫 페이지
 
