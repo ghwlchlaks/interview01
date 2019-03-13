@@ -214,12 +214,12 @@ export default class Header extends Component {
                       className="item"
                       to={`/fileManager/${this.state.username}`}
                     >
-                      파일매니저
+                      <h5 className="headerText">파일매니저</h5>
                     </NavLink>
                   </NavItem>
                   <NavItem>
                     <NavLink tag={Link} className="item" to="/chat">
-                      채팅
+                      <h5 className="headerText">채팅</h5>
                       <Badge color="info" pill>
                         {localStorage.getItem('message')}
                       </Badge>
@@ -250,12 +250,12 @@ export default class Header extends Component {
                 <Nav className="ml-auto" navbar>
                   <NavItem>
                     <NavLink tag={Link} className="item" to="/login">
-                      로그인
+                      <h5 className="headerText">로그인</h5>
                     </NavLink>
                   </NavItem>
                   <NavItem>
                     <NavLink tag={Link} className="item" to="/signup">
-                      회원가입
+                      <h5 className="headerText">회원가입</h5>
                     </NavLink>
                   </NavItem>
                 </Nav>

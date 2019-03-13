@@ -12,7 +12,7 @@ export default class home extends Component {
             <CardTitle>페이지 구성도</CardTitle>
             <CardLink
               target="_blank"
-              href="https://github.com/ghwlchlaks/interview01/tree/deploy"
+              href="https://github.com/ghwlchlaks/interview01"
             >
               GitHub Link
             </CardLink>

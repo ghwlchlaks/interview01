@@ -10,5 +10,10 @@
   }
 }
 #header {
-  background-color: #808080;
+  background-color: #2d3246;
+}
+
+.headerText {
+  color: white;
+  border: 1px solid white;
 }
