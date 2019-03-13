@@ -1,5 +1,5 @@
 const REDIS_PORT = process.env.REDIS_PORT || 6379;
-const REDIS_HOST = process.env.REDIS_HOST || '192.168.0.3' || 'localhost';
+const REDIS_HOST = process.env.REDIS_HOST || '192.168.0.7';
 const REDIS_PASSWORD = process.env.REDIS_PASSWORD || 'redis';
 
 const redis = require('redis');
@@ -11,6 +11,10 @@ redisClient.auth(REDIS_PASSWORD, err => {
 
 redisClient.on('error', err => {
   console.log('Redis error: ' + err);
+});
+
+redisClient.on('ready', () => {
+  console.log('redis connection');
 });
 
 module.exports = redisClient;

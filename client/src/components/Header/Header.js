@@ -211,22 +211,33 @@ export default class Header extends Component {
                   <NavItem>
                     <NavLink
                       tag={Link}
-                      className="item"
+                      className="item headerText"
+                      style={{ color: 'white' }}
                       to={`/fileManager/${this.state.username}`}
                     >
-                      <h5 className="headerText">파일매니저</h5>
+                      파일매니저
                     </NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink tag={Link} className="item" to="/chat">
-                      <h5 className="headerText">채팅</h5>
+                    <NavLink
+                      tag={Link}
+                      className="item headerText"
+                      style={{ color: 'white' }}
+                      to="/chat"
+                    >
+                      채팅
                       <Badge color="info" pill>
                         {localStorage.getItem('message')}
                       </Badge>
                     </NavLink>
                   </NavItem>
                   <UncontrolledDropdown nav inNavbar>
-                    <DropdownToggle className="item" nav caret>
+                    <DropdownToggle
+                      className="item headerText"
+                      style={{ color: 'white' }}
+                      nav
+                      caret
+                    >
                       정보
                     </DropdownToggle>
                     <DropdownMenu right>
@@ -249,13 +260,23 @@ export default class Header extends Component {
               <Collapse isOpen={this.state.isOpen} navbar>
                 <Nav className="ml-auto" navbar>
                   <NavItem>
-                    <NavLink tag={Link} className="item" to="/login">
-                      <h5 className="headerText">로그인</h5>
+                    <NavLink
+                      tag={Link}
+                      className="item headerText"
+                      style={{ color: 'white' }}
+                      to="/login"
+                    >
+                      로그인
                     </NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink tag={Link} className="item" to="/signup">
-                      <h5 className="headerText">회원가입</h5>
+                    <NavLink
+                      tag={Link}
+                      className="item headerText"
+                      style={{ color: 'white' }}
+                      to="/signup"
+                    >
+                      회원가입
                     </NavLink>
                   </NavItem>
                 </Nav>

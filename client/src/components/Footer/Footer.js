@@ -7,29 +7,17 @@ export default class Footer extends Component {
       <div id="footer">
         <div className="row no-gutters social-container">
           <div className="col">
-            <a
-              className="social-inner"
-              target="_blank"
-              href="https://github.com/ghwlchlaks/"
-            >
+            <a className="social-inner" href="https://github.com/ghwlchlaks/">
               <span>Github</span>
             </a>
           </div>
           <div className="col">
-            <a
-              className="social-inner"
-              target="_blank"
-              href="https://ghwlchlaks.github.io/"
-            >
+            <a className="social-inner" href="https://ghwlchlaks.github.io/">
               <span>Blog</span>
             </a>
           </div>
           <div className="col">
-            <a
-              className="social-inner"
-              target="_blank"
-              href="https://disqus.com/by/JihoDev/"
-            >
+            <a className="social-inner" href="https://disqus.com/by/JihoDev/">
               <span>Comment</span>
             </a>
           </div>

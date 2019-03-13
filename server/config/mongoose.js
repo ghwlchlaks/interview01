@@ -1,4 +1,4 @@
-const MONGO_HOST = process.env.MONGO_HOST || 'localhost';
+const MONGO_HOST = process.env.MONGO_HOST || '192.168.0.7';
 const MONGO_PORT = process.env.MONGO_PORT || 27017;
 const dbName = 'myProject';
 
