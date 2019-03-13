@@ -17,7 +17,7 @@ import {
   Badge,
   Alert
 } from 'reactstrap';
-import logo_img from '../../assets/images/logo.svg';
+import logo_img from '../../assets/images/logo.png';
 import { logout, isAuthenticated } from './action';
 import socketIOClient from 'socket.io-client';
 import { SERVER_IP } from '../../config';
@@ -197,10 +197,10 @@ export default class Header extends Component {
     const privateMessage = this.state.privateMessage;
 
     return (
-      <div>
+      <div id="header">
         {/* 로그인 유무 판단 후 렌더링 */}
         {isAlreadyAuthentication ? (
-          <Navbar color="light" light expand="md">
+          <Navbar light expand="md">
             <Container>
               <NavbarBrand href="/">
                 <img src={logo_img} id="App-head-logo" alt="goorm_img" />
@@ -240,7 +240,7 @@ export default class Header extends Component {
             </Container>
           </Navbar>
         ) : (
-          <Navbar color="light" light expand="md">
+          <Navbar light expand="md">
             <Container>
               <NavbarBrand href="/">
                 <img src={logo_img} id="App-head-logo" alt="goorm_img" />
